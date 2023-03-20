@@ -8,78 +8,17 @@
         <version>2.7.9</version>
         <relativePath/>
     </parent>
-    <groupId>com.tansci</groupId>
-    <artifactId>tansci-boot</artifactId>
-    <version>1.0.0</version>
 
-    <name>tansci-boot</name>
+    <groupId>com.tansci</groupId>
+    <artifactId>tansci-boot-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>tansci-boot-parent</name>
     <description>Tansci Spring Boot</description>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <mybatis-plus-boot.varsion>3.4.3.1</mybatis-plus-boot.varsion>
-        <druid-spring-boot.varsion>1.2.6</druid-spring-boot.varsion>
-        <sa-token-spring-boot.varsion>1.34.0</sa-token-spring-boot.varsion>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus-boot.varsion}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid-spring-boot.varsion}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-spring-boot-starter</artifactId>
-            <version>${sa-token-spring-boot.varsion}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <modules>
+        <module>tansci-boot</module>
+    </modules>
 
 </project>
