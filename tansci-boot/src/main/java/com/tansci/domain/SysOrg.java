@@ -13,53 +13,56 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * @ClassName： SysRole.java
- * @ClassPath： com.tansci.domain.SysRole.java
- * @Description： 权限
- * @Author： tanyp
- * @Date： 2023/03/20 10:38
- **/
+ * @path：com.tansci.domain.SysOrg.java
+ * @className：SysOrg.java
+ * @description：组织
+ * @author：tanyp
+ * @dateTime：2023/03/23 13:35
+ * @editNote：
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "sys_role")
-@ApiModel(value = "权限")
-public class SysRole {
+@TableName(value = "sys_org")
+@ApiModel(value = "组织")
+public class SysOrg {
 
-    @TableId(type = IdType.ASSIGN_UUID)
     @ApiModelProperty(value = "主键id")
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Integer id;
 
-    @ApiModelProperty(value = "角色名称")
+    @ApiModelProperty(value = "组织名称")
     private String name;
 
-    @ApiModelProperty(value = "角色编码")
-    private String code;
+    @ApiModelProperty(value = "父id")
+    private Integer parentId;
 
-    @ApiModelProperty(value = "权限：0：全部，1：自定义，2：本级级子级，3：本级")
-    private String permission;
+    @ApiModelProperty(value = "组织编码")
+    private String code;
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
-    @ApiModelProperty(value = "是否删除：0、未删除，1、已删除")
+    @ApiModelProperty(value = "删除状态：0、正常，1、已删除")
     private Integer isDel;
 
-    @ApiModelProperty(value = "创建人")
-    private String creator;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     @ApiModelProperty(value = "更新时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private LocalDateTime updateTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "描述")
     private String remarks;
+
+    @ApiModelProperty(value = "子集")
+    @TableField(exist = false)
+    private List<SysOrg> children;
 
 }

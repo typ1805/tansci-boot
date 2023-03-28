@@ -1,4 +1,4 @@
-package com.tansci.exception;
+package com.tansci.common.exception;
 
 import lombok.Getter;
 

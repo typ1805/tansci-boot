@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tansci.common.constant.Constants;
 import com.tansci.domain.SysUser;
-import com.tansci.exception.BusinessException;
+import com.tansci.common.exception.BusinessException;
 import com.tansci.mapper.SysUserMapper;
 import com.tansci.service.SysUserService;
 import com.tansci.utils.Sha256Util;

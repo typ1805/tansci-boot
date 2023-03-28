@@ -18,6 +18,7 @@
 		loginForm: {
 			username: '',
 			password: '',
+			remember: 0
 		},
 	})
 
@@ -82,6 +83,9 @@
 							<el-input type="password" v-model="state.loginForm.password" prefix-icon="Lock" show-password placeholder="请输入密码" style="width:100%"></el-input>
 						</el-form-item>
 						<el-form-item>
+							<el-checkbox v-model="state.loginForm.remember">记住密码</el-checkbox>
+						</el-form-item>
+						<el-form-item>
 							<el-button type="primary" @click="onSubmit(loginFormRef)" :loading="loading" style="width:100%">登录</el-button>
 						</el-form-item>
 					</el-form>
@@ -124,7 +128,7 @@
 			.main-title{
 				font-size: 32px;
 				text-align: center;
-				padding: 6rem 0;
+				padding: 5rem 0;
 			}
 			.main-container{
 				display: flex;

@@ -2,7 +2,7 @@ package com.tansci.handler;
 
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
-import com.tansci.exception.BusinessException;
+import com.tansci.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -34,8 +34,17 @@ public class SysMenu {
     @ApiModelProperty(value = "主键id", hidden = true)
     private String id;
 
+    @ApiModelProperty(value = "父菜单ID")
+    private String parentId;
+
     @ApiModelProperty(value = "菜单名称")
     private String name;
+
+    @ApiModelProperty(value = "菜单链接")
+    private String url;
+
+    @ApiModelProperty(value = "图标")
+    private String icon;
 
     @ApiModelProperty(value = "中文名称")
     private String chineseName;
@@ -43,29 +52,26 @@ public class SysMenu {
     @ApiModelProperty(value = "英文名称")
     private String englishName;
 
-    @ApiModelProperty(value = "父菜单ID")
-    private String parentId;
-
-    @ApiModelProperty(value = "状态：0：删除，1：正常，2：禁用")
-    private Integer status;
-
-    @ApiModelProperty(value = "菜单UR")
-    private String url;
-
-    @ApiModelProperty(value = "图标")
-    private String icon;
-
-    @ApiModelProperty(value = "级别")
-    private Integer level;
+    @ApiModelProperty(value = "权限")
+    private String permission;
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
-    @ApiModelProperty(value = "类型：0、菜单，1、按钮，2、链接，3、嵌套页面")
-    private Integer type;
+    @ApiModelProperty(value = "组件名称")
+    private String component;
 
-    @ApiModelProperty(value = "描述")
-    private String remarks;
+    @ApiModelProperty(value = "打开方式：0、默认，1、iframe，2、新标签页")
+    private Integer openMode;
+
+    @ApiModelProperty(value = "是否删除：0、未删除，1、已删除")
+    private Integer isDel;
+
+    @ApiModelProperty(value = "是否缓存：0、不缓存，1、缓存")
+    private Integer keepAlive;
+
+    @ApiModelProperty(value = "是否显示：0、不显示，1、显示")
+    private Integer isShow;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     @ApiModelProperty(value = "更新时间")
@@ -75,9 +81,8 @@ public class SysMenu {
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
 
-    @TableField(exist = false)
-    @ApiModelProperty(value = "角色id")
-    private String roleId;
+    @ApiModelProperty(value = "描述")
+    private String remarks;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "子级菜单")

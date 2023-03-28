@@ -91,11 +91,11 @@
 </template>
 <style lang="scss" scoped>
     .layout-container{
+        background: var(--el-bg-color);
         .el-header{
             display: flex;
             justify-content: space-between;
             line-height: 52px;
-            background: var(--el-bg-color);
             .header-logo{
                 display: flex;
                 height: 52px;
@@ -109,12 +109,11 @@
             }
         }
         .el-aside{
-            background: var(--el-bg-color);
             ::v-deep .el-menu{
                 margin: 0 0.6rem;
                 padding: 0 0.2rem;
                 border-right: none;
-                background: var(--el-bg-color);
+                background: transparent;
                 .el-menu-item, .el-sub-menu__title {
                     border-radius: 0.2rem;
                     height: 36px;
@@ -125,15 +124,15 @@
                     padding-left: 0;
                 }
                 .el-sub-menu__title:hover{
-                    background: #fff !important;
-                    color: var(--theme) !important;
+                    background: transparent;
+                    color: var(--theme);
                 }
                 .el-menu-item:hover{
-                    background: #fff !important;
-                    color: var(--theme) !important;
+                    background: transparent;
+                    color: var(--theme);
                 }
                 .el-menu-item.is-active {
-                    background: #fff;
+                    background: transparent;
                 }
             }
         }
@@ -141,7 +140,6 @@
             width: 0px;
         }
         .el-main{
-            background: var(--el-bg-color);
             padding: 0;
             overflow-x: hidden;
             overflow-y: auto;

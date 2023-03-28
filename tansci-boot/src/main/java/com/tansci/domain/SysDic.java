@@ -44,10 +44,6 @@ public class SysDic {
     @ApiModelProperty(value = "类型：0、系统，1、业务")
     private Integer type;
 
-    @TableField(exist = false)
-    @ApiModelProperty(value = "类型名称")
-    private String typeName;
-
     @ApiModelProperty(value = "值")
     private Integer dicValue;
 
