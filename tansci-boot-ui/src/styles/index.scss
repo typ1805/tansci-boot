@@ -1,0 +1,51 @@
+// import dark theme
+@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+
+:root {
+  // 主题
+  --theme: #2F9688;
+
+  // 局部背景
+  --el-bg-color: #eff4f9;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB","Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/**
+ * el-table 滚动条样式
+ */
+ .el-table__body-wrapper::-webkit-scrollbar {
+  width: 5px;
+  height: 1px;
+}
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+  background-color: #909399;
+  border-radius: 5px;
+}
+.el-table__body-wrapper::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background: #ededed;
+}
+
+/**
+* 滚动条样式
+*/
+.scroll-div::-webkit-scrollbar{
+  width: 5px;
+  height: 1px;
+}
+.scroll-div::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #909399;
+}
+.scroll-div::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background: #ededed;
+}
