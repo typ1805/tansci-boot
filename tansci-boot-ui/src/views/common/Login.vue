@@ -78,8 +78,7 @@
 							<el-input v-model="state.loginForm.username" prefix-icon="Avatar" placeholder="请输入账号" style="width:100%"></el-input>
 						</el-form-item>
 						<el-form-item prop="password" :rules="[
-								{required: true,message: '请输入密码',trigger: 'blur'},
-								{pattern: /^[a-zA-Z]\w{5,17}$/,message: '密码有误，请重新输入',trigger: 'blur'}]">
+								{required: true,message: '请输入密码',trigger: 'blur'}]">
 							<el-input type="password" v-model="state.loginForm.password" prefix-icon="Lock" show-password placeholder="请输入密码" style="width:100%"></el-input>
 						</el-form-item>
 						<el-form-item>

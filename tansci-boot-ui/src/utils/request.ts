@@ -18,7 +18,7 @@ const axiosInstance: AxiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
         // 设置token
         if (getToken()) {
-            config.headers.Authorization = `Bearer ${getToken()}`
+            config.headers.token = getToken()
         }
         return config;
     },

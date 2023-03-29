@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tansci.domain.SysUser;
+import com.tansci.domain.vo.SysUserVo;
 
 import java.util.List;
 
@@ -20,14 +21,14 @@ public interface SysUserService extends IService<SysUser> {
 
     List<SysUser> list(SysUser user);
 
-    Integer modifyPass(SysUser user);
+    Object insert(SysUser user);
 
-    boolean save(SysUser user);
+    Object update(SysUser user);
 
-    boolean update(SysUser user);
+    Object del(SysUser user);
 
-    boolean del(SysUser user);
+    SysUserVo login(SysUser user);
 
-    SysUser login(String username);
+    Object modifyPass(SysUser user);
 
 }

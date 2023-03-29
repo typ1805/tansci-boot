@@ -23,6 +23,9 @@
         // 获取菜单
         let routers:any = [];
         let _routes = router.options.routes;
+
+        console.log("_routes:",_routes)
+
         _routes.forEach((item:any)=>{
             if(item.children && item.type == 0){
                 routers.push(item)
@@ -109,7 +112,7 @@
             }
         }
         .el-aside{
-            ::v-deep .el-menu{
+            :deep(.el-menu) {
                 margin: 0 0.6rem;
                 padding: 0 0.2rem;
                 border-right: none;

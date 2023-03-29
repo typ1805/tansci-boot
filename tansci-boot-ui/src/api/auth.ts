@@ -1,52 +1,59 @@
 import request from '@/utils/request'
 
-// token key
+const userKey:string = 'tansci_boot_user'
 const tokenKey:string = 'tansci_boot_token'
 
-// 获取token
+// token信息
 export function getToken() {
     return sessionStorage.getItem(tokenKey);
 }
-
-// 存储token
 export function setToken(token:string) {
     sessionStorage.setItem(tokenKey, token);
 }
-
-// 删除token
 export function removeToken() {
     sessionStorage.removeItem(tokenKey);
+}
+
+// 用户信息
+export function getUser() {
+    return sessionStorage.getItem(userKey);
+}
+export function setUser(data:any) {
+    return sessionStorage.setItem(userKey, JSON.stringify(data));
+}
+export function removeUser() {
+    return sessionStorage.removeItem(userKey);
 }
 
 // 登录
 export function login(data:any){
     return new Promise((resolve, reject) => {
-      request({
-        url: '/system/security/login',
-        method: 'post',
-        data: {
-            username: data.username,
-            password: data.password,
-            code: data.code,
-            uuid: data.uuid
-        }
-      }).then((res:any) => {
-            var token = res.data
-            setToken(token)
-            resolve(token)
-      }).catch((e:any) => {
-            reject(e)
-      })
+        request({
+            url: '/tansci/auth/login',
+            method: 'post',
+            data: {
+                username: data.username,
+                password: data.password,
+                code: data.code
+            }
+        }).then((res:any) => {
+                setToken(res.data.result.token)
+                setUser(res.data.result)
+                resolve(res.data.result.token)
+        }).catch((e:any) => {
+                reject(e)
+        })
     })
 }
 
 // 登出
 export function logout(){
     request({
-        url: '/system/security/logout',
+        url: '/tansci/auth/logout',
         method: 'get'
     }).then(() => {
         removeToken()
+        removeUser()
         location.reload()
     })
 }

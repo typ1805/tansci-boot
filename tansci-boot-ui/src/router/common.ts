@@ -20,5 +20,23 @@ export default[
     name: '500',
     meta: {title: "500"},
     component: () => import('@/views/common/500.vue') 
+  },
+  {
+    path: '/index',
+    name: 'index',
+    type: 0,
+    icon: 'HomeFilled',
+    meta: { title: "首页" },
+    component: () => import("@/components/layout/Index.vue"),
+    children: [
+      {
+        path: '/index',
+        name: 'index',
+        type: 0,
+        icon: 'HomeFilled',
+        meta: { title: "首页" },
+        component: () => import('@/views/Index.vue')
+      }
+    ]
   }
 ]

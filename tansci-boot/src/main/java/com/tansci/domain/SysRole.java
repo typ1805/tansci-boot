@@ -1,7 +1,6 @@
 package com.tansci.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 /**
  * @ClassName： SysRole.java
  * @ClassPath： com.tansci.domain.SysRole.java
- * @Description： 权限
+ * @Description： 角色
  * @Author： tanyp
  * @Date： 2023/03/20 10:38
  **/
@@ -26,7 +25,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "sys_role")
-@ApiModel(value = "权限")
+@ApiModel(value = "角色")
 public class SysRole {
 
     @TableId(type = IdType.ASSIGN_UUID)

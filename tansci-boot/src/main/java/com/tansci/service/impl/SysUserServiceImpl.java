@@ -5,18 +5,25 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.tansci.common.constant.Constants;
-import com.tansci.domain.SysUser;
 import com.tansci.common.exception.BusinessException;
+import com.tansci.domain.SysUser;
+import com.tansci.domain.SysUserRole;
+import com.tansci.domain.vo.SysUserSessionVo;
+import com.tansci.domain.vo.SysUserVo;
 import com.tansci.mapper.SysUserMapper;
+import com.tansci.service.SysUserRoleService;
 import com.tansci.service.SysUserService;
 import com.tansci.utils.Sha256Util;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName： SysUserServiceImpl.java
@@ -28,6 +35,9 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
 
     @Override
     public IPage<SysUser> page(Page page, SysUser user) {
@@ -51,7 +61,77 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Integer modifyPass(SysUser user) {
+    public Object insert(SysUser user) {
+        Integer count = this.baseMapper.selectCount(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, user.getUsername()));
+        if (Objects.nonNull(count) && count > 0) {
+            throw new BusinessException("用户名称已存在！");
+        }
+        user.setIsDel(Constants.NOT_DEL_FALG);
+        user.setCreateTime(LocalDateTime.now());
+        user.setPassword(Sha256Util.getSHA256(user.getPassword()));
+        int rows = this.baseMapper.insert(user);
+        if (rows > 0) {
+            // 添加权限
+            List<SysUserRole> userRoles = Lists.newArrayList();
+            user.getRoleIds().forEach(item -> {
+                userRoles.add(SysUserRole.builder().userId(user.getId()).roleId(item).build());
+            });
+            sysUserRoleService.saveBatch(userRoles);
+        }
+        return rows;
+    }
+
+    @Override
+    public Object update(SysUser user) {
+        user.setUpdateTime(LocalDateTime.now());
+        return this.baseMapper.updateById(user);
+    }
+
+    @Override
+    public Object del(SysUser user) {
+        user.setIsDel(Constants.IS_DEL_FALG);
+        int rows = this.baseMapper.updateById(user);
+        if (rows > 0) {
+            sysUserRoleService.remove(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, user.getId()));
+        }
+        return rows;
+    }
+
+    @Override
+    public SysUserVo login(SysUser user) {
+        SysUser sysUser = this.baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, user.getUsername()));
+        if (Objects.nonNull(sysUser) && Objects.equals(sysUser.getPassword(), Sha256Util.getSHA256(user.getPassword()))) {
+            // 生成token
+            StpUtil.login(sysUser.getId());
+
+            // 用户角色到session
+            List<SysUserRole> roles = sysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, sysUser.getId()));
+            if (Objects.nonNull(roles) && roles.size() > 0) {
+                StpUtil.getSession().set(sysUser.getId(),
+                        SysUserSessionVo.builder()
+                                .id(sysUser.getId())
+                                .username(sysUser.getUsername())
+                                .nickname(sysUser.getNickname())
+                                .type(sysUser.getType())
+                                .roleIds(roles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()))
+                                .build()
+                );
+            }
+
+            return SysUserVo.builder()
+                    .username(sysUser.getUsername())
+                    .nickname(sysUser.getNickname())
+                    .type(sysUser.getType())
+                    .avatar(sysUser.getAvatar())
+                    .loginTime(LocalDateTime.now())
+                    .token(StpUtil.getTokenInfo().getTokenValue())
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
+    public Object modifyPass(SysUser user) {
         SysUser sysUser = this.baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, user.getUsername()));
 
         if (Objects.isNull(sysUser) || !Objects.equals(Sha256Util.getSHA256(sysUser.getPassword()), Sha256Util.getSHA256(user.getPassword()))) {
@@ -61,50 +141,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setPassword(Sha256Util.getSHA256(user.getPassword()));
         sysUser.setUpdateTime(LocalDateTime.now());
         return this.baseMapper.updateById(sysUser);
-    }
-
-    @Override
-    public boolean save(SysUser user) {
-        Integer count = this.baseMapper.selectCount(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, user.getUsername()));
-        if (Objects.nonNull(count) && count > 0) {
-            throw new BusinessException("用户名称已存在！");
-        }
-        user.setIsDel(Constants.NOT_DEL_FALG);
-        user.setCreateTime(LocalDateTime.now());
-        user.setPassword(Sha256Util.getSHA256(user.getPassword()));
-        int row = this.baseMapper.insert(user);
-        return false;
-    }
-
-    @Override
-    public boolean update(SysUser user) {
-        user.setUpdateTime(LocalDateTime.now());
-        int row = this.baseMapper.updateById(user);
-        return false;
-    }
-
-    @Override
-    public boolean del(SysUser user) {
-        user.setIsDel(Constants.IS_DEL_FALG);
-        this.baseMapper.updateById(user);
-        return false;
-    }
-
-    @Override
-    public SysUser login(String username) {
-        SysUser user = this.baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, username));
-        if (Objects.nonNull(user)) {
-            // 生成token
-            StpUtil.login(user.getId());
-            // 获取token信息
-            return SysUser.builder()
-                    .username(user.getUsername())
-                    .nickname(user.getNickname())
-                    .type(user.getType())
-                    .token(StpUtil.getTokenInfo().getTokenValue())
-                    .build();
-        }
-        return null;
     }
 
 }

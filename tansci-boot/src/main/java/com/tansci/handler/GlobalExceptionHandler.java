@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
             return WrapMapper.wrap(Wrapper.ILLEGAL_ARGUMENT_CODE_, "参数有误：" + ex.getBindingResult().getFieldError().getDefaultMessage(), null);
         } else {
             log.error("统一系统异常：{}", e);
-            return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE, null);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, e.getMessage(), null);
         }
     }
 

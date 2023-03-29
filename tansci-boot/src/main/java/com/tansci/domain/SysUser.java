@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @path：com.tansci.domain.SysUser.java
@@ -48,8 +49,6 @@ public class SysUser {
 
     @ApiModelProperty(value = "用户类型：1、管理员，2、普通用户")
     private Integer type;
-    @TableField(exist = false)
-    private String typeName;
 
     @ApiModelProperty(value = "手机号")
     private String phone;
@@ -59,8 +58,6 @@ public class SysUser {
 
     @ApiModelProperty(value = "性别：0、男，1、女")
     private Integer gender;
-    @TableField(exist = false)
-    private String genderName;
 
     @ApiModelProperty(value = "出生日期")
     private LocalDate birthday;
@@ -98,11 +95,7 @@ public class SysUser {
     private String remarks;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "角色id")
-    private String roleId;
-
-    @TableField(exist = false)
-    @ApiModelProperty(value = "token")
-    private String token;
+    @ApiModelProperty(value = "权限IDS")
+    private List<String> roleIds;
 
 }

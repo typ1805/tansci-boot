@@ -10,6 +10,7 @@ import {
   transformerVariantGroup,
 } from 'unocss'
 
+const url = "http://127.0.0.1:8080"
 export default defineConfig({
   resolve: {
     alias: {
@@ -39,5 +40,16 @@ export default defineConfig({
         transformerVariantGroup(),
       ]
     }),
-  ]
+  ],
+  server: {
+    proxy: {
+      '/tansci': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/tansci':'/tansci'
+        }
+      }
+    }
+  }
 })

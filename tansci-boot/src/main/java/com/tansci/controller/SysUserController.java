@@ -23,8 +23,8 @@ import java.util.List;
  **/
 @Slf4j
 @RestController
-@RequestMapping("/user")
-@Api(value = "user", tags = "用户管理")
+@RequestMapping("/sysuser")
+@Api(value = "sysuser", tags = "用户管理")
 public class SysUserController {
 
     @Autowired
@@ -44,25 +44,25 @@ public class SysUserController {
 
     @ApiOperation(value = "添加用户信息", notes = "添加用户信息")
     @PostMapping("/save")
-    public Wrapper<Boolean> save(@RequestBody SysUser user) {
-        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.save(user));
+    public Wrapper<Object> save(@RequestBody SysUser user) {
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.insert(user));
     }
 
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息")
     @PostMapping("/update")
-    public Wrapper<Boolean> update(@RequestBody SysUser user) {
+    public Wrapper<Object> update(@RequestBody SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.update(user));
     }
 
     @ApiOperation(value = "删除用户", notes = "删除用户")
     @GetMapping("/del")
-    public Wrapper<Boolean> del(SysUser user) {
+    public Wrapper<Object> del(SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.del(user));
     }
 
     @ApiOperation(value = "修改密码", notes = "修改密码")
     @PostMapping("/modifyPass")
-    public Wrapper<Integer> modifyPass(@RequestBody SysUser user) {
+    public Wrapper<Object> modifyPass(@RequestBody SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.modifyPass(user));
     }
 
