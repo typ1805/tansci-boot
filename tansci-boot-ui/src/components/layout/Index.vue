@@ -1,11 +1,9 @@
 <script setup lang="ts">
     import { reactive, onMounted, onBeforeMount, onDeactivated } from "vue"
     import { isDark, toggleDark } from '@/composables'
-    import { useRouter } from 'vue-router'
+    import { getUser, getMenus, logout } from "@/api/auth"
     import Submenu from "@/components/Submenu.vue"
     import TabsMenu from "@/components/TabsMenu.vue"
-
-    const router = useRouter()
 
     const logo = new URL('../../assets/image/logo.png', import.meta.url).href
     const state = reactive({
@@ -13,6 +11,7 @@
         asideWidth: '180px',
         routers: [],
         defaultHeight: null,
+        username: '未登录'
     })
 
     onBeforeMount(() => {
@@ -22,16 +21,19 @@
     onMounted(()=>{
         // 获取菜单
         let routers:any = [];
-        let _routes = router.options.routes;
-
-        console.log("_routes:",_routes)
+        let _routes:any = getMenus();
 
         _routes.forEach((item:any)=>{
-            if(item.children && item.type == 0){
+            if(item.children && item.isShow){
                 routers.push(item)
             }
         })
         state.routers = routers
+
+        let user:any = getUser()
+        if(user){
+            state.username = user.nickname
+        }
 
         window.addEventListener('resize', onDefaultHeight);
     })
@@ -42,6 +44,13 @@
 
     function onDefaultHeight(){
         state.defaultHeight = window.innerHeight
+    }
+    function onHeaderCommand(command:any){
+        if('logout' === command){
+            logout()
+        } else if('password' === command){
+
+        }
     }
 
 </script>
@@ -56,17 +65,24 @@
                 <div class="header-dark">
                     <el-button @click="toggleDark()" link type="primary">
                         <template #icon>
-                            <el-icon><Sunny v-show="!isDark"/></el-icon>
-                            <el-icon><Moon v-show="isDark"/></el-icon>
+                            <el-icon :size="20"><Sunny v-show="!isDark"/></el-icon>
+                            <el-icon :size="20"><Moon v-show="isDark"/></el-icon>
                         </template>
                     </el-button>
                 </div>
                 <div class="header-login">
-                    <el-button circle>
-                        <template #icon>
-                            <el-icon><UserFilled /></el-icon>
+                    <el-dropdown @command="onHeaderCommand">
+                        <span class="el-dropdown-link">
+                            <span>{{state.username}}</span>
+                            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+                        </span>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item command="password">修改密码</el-dropdown-item>
+                                <el-dropdown-item command="logout">退出</el-dropdown-item>
+                            </el-dropdown-menu>
                         </template>
-                    </el-button>
+                    </el-dropdown>
                 </div>
             </div>
         </el-header>
@@ -109,6 +125,15 @@
             .header-content{
                 display: flex;
                 justify-content: right;
+                .header-dark{
+                    padding-right: 1rem;
+                }
+                .header-login{
+                    .el-dropdown{
+                        cursor: pointer;
+                        line-height: 52px;
+                    }
+                }
             }
         }
         .el-aside{

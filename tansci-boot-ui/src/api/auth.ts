@@ -2,6 +2,7 @@ import request from '@/utils/request'
 
 const userKey:string = 'tansci_boot_user'
 const tokenKey:string = 'tansci_boot_token'
+const menuKey:string = 'tansci_boot_menu'
 
 // token信息
 export function getToken() {
@@ -16,13 +17,25 @@ export function removeToken() {
 
 // 用户信息
 export function getUser() {
-    return sessionStorage.getItem(userKey);
+    let user = sessionStorage.getItem(userKey);
+    return user ? JSON.parse(user) : null;
 }
 export function setUser(data:any) {
     return sessionStorage.setItem(userKey, JSON.stringify(data));
 }
 export function removeUser() {
     return sessionStorage.removeItem(userKey);
+}
+
+// 菜单信息
+export function getMenus() {
+    let menu = sessionStorage.getItem(menuKey);
+    return menu ? JSON.parse(menu) : null;
+}
+
+// 菜单信息
+export function setMenus(menus:any) {
+    return sessionStorage.setItem(menuKey, JSON.stringify(menus));
 }
 
 // 登录

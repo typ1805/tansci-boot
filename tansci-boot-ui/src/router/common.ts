@@ -24,17 +24,17 @@ export default[
   {
     path: '/index',
     name: 'index',
-    type: 0,
     icon: 'HomeFilled',
     meta: { title: "首页" },
+    isShow: true,
     component: () => import("@/components/layout/Index.vue"),
     children: [
       {
         path: '/index',
         name: 'index',
-        type: 0,
         icon: 'HomeFilled',
         meta: { title: "首页" },
+        isShow: true,
         component: () => import('@/views/Index.vue')
       }
     ]

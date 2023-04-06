@@ -3,6 +3,7 @@ package com.tansci.controller;
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
 import com.tansci.domain.SysMenu;
+import com.tansci.domain.vo.SysMenuVo;
 import com.tansci.service.SysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,10 +31,16 @@ public class SysMenuController {
     @Autowired
     private SysMenuService sysMenuService;
 
-    @ApiOperation(value = "菜单树", notes = "菜单树")
+    @ApiOperation(value = "当前用户权限菜单树", notes = "当前用户权限菜单树")
     @GetMapping("/tree")
     public Wrapper<List<SysMenu>> tree(SysMenu menu) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.tree(menu));
+    }
+
+    @ApiOperation(value = "当前用户权限菜单列表", notes = "当前用户权限菜单列表")
+    @GetMapping("/menus")
+    public Wrapper<List<SysMenuVo>> menus() {
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.menus());
     }
 
 }

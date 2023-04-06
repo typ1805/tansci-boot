@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 28/03/2023 17:24:19
+ Date: 06/04/2023 17:20:01
 */
 
 SET NAMES utf8mb4;
@@ -40,6 +40,10 @@ CREATE TABLE `sys_dic`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of sys_dic
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_login_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_login_log`;
@@ -53,9 +57,13 @@ CREATE TABLE `sys_login_log`  (
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '地理位置',
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'ip地址',
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'token',
-  `create_date` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_login_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -74,13 +82,23 @@ CREATE TABLE `sys_menu`  (
   `component` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '组件名称',
   `open_mode` int(1) NULL DEFAULT 0 COMMENT '打开方式：0、默认，1、iframe，2、新标签页',
   `is_del` int(1) NULL DEFAULT 0 COMMENT '是否删除：0、未删除，1、已删除',
-  `keep_alive` int(1) NULL DEFAULT 1 COMMENT '是否缓存：0、不缓存，1、缓存',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '描述',
+  `keep_alive` int(1) NULL DEFAULT NULL COMMENT '是否缓存：0、不缓存，1、缓存',
   `is_show` int(1) NULL DEFAULT NULL COMMENT '是否显示：1显示，0不显示',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_menu
+-- ----------------------------
+INSERT INTO `sys_menu` VALUES ('10001dsgf', 'b1851d1b13594e71840103c11a37a002', 'Iframe', 'https://www.bing.com/?mkt=zh-CN', 'Grid', 'Iframe测试', 'User', NULL, 6, NULL, 0, 0, 0, 1, '2023-03-29 08:57:50', '2023-03-29 08:57:52', NULL);
+INSERT INTO `sys_menu` VALUES ('b1851d1b13594e71840103c11a37a002', '0', 'system', '/system', 'Grid', '系统管理', 'System', NULL, 1, NULL, 0, 0, 0, 1, '2023-03-29 08:57:50', '2023-03-29 08:57:52', NULL);
+INSERT INTO `sys_menu` VALUES ('b1851d1b13594e71840103c11a37a003', 'b1851d1b13594e71840103c11a37a002', 'menu', '/system/Menu', 'Grid', '菜单管理', 'Menu', NULL, 2, NULL, 0, 0, 0, 1, '2023-03-29 08:57:50', '2023-03-29 08:57:52', NULL);
+INSERT INTO `sys_menu` VALUES ('b1851d1b13594e71840103c11a37a004', 'b1851d1b13594e71840103c11a37a002', 'org', '/system/Org', 'QuestionFilled', '组织管理', 'Org', NULL, 3, NULL, 0, 0, 0, 1, '2023-03-29 08:57:50', '2023-03-29 08:57:52', NULL);
+INSERT INTO `sys_menu` VALUES ('b1851d1b13594e71840103c11a37a005', 'b1851d1b13594e71840103c11a37a002', 'role', '/system/Role', 'Grid', '权限管理', 'Role', NULL, 4, NULL, 0, 0, 0, 1, '2023-03-29 08:57:50', '2023-03-29 08:57:52', NULL);
+INSERT INTO `sys_menu` VALUES ('b1851d1b13594e71840103c11a37a006', 'b1851d1b13594e71840103c11a37a002', 'user', '/system/User', 'Grid', '用户管理', 'User', NULL, 5, NULL, 0, 0, 0, 1, '2023-03-29 08:57:50', '2023-03-29 08:57:52', NULL);
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -105,6 +123,10 @@ CREATE TABLE `sys_oper_log`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of sys_oper_log
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_org
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_org`;
@@ -122,6 +144,11 @@ CREATE TABLE `sys_org`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '组织' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of sys_org
+-- ----------------------------
+INSERT INTO `sys_org` VALUES ('534a37c366ec47878a6b0c85703d0bc4', '0', '总公司', 'SO00001', 0, 0, '2023-03-29 08:53:41', '2023-03-29 08:53:43', NULL);
+
+-- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
@@ -133,11 +160,16 @@ CREATE TABLE `sys_role`  (
   `sort` int(1) NULL DEFAULT NULL COMMENT '排序',
   `is_del` int(1) NULL DEFAULT 0 COMMENT '是否删除：0未删除，1已删除',
   `create_by` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '描述',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES ('534a37c366ec47878a6b0c85703d0bc3', '管理员', 'SR000001', '0', 0, 0, NULL, '2023-03-29 08:51:36', '2023-03-29 08:51:39', NULL);
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -150,6 +182,15 @@ CREATE TABLE `sys_role_menu`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '角色和菜单关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of sys_role_menu
+-- ----------------------------
+INSERT INTO `sys_role_menu` VALUES ('534a37c366ec47878a6b0c85703d0bc3', 'b1851d1b13594e71840103c11a37a002');
+INSERT INTO `sys_role_menu` VALUES ('534a37c366ec47878a6b0c85703d0bc3', 'b1851d1b13594e71840103c11a37a003');
+INSERT INTO `sys_role_menu` VALUES ('534a37c366ec47878a6b0c85703d0bc3', 'b1851d1b13594e71840103c11a37a004');
+INSERT INTO `sys_role_menu` VALUES ('534a37c366ec47878a6b0c85703d0bc3', 'b1851d1b13594e71840103c11a37a005');
+INSERT INTO `sys_role_menu` VALUES ('534a37c366ec47878a6b0c85703d0bc3', 'b1851d1b13594e71840103c11a37a006');
+
+-- ----------------------------
 -- Table structure for sys_role_org
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_org`;
@@ -158,6 +199,11 @@ CREATE TABLE `sys_role_org`  (
   `role_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色id',
   PRIMARY KEY (`org_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户组织机构关联表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_role_org
+-- ----------------------------
+INSERT INTO `sys_role_org` VALUES ('534a37c366ec47878a6b0c85703d0bc4', '534a37c366ec47878a6b0c85703d0bc3');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -180,11 +226,16 @@ CREATE TABLE `sys_user`  (
   `id_card` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '身份证号码',
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '邮箱',
   `create_by` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`, `username`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES ('534a37c366ec47878a6b0c85703d0bc2', 'admin', '管理员', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 1, NULL, NULL, 0, '2023-03-29', NULL, 0, '', '', '', '', NULL, '2023-03-29 08:49:24', '2023-03-29 08:49:27', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -195,5 +246,10 @@ CREATE TABLE `sys_user_role`  (
   `role_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色id',
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户角色' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_user_role
+-- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('534a37c366ec47878a6b0c85703d0bc2', '534a37c366ec47878a6b0c85703d0bc3');
 
 SET FOREIGN_KEY_CHECKS = 1;

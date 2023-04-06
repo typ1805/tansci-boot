@@ -102,10 +102,13 @@
             </el-tab-pane>
         </el-tabs>
         <el-dropdown trigger="hover">
-            <el-button size="small" type="primary">
+            <!-- <el-button size="small" type="primary">
                 <span>更多</span>
                 <el-icon class="el-icon--right"><arrow-down /></el-icon>
-            </el-button>
+            </el-button> -->
+            <span class="el-dropdown-link" style="cursor: pointer;">
+                <el-icon :size="18"><Tools /></el-icon>
+            </span>
             <template #dropdown>
                 <el-dropdown-menu>
                     <el-dropdown-item icon="CircleCloseFilled" @click="onCloseCurrentTab">关闭当前</el-dropdown-item>

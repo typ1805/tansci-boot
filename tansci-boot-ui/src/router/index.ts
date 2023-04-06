@@ -1,16 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router"
 import { ElMessage } from 'element-plus'
-import { getToken, removeToken, removeUser } from "@/api/auth"
+import { getToken, removeToken, removeUser, setMenus } from "@/api/auth"
 import { generateRoutes } from "./permission"
-
-// import routers from './routers'
 
 import common from './common'
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        ...common,
-        // ...routers
+        ...common
     ]
 })
 
@@ -25,9 +22,9 @@ router.beforeEach(async (to:any, from:any, next) => {
     }
 
     if(getToken()){
-        if(to.path === '/login'){
-            next({ path: '/index' })
-        } else {
+        // if(to.path === '/login'){
+        //     next({ path: '/index' })
+        // } else {
             if(load){
                 next()
             } else {
@@ -35,9 +32,13 @@ router.beforeEach(async (to:any, from:any, next) => {
                 try {
                     // 获取菜单
                     await generateRoutes().then( (accessRoutes:any) => {
+                        accessRoutes.push({path:'/:pathMatch(.*)*', redirect:'/404'})
                         accessRoutes.forEach( (item:any) => {
                             router.addRoute(item)
                         })
+
+                        let routers = common.concat(accessRoutes)
+                        setMenus([...routers])
                     })
     
                     next({ ...to, replace: true })
@@ -48,7 +49,7 @@ router.beforeEach(async (to:any, from:any, next) => {
                     next(`/login`)
                 }
             }
-        }
+        // }
     } else {
         if(whiteList.indexOf(to.path) !== -1){
             next()

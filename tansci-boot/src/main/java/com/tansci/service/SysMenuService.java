@@ -2,6 +2,7 @@ package com.tansci.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tansci.domain.SysMenu;
+import com.tansci.domain.vo.SysMenuVo;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ import java.util.List;
 public interface SysMenuService extends IService<SysMenu> {
 
     List<SysMenu> tree(SysMenu menu);
+
+    List<SysMenuVo> menus();
 
 }

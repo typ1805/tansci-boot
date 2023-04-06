@@ -1,5 +1,6 @@
 package com.tansci.handler;
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
 import com.tansci.common.exception.BusinessException;
@@ -35,6 +36,9 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex = (MethodArgumentNotValidException) e;
             log.error("参数校验异常：{}", ex.getBindingResult().getFieldError().getDefaultMessage());
             return WrapMapper.wrap(Wrapper.ILLEGAL_ARGUMENT_CODE_, "参数有误：" + ex.getBindingResult().getFieldError().getDefaultMessage(), null);
+        } else if (e instanceof NotLoginException) {
+            NotLoginException ne = (NotLoginException) e;
+            return WrapMapper.wrap(Wrapper.AUTHORIZATION_CODE, Wrapper.AUTHORIZATION_MESSAGE, ne.getMessage());
         } else {
             log.error("统一系统异常：{}", e);
             return WrapMapper.wrap(Wrapper.ERROR_CODE, e.getMessage(), null);

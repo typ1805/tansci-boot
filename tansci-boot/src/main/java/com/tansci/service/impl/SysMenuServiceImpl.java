@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.tansci.common.constant.Constants;
 import com.tansci.domain.SysMenu;
 import com.tansci.domain.SysRoleMenu;
+import com.tansci.domain.vo.SysMenuVo;
 import com.tansci.domain.vo.SysUserSessionVo;
 import com.tansci.mapper.SysMenuMapper;
 import com.tansci.service.SysMenuService;
@@ -60,4 +61,51 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return menuList;
     }
 
+    @Override
+    public List<SysMenuVo> menus() {
+        // 菜单权限
+        String userId = String.valueOf(StpUtil.getLoginId());
+        SysUserSessionVo sessionVo = (SysUserSessionVo) StpUtil.getSession().get(userId);
+        List<String> menuIds = Lists.newArrayList();
+        if (Objects.nonNull(sessionVo) && Objects.nonNull(sessionVo.getRoleIds()) && sessionVo.getRoleIds().size() > 0) {
+            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, sessionVo.getRoleIds()));
+            menuIds.addAll(menus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList()));
+        }
+
+        List<SysMenu> list = this.baseMapper.selectList(
+                Wrappers.<SysMenu>lambdaQuery()
+                        .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
+                        .eq(Objects.nonNull(menuIds) && menuIds.size() > 0, SysMenu::getId, menuIds)
+        );
+
+        List<SysMenuVo> newList = new ArrayList<>();
+        for (SysMenu menu : list) {
+            Map<String, Object> meta = new HashMap<>();
+            meta.put("title", menu.getChineseName());
+            meta.put("keepAlive", Objects.equals(1, menu.getKeepAlive()) ? true : false);
+            meta.put("isShow", Objects.equals(1, menu.getIsShow()) ? true : false);
+            meta.put("id", menu.getId());
+            meta.put("openMode", menu.getOpenMode());
+            newList.add(
+                    SysMenuVo.builder()
+                            .id(menu.getId())
+                            .parentId(menu.getParentId())
+                            .name(menu.getName())
+                            .path(menu.getUrl())
+                            .icon(menu.getIcon())
+                            .sort(menu.getSort())
+                            .component(Objects.nonNull(menu.getComponent()) ? menu.getComponent() : "Layout")
+                            .isShow(Objects.equals(1, menu.getIsShow()) ? true : false)
+                            .meta(meta)
+                            .build()
+            );
+        }
+
+        newList = newList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(SysMenuVo::getId))), ArrayList::new));
+        Map<String, List<SysMenuVo>> map = newList.stream().collect(Collectors.groupingBy(SysMenuVo::getParentId, Collectors.toList()));
+        newList.stream().forEach(item -> item.setChildren(map.get(item.getId())));
+
+        List<SysMenuVo> menuList = map.get("0").stream().sorted(Comparator.comparing(SysMenuVo::getSort)).collect(Collectors.toList());
+        return menuList;
+    }
 }
