@@ -8,7 +8,6 @@ import com.tansci.common.constant.Constants;
 import com.tansci.domain.SysMenu;
 import com.tansci.domain.SysRoleMenu;
 import com.tansci.domain.vo.SysMenuVo;
-import com.tansci.domain.vo.SysUserSessionVo;
 import com.tansci.mapper.SysMenuMapper;
 import com.tansci.service.SysMenuService;
 import com.tansci.service.SysRoleMenuService;
@@ -35,12 +34,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenu> tree(SysMenu menu) {
-        // 菜单权限
-        String userId = String.valueOf(StpUtil.getLoginId());
-        SysUserSessionVo sessionVo = (SysUserSessionVo) StpUtil.getSession().get(userId);
         List<String> menuIds = Lists.newArrayList();
-        if (Objects.nonNull(sessionVo) && Objects.nonNull(sessionVo.getRoleIds()) && sessionVo.getRoleIds().size() > 0) {
-            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, sessionVo.getRoleIds()));
+        if (Objects.nonNull(StpUtil.getRoleList()) && StpUtil.getRoleList().size() > 0) {
+            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, StpUtil.getRoleList()));
             menuIds.addAll(menus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList()));
         }
 
@@ -63,18 +59,16 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenuVo> menus() {
-        // 菜单权限
-        String userId = String.valueOf(StpUtil.getLoginId());
-        SysUserSessionVo sessionVo = (SysUserSessionVo) StpUtil.getSession().get(userId);
         List<String> menuIds = Lists.newArrayList();
-        if (Objects.nonNull(sessionVo) && Objects.nonNull(sessionVo.getRoleIds()) && sessionVo.getRoleIds().size() > 0) {
-            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, sessionVo.getRoleIds()));
+        if (Objects.nonNull(StpUtil.getRoleList()) && StpUtil.getRoleList().size() > 0) {
+            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, StpUtil.getRoleList()));
             menuIds.addAll(menus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList()));
         }
 
         List<SysMenu> list = this.baseMapper.selectList(
                 Wrappers.<SysMenu>lambdaQuery()
                         .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
+                        .eq(SysMenu::getIsShow, 1)
                         .eq(Objects.nonNull(menuIds) && menuIds.size() > 0, SysMenu::getId, menuIds)
         );
 

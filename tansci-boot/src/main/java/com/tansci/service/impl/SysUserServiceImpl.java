@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName： SysUserServiceImpl.java
@@ -131,22 +130,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
             // 生成token
             StpUtil.login(sysUser.getId());
-            // 登录日志记录
             loginLog.setToken(StpUtil.getTokenInfo().getTokenValue());
 
-            // 用户角色到session
-            List<SysUserRole> roles = sysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, sysUser.getId()));
-            if (Objects.nonNull(roles) && roles.size() > 0) {
-                StpUtil.getSession().set(sysUser.getId(),
-                        SysUserSessionVo.builder()
-                                .id(sysUser.getId())
-                                .username(sysUser.getUsername())
-                                .nickname(sysUser.getNickname())
-                                .type(sysUser.getType())
-                                .roleIds(roles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()))
-                                .build()
-                );
-            }
+            // 存储session
+            StpUtil.getSession().set(sysUser.getId(),
+                    SysUserSessionVo.builder()
+                            .id(sysUser.getId())
+                            .username(sysUser.getUsername())
+                            .nickname(sysUser.getNickname())
+                            .type(sysUser.getType())
+                            .build()
+            );
 
             return SysUserVo.builder()
                     .username(sysUser.getUsername())

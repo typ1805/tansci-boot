@@ -29,4 +29,14 @@ public class Constants {
     public final static String UPDATE = "INSERT";
     public final static String DELETE = "DELETE";
 
+    /**
+     * 权限校验
+     */
+    public final static String PERMISSION_KEY = "permission-session";
+    /**
+     * 角色校验
+     */
+    public final static String ROLE_KEY = "role-session";
+
+
 }
