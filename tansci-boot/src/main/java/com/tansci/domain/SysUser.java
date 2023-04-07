@@ -98,4 +98,8 @@ public class SysUser {
     @ApiModelProperty(value = "权限IDS")
     private List<String> roleIds;
 
+    @TableField(exist = false)
+    @ApiModelProperty(value = "验证码")
+    private String code;
+
 }

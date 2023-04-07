@@ -8,18 +8,22 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.tansci.common.constant.Constants;
 import com.tansci.common.exception.BusinessException;
+import com.tansci.domain.SysLoginLog;
 import com.tansci.domain.SysUser;
 import com.tansci.domain.SysUserRole;
 import com.tansci.domain.vo.SysUserSessionVo;
 import com.tansci.domain.vo.SysUserVo;
 import com.tansci.mapper.SysUserMapper;
+import com.tansci.service.SysLoginLogService;
 import com.tansci.service.SysUserRoleService;
 import com.tansci.service.SysUserService;
 import com.tansci.utils.Sha256Util;
+import com.tansci.utils.SystemUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +42,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
+    @Autowired
+    private SysLoginLogService sysLoginLogService;
 
     @Override
     public IPage<SysUser> page(Page page, SysUser user) {
@@ -98,11 +104,35 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public SysUserVo login(SysUser user) {
-        SysUser sysUser = this.baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, user.getUsername()));
-        if (Objects.nonNull(sysUser) && Objects.equals(sysUser.getPassword(), Sha256Util.getSHA256(user.getPassword()))) {
+    public SysUserVo login(HttpServletRequest request, SysUser user) {
+        SysLoginLog loginLog = SysLoginLog.builder()
+                .username(user.getUsername())
+                .failPassword(user.getPassword())
+                .type("成功")
+                .ip(SystemUtils.getIp(request))
+                .address(SystemUtils.getAddress(request))
+                .browser(SystemUtils.getBrowser(request))
+                .os(SystemUtils.getOS(request))
+                .build();
+
+        try {
+            // 校验验证码
+            String code = (String) request.getSession().getAttribute("verifyCode");
+            if (Objects.isNull(user.getCode()) || !Objects.equals(code, user.getCode())) {
+                loginLog.setType("失败");
+                throw new BusinessException("验证码有误，请重新获取！");
+            }
+
+            SysUser sysUser = this.baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, user.getUsername()));
+            if (Objects.isNull(sysUser) && !Objects.equals(sysUser.getPassword(), Sha256Util.getSHA256(user.getPassword()))) {
+                loginLog.setType("失败");
+                throw new BusinessException("登录失败，用户名或密码有误！");
+            }
+
             // 生成token
             StpUtil.login(sysUser.getId());
+            // 登录日志记录
+            loginLog.setToken(StpUtil.getTokenInfo().getTokenValue());
 
             // 用户角色到session
             List<SysUserRole> roles = sysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, sysUser.getId()));
@@ -126,8 +156,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                     .loginTime(LocalDateTime.now())
                     .token(StpUtil.getTokenInfo().getTokenValue())
                     .build();
+        } finally {
+            sysLoginLogService.save(loginLog);
         }
-        return null;
     }
 
     @Override

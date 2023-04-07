@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.tansci.domain.SysUser;
 import com.tansci.domain.vo.SysUserVo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public interface SysUserService extends IService<SysUser> {
 
     Object del(SysUser user);
 
-    SysUserVo login(SysUser user);
+    SysUserVo login(HttpServletRequest request, SysUser user);
 
     Object modifyPass(SysUser user);
 

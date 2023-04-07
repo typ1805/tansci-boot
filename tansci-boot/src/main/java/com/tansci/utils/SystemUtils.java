@@ -1,5 +1,11 @@
 package com.tansci.utils;
 
+import cn.hutool.core.net.Ipv4Util;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
+import cn.hutool.json.JSONUtil;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -20,48 +26,8 @@ public class SystemUtils {
      * @return： java.lang.String
      **/
     public static String getOS(HttpServletRequest request) {
-        String osName = "";
-        String userAgent = request.getHeader("User-Agent").toUpperCase();
-        if (userAgent.contains("WINDOWS")) {
-            if (userAgent.contains("WINDOWS NT 10.0")) {
-                osName = "Windows 10";
-            } else if (userAgent.contains("WINDOWS NT 6.3")) {
-                osName = "Windows 8.1";
-            } else if (userAgent.contains("WINDOWS NT 6.2")) {
-                osName = "Windows 8";
-            } else if (userAgent.contains("WINDOWS NT 6.1")) {
-                osName = "Windows 7";
-            } else if (userAgent.contains("WINDOWS NT 6.0")) {
-                osName = "Windows Vista";
-            } else if (userAgent.contains("WINDOWS NT 5.2")) {
-                osName = "Windows XP";
-            } else if (userAgent.contains("WINDOWS NT 5.1")) {
-                osName = "Windows XP";
-            } else if (userAgent.contains("WINDOWS NT 5.01")) {
-                osName = "Windows 2000";
-            } else if (userAgent.contains("WINDOWS NT 5.0")) {
-                osName = "Windows 2000";
-            } else if (userAgent.contains("WINDOWS NT 4.0")) {
-                osName = "Windows NT 4.0";
-            } else if (userAgent.contains("WINDOWS 98; WIN 9X 4.90")) {
-                osName = "Windows ME";
-            } else if (userAgent.contains("WINDOWS 98")) {
-                osName = "Windows 98";
-            } else if (userAgent.contains("WINDOWS 95")) {
-                osName = "Windows 95";
-            } else if (userAgent.contains("WINDOWS CE")) {
-                osName = "Windows CE";
-            }
-        } else if (userAgent.contains("MAC")) {
-            osName = "Mac";
-        } else if (userAgent.contains("UNIX")) {
-            osName = "UNIX";
-        } else if (userAgent.contains("LINUX")) {
-            osName = "Linux";
-        } else if (userAgent.contains("SUNOS")) {
-            osName = "SunOS";
-        }
-        return osName;
+        UserAgent userAgent = UserAgentUtil.parse(request.getHeaders("User-Agent").toString());
+        return userAgent.getBrowser().toString();
     }
 
     /**
@@ -73,31 +39,12 @@ public class SystemUtils {
      * @return： java.lang.String
      **/
     public static String getBrowser(HttpServletRequest request) {
-        String browserName = "";
-        String userAgent = request.getHeader("User-Agent").toUpperCase();
-        if (userAgent == null || userAgent.equals("")) {
-            return "";
-        }
-        if (userAgent.indexOf("MSIE") > 0) {
-            browserName = "IE";
-        } else if (userAgent.indexOf("FIREFOX") > 0) {
-            browserName = "Firefox";
-        } else if (userAgent.indexOf("CHROME") > 0) {
-            browserName = "Chrome";
-        } else if (userAgent.indexOf("SAFARI") > 0) {
-            browserName = "Safari";
-        } else if (userAgent.indexOf("CAMINO") > 0) {
-            browserName = "Camino";
-        } else if (userAgent.indexOf("KONQUEROR") > 0) {
-            browserName = "Konqueror";
-        } else if (userAgent.indexOf("EDGE") > 0) {
-            browserName = "Microsoft Edge";
-        }
-        return browserName;
+        UserAgent userAgent = UserAgentUtil.parse(request.getHeaders("User-Agent").toString());
+        return userAgent.getOs().toString();
     }
 
     /**
-     * @methodName：getIpAddress
+     * @methodName：getIp
      * @description：获取IP地址
      * @author：tanyp
      * @dateTime：2022/2/15 14:19
@@ -105,7 +52,7 @@ public class SystemUtils {
      * @Return： java.lang.String
      * @editNote：
      */
-    public static String getIpAddress(HttpServletRequest request) {
+    public static String getIp(HttpServletRequest request) {
 
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
@@ -145,6 +92,28 @@ public class SystemUtils {
             return ip.split(",")[0];
         } else {
             return ip;
+        }
+    }
+
+    /**
+     * @MonthName： getAddress
+     * @Description： 获取地址
+     * @Author： tanyp
+     * @Date： 2023/4/7 11:24
+     * @Param： [ip]
+     * @return： java.lang.String
+     **/
+    public static String getAddress(HttpServletRequest request) {
+        String ip = getIp(request);
+        try {
+            if (Ipv4Util.isInnerIP(ip)) {
+                return "内网IP";
+            }
+            return JSONUtil.parseObj(HttpUtil.get("https://whois.pconline.com.cn/ipJson.jsp?json=true&ip=" + ip)).getStr("addr");
+        } catch (IllegalArgumentException e) {
+            return "内网IP";
+        } catch (Exception e) {
+            return "未知";
         }
     }
 

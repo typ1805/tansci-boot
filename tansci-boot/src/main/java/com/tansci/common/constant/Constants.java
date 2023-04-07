@@ -10,12 +10,23 @@ package com.tansci.common.constant;
 public class Constants {
 
     /**
-     * 未删除状态
+     * 删除状态：0、正常，1、删除
      */
     public final static Integer NOT_DEL_FALG = 0;
-    /**
-     * 已删除状态
-     */
     public final static Integer IS_DEL_FALG = 1;
+
+    /**
+     * 操作日志状态：0、成功，1、失败
+     */
+    public final static Integer OPER_LOG_STATUS_SUCCESS = 0;
+    public final static Integer OPER_LOG_STATUS_ERROR = 1;
+
+    /**
+     * 接口操作类型
+     */
+    public final static String SELECT = "SELECT";
+    public final static String INSERT = "INSERT";
+    public final static String UPDATE = "INSERT";
+    public final static String DELETE = "DELETE";
 
 }

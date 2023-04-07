@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 06/04/2023 17:20:01
+ Date: 07/04/2023 14:54:55
 */
 
 SET NAMES utf8mb4;
@@ -64,6 +64,7 @@ CREATE TABLE `sys_login_log`  (
 -- ----------------------------
 -- Records of sys_login_log
 -- ----------------------------
+INSERT INTO `sys_login_log` VALUES ('165965da5e98b46703683bc655004384', 'admin', '123456', '成功', 'Unknown', 'Unknown', '内网IP', '127.0.0.1', '19aa0675-d451-4232-9221-73babda49078', '2023-04-07 11:33:04');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -107,6 +108,7 @@ DROP TABLE IF EXISTS `sys_oper_log`;
 CREATE TABLE `sys_oper_log`  (
   `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键id',
   `module` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '功能模块',
+  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作方法',
   `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作类型',
   `message` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作描述',
   `req_param` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '请求参数',
@@ -114,9 +116,10 @@ CREATE TABLE `sys_oper_log`  (
   `take_up_time` int(64) NULL DEFAULT NULL COMMENT '耗时',
   `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作用户id',
   `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作用户名称',
-  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '操作方法',
+  `status` int(1) NULL DEFAULT NULL COMMENT '状态：0、成功，1、失败',
   `uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求url',
   `ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求IP',
+  `unusual` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '异常信息',
   `version` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '版本号',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
@@ -125,6 +128,7 @@ CREATE TABLE `sys_oper_log`  (
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
+INSERT INTO `sys_oper_log` VALUES ('f052dcb16aeb0fa199bd82aa058e8eee', '菜单管理-当前用户权限菜单列表', 'com.tansci.controller.SysMenuController.menus', 'SELECT', '当前用户权限菜单列表', '{}', '{\"code\":200,\"message\":\"操作成功\",\"result\":[{\"children\":[{\"component\":\"Layout\",\"icon\":\"Grid\",\"id\":\"10001dsgf\",\"isShow\":true,\"meta\":{\"keepAlive\":false,\"openMode\":0,\"id\":\"10001dsgf\",\"title\":\"Iframe测试\",\"isShow\":true},\"name\":\"Iframe\",\"parentId\":\"b1851d1b13594e71840103c11a37a002\",\"path\":\"https://www.bing.com/?mkt=zh-CN\",\"sort\":6},{\"component\":\"Layout\",\"icon\":\"Grid\",\"id\":\"b1851d1b13594e71840103c11a37a003\",\"isShow\":true,\"meta\":{\"keepAlive\":false,\"openMode\":0,\"id\":\"b1851d1b13594e71840103c11a37a003\",\"title\":\"菜单管理\",\"isShow\":true},\"name\":\"menu\",\"parentId\":\"b1851d1b13594e71840103c11a37a002\",\"path\":\"/system/Menu\",\"sort\":2},{\"component\":\"Layout\",\"icon\":\"QuestionFilled\",\"id\":\"b1851d1b13594e71840103c11a37a004\",\"isShow\":true,\"meta\":{\"keepAlive\":false,\"openMode\":0,\"id\":\"b1851d1b13594e71840103c11a37a004\",\"title\":\"组织管理\",\"isShow\":true},\"name\":\"org\",\"parentId\":\"b1851d1b13594e71840103c11a37a002\",\"path\":\"/system/Org\",\"sort\":3},{\"component\":\"Layout\",\"icon\":\"Grid\",\"id\":\"b1851d1b13594e71840103c11a37a005\",\"isShow\":true,\"meta\":{\"keepAlive\":false,\"openMode\":0,\"id\":\"b1851d1b13594e71840103c11a37a005\",\"title\":\"权限管理\",\"isShow\":true},\"name\":\"role\",\"parentId\":\"b1851d1b13594e71840103c11a37a002\",\"path\":\"/system/Role\",\"sort\":4},{\"component\":\"Layout\",\"icon\":\"Grid\",\"id\":\"b1851d1b13594e71840103c11a37a006\",\"isShow\":true,\"meta\":{\"keepAlive\":false,\"openMode\":0,\"id\":\"b1851d1b13594e71840103c11a37a006\",\"title\":\"用户管理\",\"isShow\":true},\"name\":\"user\",\"parentId\":\"b1851d1b13594e71840103c11a37a002\",\"path\":\"/system/User\",\"sort\":5}],\"component\":\"Layout\",\"icon\":\"Grid\",\"id\":\"b1851d1b13594e71840103c11a37a002\",\"isShow\":true,\"meta\":{\"keepAlive\":false,\"openMode\":0,\"id\":\"b1851d1b13594e71840103c11a37a002\",\"title\":\"系统管理\",\"isShow\":true},\"name\":\"system\",\"parentId\":\"0\",\"path\":\"/system\",\"sort\":1}]}', 49, '534a37c366ec47878a6b0c85703d0bc2', NULL, 0, '/tansci/sysmenu/menus', '127.0.0.1', NULL, NULL, '2023-04-07 14:50:17');
 
 -- ----------------------------
 -- Table structure for sys_org

@@ -2,6 +2,8 @@ package com.tansci.controller;
 
 import cn.dev33.satoken.session.SaSessionCustomUtil;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.LineCaptcha;
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
 import com.tansci.domain.SysUser;
@@ -12,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @ClassName： AuthController.java
@@ -31,8 +35,8 @@ public class AuthController {
 
     @ApiOperation(value = "登录", notes = "登录")
     @PostMapping("/login")
-    public Wrapper<SysUserVo> login(@RequestBody SysUser user) {
-        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.login(user));
+    public Wrapper<SysUserVo> login(HttpServletRequest request, @RequestBody SysUser user) {
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.login(request, user));
     }
 
     @ApiOperation(value = "登出", notes = "登出")
@@ -41,6 +45,18 @@ public class AuthController {
         SaSessionCustomUtil.deleteSessionById(String.valueOf(StpUtil.getLoginId()));
         StpUtil.logout();
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, "登出成功！");
+    }
+
+    @ApiOperation(value = "验证码", notes = "验证码")
+    @GetMapping("/code")
+    public Wrapper<Object> verificationCode(HttpServletRequest request) {
+        LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(100, 60);
+        // 四则运算方式
+//        lineCaptcha.setGenerator(new MathGenerator());
+        // 验证码存session， 60秒过期
+        request.getSession().setMaxInactiveInterval(60);
+        request.getSession().setAttribute("verifyCode", lineCaptcha.getCode());
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, lineCaptcha.getImageBase64());
     }
 
 }

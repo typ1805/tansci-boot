@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
+import com.tansci.common.annotation.Log;
+import com.tansci.common.constant.Constants;
 import com.tansci.domain.SysUser;
 import com.tansci.service.SysUserService;
 import io.swagger.annotations.Api;
@@ -31,36 +33,42 @@ public class SysUserController {
     private SysUserService sysUserService;
 
     @ApiOperation(value = "用户分页", notes = "用户分页")
+    @Log(modul = "用户管理-用户分页", type = Constants.SELECT, desc = "用户分页")
     @GetMapping("/page")
     public Wrapper<IPage<SysUser>> page(Page page, SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.page(page, user));
     }
 
     @ApiOperation(value = "用户列表", notes = "用户列表")
+    @Log(modul = "用户管理-用户列表", type = Constants.SELECT, desc = "用户列表")
     @GetMapping("/list")
     public Wrapper<List<SysUser>> list(SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.list(user));
     }
 
     @ApiOperation(value = "添加用户信息", notes = "添加用户信息")
+    @Log(modul = "用户管理-添加用户信息", type = Constants.INSERT, desc = "添加用户信息")
     @PostMapping("/save")
     public Wrapper<Object> save(@RequestBody SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.insert(user));
     }
 
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息")
+    @Log(modul = "用户管理-修改用户信息", type = Constants.UPDATE, desc = "修改用户信息")
     @PostMapping("/update")
     public Wrapper<Object> update(@RequestBody SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.update(user));
     }
 
     @ApiOperation(value = "删除用户", notes = "删除用户")
+    @Log(modul = "用户管理-删除用户", type = Constants.DELETE, desc = "删除用户")
     @GetMapping("/del")
     public Wrapper<Object> del(SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.del(user));
     }
 
     @ApiOperation(value = "修改密码", notes = "修改密码")
+    @Log(modul = "用户管理-修改密码", type = Constants.UPDATE, desc = "修改密码")
     @PostMapping("/modifyPass")
     public Wrapper<Object> modifyPass(@RequestBody SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.modifyPass(user));

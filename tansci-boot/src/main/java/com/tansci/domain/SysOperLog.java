@@ -54,6 +54,9 @@ public class SysOperLog {
     @ApiModelProperty(value = "操作用户id")
     private String userId;
 
+    @ApiModelProperty(value = "状态：0、成功，1、失败")
+    private Integer status;
+
     @ApiModelProperty(value = "操作用户名称")
     private String userName;
 
@@ -68,6 +71,9 @@ public class SysOperLog {
 
     @ApiModelProperty(value = "版本号")
     private String version;
+
+    @ApiModelProperty(value = "异常信息")
+    private String unusual;
 
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")

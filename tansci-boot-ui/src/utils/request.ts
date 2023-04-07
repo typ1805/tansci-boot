@@ -30,10 +30,10 @@ axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
 // axios实例拦截响应
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => {
-        if (response.status === 200 && response.data.code == 200) {
+        if (response.status === 200 && response.data.code === 200) {
             return response;
         } else {
-            ElMessage.warning(showMessage(response.status));
+            ElMessage.warning(showMessage(response.data.code));
             if (response.data.code === 402) {
                 logout()
             }

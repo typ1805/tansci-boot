@@ -1,14 +1,15 @@
 <script setup lang="ts">
-	import {onBeforeMount,reactive,ref,toRefs} from "vue"
+	import {onBeforeMount,onMounted,reactive,ref,toRefs} from "vue"
 	import type {FormInstance} from 'element-plus'
 	import {useRouter} from 'vue-router'
-	import {login} from '@/api/auth'
+	import {login,getCode} from '@/api/auth'
 
 	const router = useRouter()
 	const loginFormRef = ref<FormInstance>() 
 	
 	const logo = new URL('../../assets/image/logo.png', import.meta.url).href
 	const loginLogo = new URL('../../assets/image/login-icon.png', import.meta.url).href
+	const codeImg = ref()
 
 	const state = reactive({
 		loading: false,
@@ -18,6 +19,7 @@
 		loginForm: {
 			username: '',
 			password: '',
+			code: '',
 			remember: 0
 		},
 	})
@@ -26,9 +28,19 @@
 		state.loginStyle.height = (document.body.clientHeight || document.documentElement.clientHeight) + "px"
 	})
 
+	onMounted(() =>{
+		onCode()
+	})
+
     function copyYear(){
 		let date = new Date();
 		return date.getFullYear();
+	}
+
+	function onCode(){
+		getCode().then((res:any) =>{
+			codeImg.value = 'data:image/png;base64,' + res.data.result
+		})
 	}
 
 	async function onSubmit(formEl: FormInstance | undefined) {
@@ -38,7 +50,8 @@
 				// 登录成功后设置token到缓存
 				let param:any = {
 					username: state.loginForm.username,
-					password: state.loginForm.password
+					password: state.loginForm.password,
+					code: state.loginForm.code
 				}
 				state.loading = true;
 				login(param).then((res:any) =>{
@@ -80,6 +93,10 @@
 						<el-form-item prop="password" :rules="[
 								{required: true,message: '请输入密码',trigger: 'blur'}]">
 							<el-input type="password" v-model="state.loginForm.password" prefix-icon="Lock" show-password placeholder="请输入密码" style="width:100%"></el-input>
+						</el-form-item>
+						<el-form-item prop="code" :rules="[{required: true,message: '请输入验证码',trigger: 'blur'}]">
+							<el-input v-model="state.loginForm.code" prefix-icon="HelpFilled" placeholder="请输入验证码" style="width:70%; margin-right: 1%"></el-input>
+							<img :src="codeImg" @click="onCode" style="width: 29%; height: 38px;">
 						</el-form-item>
 						<el-form-item>
 							<el-checkbox v-model="state.loginForm.remember">记住密码</el-checkbox>

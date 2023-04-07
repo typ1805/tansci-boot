@@ -2,6 +2,8 @@ package com.tansci.controller;
 
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
+import com.tansci.common.annotation.Log;
+import com.tansci.common.constant.Constants;
 import com.tansci.domain.SysMenu;
 import com.tansci.domain.vo.SysMenuVo;
 import com.tansci.service.SysMenuService;
@@ -32,12 +34,14 @@ public class SysMenuController {
     private SysMenuService sysMenuService;
 
     @ApiOperation(value = "当前用户权限菜单树", notes = "当前用户权限菜单树")
+    @Log(modul = "菜单管理-当前用户权限菜单树", type = Constants.SELECT, desc = "当前用户权限菜单树")
     @GetMapping("/tree")
     public Wrapper<List<SysMenu>> tree(SysMenu menu) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.tree(menu));
     }
 
     @ApiOperation(value = "当前用户权限菜单列表", notes = "当前用户权限菜单列表")
+    @Log(modul = "菜单管理-当前用户权限菜单列表", type = Constants.SELECT, desc = "当前用户权限菜单列表")
     @GetMapping("/menus")
     public Wrapper<List<SysMenuVo>> menus() {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.menus());

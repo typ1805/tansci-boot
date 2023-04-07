@@ -70,3 +70,17 @@ export function logout(){
         location.reload()
     })
 }
+
+// 验证码
+export function getCode(){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/auth/code',
+            method: 'get'
+        }).then((res:any) => {
+            resolve(res)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
