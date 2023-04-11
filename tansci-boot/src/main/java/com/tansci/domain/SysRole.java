@@ -1,6 +1,7 @@
 package com.tansci.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @ClassName： SysRole.java
@@ -60,5 +62,13 @@ public class SysRole {
 
     @ApiModelProperty(value = "描述")
     private String remarks;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "菜单权限")
+    private List<String> menuIds;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "数据权限")
+    private List<String> orgIds;
 
 }

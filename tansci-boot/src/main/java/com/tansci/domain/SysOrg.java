@@ -32,14 +32,14 @@ import java.util.List;
 public class SysOrg {
 
     @ApiModelProperty(value = "主键id")
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     @ApiModelProperty(value = "组织名称")
     private String name;
 
     @ApiModelProperty(value = "父id")
-    private Integer parentId;
+    private String parentId;
 
     @ApiModelProperty(value = "组织编码")
     private String code;

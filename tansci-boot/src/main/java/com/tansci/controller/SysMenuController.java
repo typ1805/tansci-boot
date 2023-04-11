@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -57,9 +58,12 @@ public class SysMenuController {
 
     @ApiOperation(value = "添加", notes = "添加")
     @Log(modul = "菜单管理-添加", type = Constants.INSERT, desc = "添加")
-    @GetMapping("/save")
+    @PostMapping("/save")
     @SaCheckPermission("menu:save")
     public Wrapper<Object> save(@RequestBody SysMenu menu) {
+        menu.setIsDel(Constants.NOT_DEL_FALG);
+        menu.setUpdateTime(LocalDateTime.now());
+        menu.setCreateTime(LocalDateTime.now());
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.save(menu));
     }
 
@@ -76,6 +80,7 @@ public class SysMenuController {
     @PostMapping("/update")
     @SaCheckPermission("menu:update")
     public Wrapper<Object> update(@RequestBody SysMenu menu) {
+        menu.setUpdateTime(LocalDateTime.now());
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.updateById(menu));
     }
 

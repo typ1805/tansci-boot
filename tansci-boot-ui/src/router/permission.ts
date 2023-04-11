@@ -16,10 +16,10 @@ export const filterRouter = (routers:any, level:any) => {
                 router.path = "/" + common.uuid()
             }
 
-            if(router.path && router.path.startsWith('http') && router.meta.openMode === 0){
+            if(router.path && router.path.startsWith('http') && router.meta.openMode === 1){
                 setIframe()
             } else if(router.path && router.path.startsWith('/') && router.path.indexOf('.htm') != -1){
-                if(router.meta.openMode === 0){
+                if(router.meta.openMode === 1){
                     setIframe()
                 } else {
                     router.path = location.href.substring(0, location.href.indexOf('/', location.href.indexOf('/', location.href.indexOf('/') + 1) + 1)) + router.path

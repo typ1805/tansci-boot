@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { showMessage } from './status'
 import { ElMessage } from 'element-plus'
 import { logout, getToken } from '@/api/auth'
 import router from '../router'
@@ -33,7 +32,7 @@ axiosInstance.interceptors.response.use(
         if (response.status === 200 && response.data.code === 200) {
             return response;
         } else {
-            ElMessage.warning(showMessage(response.data.code));
+            ElMessage.warning(response.data.message);
             if (response.data.code === 402) {
                 logout()
             }
@@ -42,7 +41,7 @@ axiosInstance.interceptors.response.use(
                 sessionStorage.clear();
                 router.push({path: 'login'});
             } 
-            return response;
+            return Promise.reject(response);
         }
     },
     // 请求失败
@@ -50,7 +49,7 @@ axiosInstance.interceptors.response.use(
         const {response} = error;
         if (response) {
             // 请求已发出，但是不在2xx的范围
-            ElMessage.warning(showMessage(response.status));
+            ElMessage.warning(response.statusText);
             return Promise.reject(response.data);
         } else {
             ElMessage.warning('网络连接异常,请稍后再试!');

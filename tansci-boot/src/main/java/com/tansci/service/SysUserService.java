@@ -26,7 +26,7 @@ public interface SysUserService extends IService<SysUser> {
 
     Object update(SysUser user);
 
-    Object del(SysUser user);
+    Object del(String id);
 
     SysUserVo login(HttpServletRequest request, SysUser user);
 

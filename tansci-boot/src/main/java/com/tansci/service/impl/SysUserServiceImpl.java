@@ -93,11 +93,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Object del(SysUser user) {
-        user.setIsDel(Constants.IS_DEL_FALG);
-        int rows = this.baseMapper.updateById(user);
+    public Object del(String id) {
+        int rows = this.baseMapper.deleteById(id);
         if (rows > 0) {
-            sysUserRoleService.remove(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, user.getId()));
+            sysUserRoleService.remove(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, id));
         }
         return rows;
     }

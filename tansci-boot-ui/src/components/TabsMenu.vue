@@ -144,6 +144,9 @@
 			padding: 0;
 			margin: 0;
 		}
+        .el-tabs--card > .el-tabs__header{
+            border: none;
+        }
 		.el-tabs--card > .el-tabs__header .el-tabs__nav {
 			border: none;
 		}
