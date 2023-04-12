@@ -6,22 +6,17 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tansci.common.constant.Constants;
-import com.tansci.domain.SysRole;
-import com.tansci.domain.SysRoleMenu;
-import com.tansci.domain.SysRoleOrg;
+import com.tansci.domain.*;
 import com.tansci.mapper.SysRoleMapper;
-import com.tansci.service.SysRoleMenuService;
-import com.tansci.service.SysRoleOrgService;
-import com.tansci.service.SysRoleService;
+import com.tansci.service.*;
 import com.tansci.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName： SysRoleServiceImpl.java
@@ -37,7 +32,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
     @Autowired
+    private SysMenuService sysMenuService;
+    @Autowired
     private SysRoleOrgService sysRoleOrgService;
+    @Autowired
+    private SysOrgService sysOrgService;
 
     @Override
     public IPage<SysRole> page(Page page, SysRole role) {
@@ -64,7 +63,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public Object insert(SysRole role) {
         role.setCreator(String.valueOf(StpUtil.getLoginId()));
-        role.setCode(UUIDUtils.getUUID(10));
+        role.setCode("SR"+UUIDUtils.getUUID(10).toUpperCase());
         role.setIsDel(Constants.NOT_DEL_FALG);
         role.setUpdateTime(LocalDateTime.now());
         role.setCreateTime(LocalDateTime.now());
@@ -98,13 +97,36 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public Object orgList(String roleId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", sysOrgService.list(SysOrg.builder().build()));
+
+        List<SysRoleOrg> orgs = sysRoleOrgService.list(Wrappers.<SysRoleOrg>lambdaQuery().eq(SysRoleOrg::getRoleId, roleId));
+        if (Objects.nonNull(orgs) && orgs.size() > 0) {
+            map.put("selected", orgs.stream().map(SysRoleOrg::getOrgId).collect(Collectors.toList()));
+        }
+        return map;
+    }
+
+    @Override
     public Object menuPermissions(SysRole role) {
         sysRoleMenuService.remove(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, role.getId()));
         List<SysRoleMenu> menus = new ArrayList<>();
-        role.getOrgIds().forEach(item -> {
+        role.getMenuIds().forEach(item -> {
             menus.add(SysRoleMenu.builder().roleId(role.getId()).menuId(item).build());
         });
         return sysRoleMenuService.saveBatch(menus);
     }
 
+    @Override
+    public Object menuList(String roleId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", sysMenuService.tree(SysMenu.builder().build()));
+
+        List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, roleId));
+        if (Objects.nonNull(menus) && menus.size() > 0) {
+            map.put("selected", menus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList()));
+        }
+        return map;
+    }
 }

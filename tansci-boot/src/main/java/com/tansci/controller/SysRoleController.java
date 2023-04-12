@@ -80,12 +80,28 @@ public class SysRoleController {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysRoleService.dataPermissions(role));
     }
 
+    @ApiOperation(value = "获取权限组织", notes = "获取权限组织")
+    @Log(modul = "角色管理-获取权限组织", type = Constants.UPDATE, desc = "获取权限组织")
+    @GetMapping("/orgList/{roleId}")
+    @SaCheckPermission("role:data")
+    public Wrapper<Object> orgList(@PathVariable String roleId) {
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysRoleService.orgList(roleId));
+    }
+
     @ApiOperation(value = "菜单权限", notes = "菜单权限")
     @Log(modul = "角色管理-菜单权限", type = Constants.UPDATE, desc = "菜单权限")
     @PostMapping("/menuPermissions")
     @SaCheckPermission("role:menu")
     public Wrapper<Object> menuPermissions(@RequestBody SysRole role) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysRoleService.menuPermissions(role));
+    }
+
+    @ApiOperation(value = "获取权限菜单", notes = "获取权限菜单")
+    @Log(modul = "角色管理-获取权限菜单", type = Constants.UPDATE, desc = "获取权限菜单")
+    @GetMapping("/menuList/{roleId}")
+    @SaCheckPermission("role:menu")
+    public Wrapper<Object> menuList(@PathVariable String roleId) {
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysRoleService.menuList(roleId));
     }
 
 }

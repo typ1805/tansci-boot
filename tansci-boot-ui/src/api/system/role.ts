@@ -89,6 +89,19 @@ export function dataPermissions(data:any){
     })
 }
 
+export function orgList(roleId:String){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/sysrole/orgList/' + roleId,
+            method: 'get'
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
 // 菜单权限
 export function menuPermissions(data:any){
     return new Promise((resolve, reject) => {
@@ -96,6 +109,19 @@ export function menuPermissions(data:any){
             url: '/tansci/sysrole/menuPermissions',
             method: 'post',
             data: data
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+export function menuList(roleId:String){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/sysrole/menuList/' + roleId,
+            method: 'get'
         }).then((res:any) => {
             resolve(res.data)
         }).catch((e:any) => {

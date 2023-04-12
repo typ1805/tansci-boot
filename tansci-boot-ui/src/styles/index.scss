@@ -7,7 +7,10 @@
 
   // 局部背景
   // --el-bg-color: radial-gradient( white 0%, #FAFDFE 10%, #ddf8e7 50%, #FAFDFE 90%, white 100%);
-  --el-bg-color: radial-gradient(#d9f8e5 0%, #FAFDFE 80%, #e7fcef 100%);
+  // --el-bg-color: radial-gradient(#d9f8e5 0%, #FAFDFE 80%, #e7fcef 100%);
+  --el-bg-color: #FAFDFE;
+  // 背景色
+  --bg1: #FAFAFA;
 
   // 操作颜色
   --delete: #f56c6c;
@@ -30,13 +33,22 @@ body {
 }
 
 /**
+ * Dialog 对话框
+ */
+ .el-dialog__header{
+  background-color: var(--el-color-primary);
+  margin-right: 0;
+  padding: 0.5rem 1rem;
+}
+
+/**
  * table组件样式
  */
  .table-container{
   .search-wrap{
       display: flex;
       flex-wrap: wrap;
-      background: var(--bg1);
+      // background: var(--bg1);
   }
   .search-wrap>div{
       line-height: 40px;

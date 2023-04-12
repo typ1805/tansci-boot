@@ -28,6 +28,10 @@ public interface SysRoleService extends IService<SysRole> {
 
     Object dataPermissions(SysRole role);
 
+    Object orgList(String roleId);
+
     Object menuPermissions(SysRole role);
+
+    Object menuList(String roleId);
 
 }

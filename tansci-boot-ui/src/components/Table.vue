@@ -19,9 +19,12 @@
             type: Array,
             default: []
         },
-        operation: { // 操作列，自定义插槽
-            type: Boolean,
-            default: false
+        operation: {
+            type: Object,
+            default: {
+                isShow: false,
+                width: '220'
+            }
         }, 
         tableHeight: {
             type: Number,
@@ -29,7 +32,7 @@
         },
         headerCellStyle: {
             type: Object,
-            default:{color:'#606266', fontWeight: 700, background:'var(--bg1)'}
+            default:{color:'#606266', fontWeight: 700}
         },
         data: {
             type: Array,
@@ -67,7 +70,7 @@
     }
 
     // 根据属性获取对象值
-    function onFind(arr,val){
+    function onFind(arr:any,val:any){
         if(!arr) return 'info';
         
         let temp = arr.find(v=>{ return v.value == val});
@@ -174,7 +177,7 @@
                     </el-table-column>
                 </template>
                 <!-- 自定义插槽  -->
-                <el-table-column v-if="operation" fixed="right" label="操作" align="center" width="220">
+                <el-table-column v-if="operation.isShow" fixed="right" label="操作" align="center" :width="operation.width">
                     <template #default="scope">
                         <slot name="column" v-bind:column="scope"></slot>
                     </template>
