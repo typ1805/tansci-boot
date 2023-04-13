@@ -72,7 +72,7 @@ public class SysMenuController {
     @GetMapping("/delete/{id}")
     @SaCheckPermission("menu:delete")
     public Wrapper<Object> delete(@PathVariable String id) {
-        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.removeById(id));
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.delete(id));
     }
 
     @ApiOperation(value = "修改", notes = "修改")

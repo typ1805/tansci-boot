@@ -210,10 +210,10 @@
 <template>
   <el-card class="role-container" shadow="always">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="table.page" :loading="table.loading"
-      @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange" @onSwitchChange="onSwitchChange">
+      @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange">
       <template #search>
         <div><el-button type="primary" @click="onAddRole">添加</el-button></div>
-        <div><el-input v-model="name" placeholder="请输入名称"></el-input></div>
+        <div><el-input v-model="searchForm.name" placeholder="请输入名称"></el-input></div>
         <div><el-button @click="onRefresh" icon="RefreshRight" circle></el-button></div>
         <div><el-button @click="onSearch" type="primary" icon="Search">查询</el-button></div>
       </template>

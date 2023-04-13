@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.Lists;
 import com.tansci.common.constant.Constants;
 import com.tansci.common.exception.BusinessException;
 import com.tansci.domain.SysLoginLog;
@@ -27,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName： SysUserServiceImpl.java
@@ -46,7 +47,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public IPage<SysUser> page(Page page, SysUser user) {
-        return this.baseMapper.selectPage(page,
+        IPage<SysUser> iPage = this.baseMapper.selectPage(page,
                 Wrappers.<SysUser>lambdaQuery()
                         .eq(SysUser::getIsDel, Constants.NOT_DEL_FALG)
                         .eq(Objects.nonNull(user.getUsername()), SysUser::getUsername, user.getUsername())
@@ -54,6 +55,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         .eq(Objects.nonNull(user.getNickname()), SysUser::getNickname, user.getNickname())
                         .eq(Objects.nonNull(user.getType()), SysUser::getType, user.getType())
         );
+
+        if (Objects.nonNull(iPage) && Objects.nonNull(iPage.getRecords())) {
+            List<SysUserRole> roles = sysUserRoleService.list();
+            iPage.getRecords().forEach(item -> {
+                Optional<SysUserRole> rOptional = roles.stream().filter(u -> Objects.equals(u.getUserId(), item.getId())).findFirst();
+                if (rOptional.isPresent()) {
+                    item.setRoleId(rOptional.get().getRoleId());
+                }
+            });
+        }
+        return iPage;
     }
 
     @Override
@@ -72,16 +84,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new BusinessException("用户名称已存在！");
         }
         user.setIsDel(Constants.NOT_DEL_FALG);
+        user.setUpdateTime(LocalDateTime.now());
         user.setCreateTime(LocalDateTime.now());
         user.setPassword(Sha256Util.getSHA256(user.getPassword()));
         int rows = this.baseMapper.insert(user);
         if (rows > 0) {
-            // 添加权限
-            List<SysUserRole> userRoles = Lists.newArrayList();
-            user.getRoleIds().forEach(item -> {
-                userRoles.add(SysUserRole.builder().userId(user.getId()).roleId(item).build());
-            });
-            sysUserRoleService.saveBatch(userRoles);
+            sysUserRoleService.save(SysUserRole.builder().userId(user.getId()).roleId(user.getRoleId()).build());
         }
         return rows;
     }

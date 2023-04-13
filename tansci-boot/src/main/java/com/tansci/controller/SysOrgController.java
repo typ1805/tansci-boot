@@ -33,7 +33,7 @@ public class SysOrgController {
     @Autowired
     private SysOrgService sysOrgService;
 
-    @ApiOperation(value = "组织管理", notes = "组织管理")
+    @ApiOperation(value = "列表", notes = "列表")
     @Log(modul = "组织管理-列表", type = Constants.SELECT, desc = "列表")
     @GetMapping("/list")
     @SaCheckPermission("org:list")
@@ -46,7 +46,7 @@ public class SysOrgController {
     @PostMapping("/save")
     @SaCheckPermission("org:save")
     public Wrapper<Object> save(@RequestBody SysOrg org) {
-        org.setCode(UUIDUtils.getUUID(10));
+        org.setCode("SO" + UUIDUtils.getUUID(10).toUpperCase());
         org.setIsDel(Constants.NOT_DEL_FALG);
         org.setUpdateTime(LocalDateTime.now());
         org.setCreateTime(LocalDateTime.now());
@@ -58,7 +58,7 @@ public class SysOrgController {
     @GetMapping("/delete/{id}")
     @SaCheckPermission("org:delete")
     public Wrapper<Object> delete(@PathVariable String id) {
-        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysOrgService.removeById(id));
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysOrgService.delete(id));
     }
 
     @ApiOperation(value = "修改", notes = "修改")

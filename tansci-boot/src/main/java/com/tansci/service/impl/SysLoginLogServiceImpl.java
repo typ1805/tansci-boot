@@ -1,5 +1,8 @@
 package com.tansci.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tansci.domain.SysLoginLog;
 import com.tansci.mapper.SysLoginLogMapper;
@@ -17,4 +20,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLog> implements SysLoginLogService {
+
+    @Override
+    public IPage<SysLoginLog> onlineUser(Page page, String username) {
+        return this.baseMapper.selectPage(page,
+                Wrappers.<SysLoginLog>lambdaQuery().eq(SysLoginLog::getUsername, username)
+        );
+    }
+
 }

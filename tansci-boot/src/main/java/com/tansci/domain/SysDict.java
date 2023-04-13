@@ -17,8 +17,8 @@ import java.util.List;
 
 
 /**
- * @ClassName： SysDic.java
- * @ClassPath： com.tansci.SysDic.java
+ * @ClassName： SysDict.java
+ * @ClassPath： com.tansci.SysDict.java
  * @Description： 数据字典
  * @Author： tanyp
  * @Date： 2023/03/20 10:38
@@ -27,9 +27,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "sys_dic")
+@TableName(value = "sys_dict")
 @ApiModel(value = "数据字典")
-public class SysDic {
+public class SysDict {
 
     @TableId(type = IdType.ASSIGN_UUID)
     @ApiModelProperty(value = "主键id", hidden = true)
@@ -74,6 +74,6 @@ public class SysDic {
     private String remarks;
 
     @TableField(exist = false)
-    private List<SysDic> children;
+    private List<SysDict> children;
 
 }

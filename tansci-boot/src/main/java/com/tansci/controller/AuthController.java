@@ -4,10 +4,14 @@ import cn.dev33.satoken.session.SaSessionCustomUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
+import com.tansci.domain.SysLoginLog;
 import com.tansci.domain.SysUser;
 import com.tansci.domain.vo.SysUserVo;
+import com.tansci.service.SysLoginLogService;
 import com.tansci.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +36,8 @@ public class AuthController {
 
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private SysLoginLogService sysLoginLogService;
 
     @ApiOperation(value = "登录", notes = "登录")
     @PostMapping("/login")
@@ -57,6 +63,19 @@ public class AuthController {
         request.getSession().setMaxInactiveInterval(60);
         request.getSession().setAttribute("verifyCode", lineCaptcha.getCode());
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, lineCaptcha.getImageBase64());
+    }
+
+    @ApiOperation(value = "在线用户", notes = "在线用户")
+    @GetMapping("/onlineUser")
+    public Wrapper<IPage<SysLoginLog>> onlineUser(Page page, String username) {
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysLoginLogService.onlineUser(page, username));
+    }
+
+    @ApiOperation(value = "踢人", notes = "踢人")
+    @GetMapping("/kick")
+    public Wrapper<Object> kick(String token) {
+        StpUtil.logoutByTokenValue(token);
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, "ok");
     }
 
 }

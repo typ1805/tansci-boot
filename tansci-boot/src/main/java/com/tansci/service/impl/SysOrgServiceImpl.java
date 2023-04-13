@@ -56,4 +56,16 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
         return orgList;
     }
 
+    @Override
+    public Object delete(String id) {
+        List<SysOrg> orgs = this.baseMapper.selectList(Wrappers.<SysOrg>lambdaQuery().eq(SysOrg::getParentId, id));
+        List<String> ids = Lists.newArrayList(id);
+        ids.addAll(orgs.stream().map(SysOrg::getId).collect(Collectors.toList()));
+        int row = this.baseMapper.deleteBatchIds(ids);
+        if (row > 0) {
+            sysRoleOrgService.remove(Wrappers.<SysRoleOrg>lambdaQuery().in(SysRoleOrg::getOrgId, ids));
+        }
+        return row;
+    }
+
 }

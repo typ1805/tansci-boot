@@ -16,4 +16,6 @@ public interface SysOrgService extends IService<SysOrg> {
 
     List<SysOrg> list(SysOrg org);
 
+    Object delete(String id);
+
 }

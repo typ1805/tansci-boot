@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @path：com.tansci.domain.SysUser.java
@@ -95,8 +94,8 @@ public class SysUser {
     private String remarks;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "权限IDS")
-    private List<String> roleIds;
+    @ApiModelProperty(value = "角色ID")
+    private String roleId;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "验证码")

@@ -1,5 +1,7 @@
 package com.tansci.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tansci.domain.SysLoginLog;
 
@@ -11,4 +13,7 @@ import com.tansci.domain.SysLoginLog;
  * @Date： 2023/3/29 9:34
  **/
 public interface SysLoginLogService extends IService<SysLoginLog> {
+
+    IPage<SysLoginLog> onlineUser(Page page, String username);
+
 }

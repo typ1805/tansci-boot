@@ -1,12 +1,12 @@
 import request from '@/utils/request'
 
 // 分页
-export function page(param:any){
+export function page(params:any){
     return new Promise((resolve, reject) => {
         request({
             url: '/tansci/sysrole/page',
             method: 'get',
-            data: param
+            params: params
         }).then((res:any) => {
             resolve(res.data)
         }).catch((e:any) => {
@@ -16,12 +16,12 @@ export function page(param:any){
 }
 
 // 列表
-export function list(param:any){
+export function list(params:any){
     return new Promise((resolve, reject) => {
         request({
             url: '/tansci/sysrole/list',
             method: 'get',
-            data: param
+            params: params
         }).then((res:any) => {
             resolve(res.data)
         }).catch((e:any) => {

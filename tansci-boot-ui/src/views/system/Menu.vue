@@ -2,13 +2,14 @@
     import {onMounted, reactive, ref} from 'vue'
     import {ElMessage, ElMessageBox} from 'element-plus'
     import type {FormInstance} from 'element-plus'
-    import {list,getById,save,update,del} from '@/api/system/menu'
+    import {list,save,update,del} from '@/api/system/menu'
     import ElIcon from '@/components/ElIcon.vue'
 
     const menuFormRef = ref<FormInstance>();
     const state = reactive({
         treeData: [],
         operate: 0,
+        type: 1,
         menuForm:{
             id: '',
             parentId: '',
@@ -23,7 +24,8 @@
             isDel: 0,
             keepAlive: 0,
             isShow: 0,
-            remarks: ''
+            remarks: '',
+            permission: ''
         },
         menuId: null,
         iconVisible: false,
@@ -41,7 +43,12 @@
         })
     }
 
-    const onNodeClick = (data:any) =>{
+    function onNodeClick(data:any){
+        if(data.permission){
+            state.type = 2;
+        } else {
+            state.type = 1;
+        }
         state.operate = 0;
         state.menuId = data.id;
         state.menuForm = {
@@ -58,10 +65,14 @@
             isDel: data.isDel,
             keepAlive: data.keepAlive,
             isShow: data.isShow,
-            remarks: data.remarks
+            remarks: data.remarks,
+            permission: data.permission
         }
     }
-    const onOperateChange = (val:any) =>{
+    function onTypeChange(type:any){
+        state.type = type
+    }
+    function onOperateChange(val:any){
         if(val == 1){
             let menuId = '0'
             if(state.menuId){
@@ -82,7 +93,8 @@
                 isDel: 0,
                 keepAlive: 0,
                 isShow: 0,
-                remarks: ''
+                remarks: '',
+                permission: ''
             }
         } else if(val == 2) {
             state.operate = 2;
@@ -115,7 +127,8 @@
                             isDel: 0,
                             keepAlive: 0,
                             isShow: 0,
-                            remarks: ''
+                            remarks: '',
+                            permission: ''
                         };
                         onMenuTree();
                     }
@@ -125,10 +138,10 @@
             })
         }
     }
-    const onFormIcon = () =>{
+    function onFormIcon(){
         state.iconVisible = true;
     }
-    const onIcon = (val:any) =>{
+    function onIcon(val:any){
         state.menuForm.icon = val.name;
         state.iconVisible = false;
     }
@@ -140,12 +153,14 @@
                     save(state.menuForm).then(res=>{
                         if(res){
                             ElMessage.success("添加成功！");
+                            onMenuTree();
                         }
                     })
                 } else if (state.operate == 2) {
                     update(state.menuForm).then(res=>{
                         if(res){
                             ElMessage.success("更新成功！");
+                            onMenuTree();
                         }
                     })
                 }
@@ -163,10 +178,10 @@
                     isDel: 0,
                     keepAlive: 0,
                     isShow: 0,
-                    remarks: ''
+                    remarks: '',
+                    permission: ''
                 };
                 state.operate = 0;
-                onMenuTree();
             }
         })
     }
@@ -186,49 +201,60 @@
             </el-tree>
         </el-card>
         <el-card class="menu-form" shadow="never">
+            <el-radio-group @change="onTypeChange" v-model="state.type">
+                <el-radio-button :label="1">菜单</el-radio-button>
+                <el-radio-button :label="2">按钮</el-radio-button>
+            </el-radio-group>
+            <el-divider direction="vertical" style="margin: 0 1rem;"/>
             <el-radio-group @change="onOperateChange" v-model="state.operate">
                 <el-radio-button :label="1">添加</el-radio-button>
                 <el-radio-button :label="2">编辑</el-radio-button>
                 <el-radio-button :label="3">删除</el-radio-button>
             </el-radio-group>
-            <el-divider content-position="left">详细信息</el-divider>
+            <el-divider content-position="left">菜单详情</el-divider>
             <el-form :model="state.menuForm" :rules="rules" ref="menuFormRef" :disabled="state.operate==0 || state.operate==3?true:false" label-position="right" label-width="150px">
-                <el-form-item label="菜单名称" prop="name" :rules="[{required: true, message: '名称不能为空', trigger: 'blur'},{pattern: /^[A-Za-z0-9]+$/, message: '必须是字母', trigger: 'blur'}]">
+                <el-form-item v-if="state.type == 1" label="菜单名称" prop="name" :rules="[{required: true, message: '名称不能为空', trigger: 'blur'},{pattern: /^[A-Za-z0-9]+$/, message: '必须是字母', trigger: 'blur'}]">
                     <el-input v-model="state.menuForm.name" placeholder="请输入名称" style="width:50%"></el-input>
                 </el-form-item>
-                <el-form-item label="菜单路由" prop="url" :rules="[{required: true, message: '路由不能为空', trigger: 'blur'}]">
+                <el-form-item v-if="state.type == 1" label="菜单路由" prop="url" :rules="[{required: true, message: '路由不能为空', trigger: 'blur'}]">
                     <el-input v-model="state.menuForm.url" placeholder="请输入路由" style="width:50%"></el-input>
                 </el-form-item>
-                <el-form-item label="菜单图标" prop="icon" :rules="[{required: true, message: '菜单图标不能为空', trigger: 'blur'}]">
+                <el-form-item v-if="state.type == 1" label="菜单图标" prop="icon" :rules="[{required: true, message: '菜单图标不能为空', trigger: 'blur'}]">
                     <el-input v-model="state.menuForm.icon" @click="onFormIcon" readonly suffix-icon="Platform" style="width:50%"></el-input>
                     <ElIcon :iconVisible="state.iconVisible" @onIcon="onIcon"/>
                 </el-form-item>
-                <el-form-item label="中文名称" prop="chineseName" :rules="[{required: true, message: '中文名称不能为空', trigger: 'blur'},{pattern: /^[\u4e00-\u9fa5]{0,}$/, message: '必须是汉字', trigger: 'blur'}]">
+                <el-form-item v-if="state.type == 1" label="中文名称" prop="chineseName" :rules="[{required: true, message: '中文名称不能为空', trigger: 'blur'},{pattern: /^[\u4e00-\u9fa5]{0,}$/, message: '必须是汉字', trigger: 'blur'}]">
                     <el-input v-model="state.menuForm.chineseName" placeholder="请输入中文名称" style="width:50%"></el-input>
                 </el-form-item>
-                <el-form-item label="英文名称" prop="englishName" :rules="[{required: true, message: '英文名称不能为空', trigger: 'blur'},{pattern: /^[A-Za-z0-9]+$/, message: '必须是字母', trigger: 'blur'}]">
+                <el-form-item v-if="state.type == 1" label="英文名称" prop="englishName" :rules="[{required: true, message: '英文名称不能为空', trigger: 'blur'},{pattern: /^[A-Za-z0-9]+$/, message: '必须是字母', trigger: 'blur'}]">
                     <el-input v-model="state.menuForm.englishName" placeholder="请输入英文名称" autocomplete="off" style="width:50%"></el-input>
+                </el-form-item>
+                <el-form-item v-if="state.type == 2" label="菜单名称" prop="chineseName" :rules="[{required: true, message: '请输入名称', trigger: 'blur'}]">
+                    <el-input v-model="state.menuForm.chineseName" placeholder="请输入名称" style="width:50%"></el-input>
+                </el-form-item>
+                <el-form-item v-if="state.type == 2" label="权限标识" prop="permission" :rules="[{required: true, message: '请输入权限标识', trigger: 'blur'}]">
+                    <el-input v-model="state.menuForm.permission" placeholder="请输入权限标识" style="width:50%"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单顺序" prop="sort" :rules="[{required: true, message: '菜单顺序不能为空', trigger: 'blur'}]">
                     <el-input-number v-model="state.menuForm.sort" :min="0" :max="999" style="width:50%"></el-input-number>
                 </el-form-item>
-                <el-form-item label="组件名称" prop="component">
+                <el-form-item v-if="state.type == 1" label="组件名称" prop="component">
                     <el-input v-model="state.menuForm.component" placeholder="请输入组件名称" style="width:50%"></el-input>
                 </el-form-item>
-                <el-form-item label="菜单类型" prop="openMode" :rules="[{required: true, message: '请选择类型', trigger: 'change'}]">
+                <el-form-item v-if="state.type == 1" label="菜单类型" prop="openMode" :rules="[{required: true, message: '请选择类型', trigger: 'change'}]">
                     <el-select v-model="state.menuForm.openMode" placeholder="请选菜单类型" style="width:50%">
                         <el-option label="菜单" :value="0"></el-option>
                         <el-option label="Iframe" :value="1"></el-option>
                         <el-option label="新标签页" :value="2"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="是否缓存" prop="keepAlive" :rules="[{required: true, message: '请选择是否缓存', trigger: 'change'}]">
+                <el-form-item v-if="state.type == 1" label="是否缓存" prop="keepAlive" :rules="[{required: true, message: '请选择是否缓存', trigger: 'change'}]">
                     <el-radio-group v-model="state.menuForm.keepAlive">
                         <el-radio :label="1">缓存</el-radio>
                         <el-radio :label="0">不缓存</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="是否显示" prop="isShow" :rules="[{required: true, message: '请选择是否显示', trigger: 'change'}]">
+                <el-form-item v-if="state.type == 1" label="是否显示" prop="isShow" :rules="[{required: true, message: '请选择是否显示', trigger: 'change'}]">
                     <el-radio-group v-model="state.menuForm.isShow">
                         <el-radio :label="1">显示</el-radio>
                         <el-radio :label="0">不显示</el-radio>

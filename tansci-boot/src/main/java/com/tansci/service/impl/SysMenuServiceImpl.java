@@ -88,7 +88,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                             .path(menu.getUrl())
                             .icon(menu.getIcon())
                             .sort(menu.getSort())
-                            .component(Objects.nonNull(menu.getComponent()) ? menu.getComponent() : "Layout")
+                            .component(Objects.nonNull(menu.getComponent()) && menu.getComponent().length() > 0 ? menu.getComponent() : "Layout")
                             .isShow(Objects.equals(1, menu.getIsShow()) ? true : false)
                             .meta(meta)
                             .build()
@@ -102,4 +102,17 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         List<SysMenuVo> menuList = map.get("0").stream().sorted(Comparator.comparing(SysMenuVo::getSort)).collect(Collectors.toList());
         return menuList;
     }
+
+    @Override
+    public Object delete(String id) {
+        List<SysMenu> menus = this.baseMapper.selectList(Wrappers.<SysMenu>lambdaQuery().eq(SysMenu::getParentId, id));
+        List<String> ids = Lists.newArrayList(id);
+        ids.addAll(menus.stream().map(SysMenu::getId).collect(Collectors.toList()));
+        int row = this.baseMapper.deleteBatchIds(ids);
+        if (row > 0) {
+            sysRoleMenuService.remove(Wrappers.<SysRoleMenu>lambdaQuery().in(SysRoleMenu::getMenuId, ids));
+        }
+        return row;
+    }
+
 }

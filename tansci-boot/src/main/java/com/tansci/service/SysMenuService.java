@@ -19,4 +19,6 @@ public interface SysMenuService extends IService<SysMenu> {
 
     List<SysMenuVo> menus();
 
+    Object delete(String id);
+
 }
