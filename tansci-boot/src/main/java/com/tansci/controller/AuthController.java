@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
+import com.tansci.common.annotation.Log;
+import com.tansci.common.constant.Constants;
 import com.tansci.domain.SysLoginLog;
 import com.tansci.domain.SysUser;
 import com.tansci.domain.vo.SysUserVo;
@@ -66,14 +68,16 @@ public class AuthController {
     }
 
     @ApiOperation(value = "在线用户", notes = "在线用户")
+    @Log(modul = "鉴权管理", type = Constants.SELECT, desc = "在线用户")
     @GetMapping("/onlineUser")
     public Wrapper<IPage<SysLoginLog>> onlineUser(Page page, String username) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysLoginLogService.onlineUser(page, username));
     }
 
     @ApiOperation(value = "踢人", notes = "踢人")
-    @GetMapping("/kick")
-    public Wrapper<Object> kick(String token) {
+    @Log(modul = "鉴权管理", type = Constants.UPDATE, desc = "踢人")
+    @GetMapping("/kick/{token}")
+    public Wrapper<Object> kick(@PathVariable String token) {
         StpUtil.logoutByTokenValue(token);
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, "ok");
     }

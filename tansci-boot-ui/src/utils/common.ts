@@ -1,4 +1,24 @@
+import { list } from "@/api/system/dict"
+
 const common:any = {}
+
+// 数据字典
+let dictList = []
+common.getDictData = async function() {
+    await list({}).then((res:any) =>{
+        dictList = res.result
+    })
+}
+common.getDictGroup = (groupName:any) => {
+    return dictList.filter(item => item.groupName === groupName)
+}
+common.getDictLabel = (groupName:any, value:any) => {
+    let dicts = common.getDictGroup(groupName)
+    let dict = dicts.find((item:any) =>{
+        return item.dicValue == value
+    })
+    return dict ? dict.dicLabel : null;
+}
 
 // 生成UUID
 common.uuid = () => {
@@ -34,6 +54,6 @@ common.toDecimal = (value:any) => {
       s_x += '0';  
   }  
   return s_x;  
-} 
+}
 
 export default common

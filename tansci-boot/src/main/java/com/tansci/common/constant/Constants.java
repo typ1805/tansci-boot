@@ -16,6 +16,12 @@ public class Constants {
     public final static Integer IS_DEL_FALG = 1;
 
     /**
+     * 用户是否禁用：0、正常，1、禁用
+     */
+    public final static Integer USER_IS_LOGIN_IN = 0;
+    public final static Integer USER_IS_LOGIN_ON = 1;
+
+    /**
      * 操作日志状态：0、成功，1、失败
      */
     public final static Integer OPER_LOG_STATUS_SUCCESS = 0;

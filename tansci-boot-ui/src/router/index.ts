@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router"
 import { ElMessage } from 'element-plus'
 import { getToken, removeToken, removeUser, setMenus } from "@/api/auth"
+import common from '@/utils/common'
 import { generateRoutes } from "./permission"
 
-import common from './common'
+import staticRouter from './staticRouter'
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        ...common
+        ...staticRouter
     ]
 })
 
@@ -37,9 +38,10 @@ router.beforeEach(async (to:any, from:any, next) => {
                             router.addRoute(item)
                         })
 
-                        let routers = common.concat(accessRoutes)
+                        let routers = staticRouter.concat(accessRoutes)
                         setMenus([...routers])
                     })
+                    await common.getDictData()
     
                     next({ ...to, replace: true })
                 } catch (error:any) {

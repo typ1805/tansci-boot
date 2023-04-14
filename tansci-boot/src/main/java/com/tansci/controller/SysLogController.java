@@ -37,14 +37,14 @@ public class SysLogController {
     private SysOperLogService sysOperLogService;
 
     @ApiOperation(value = "登录日志", notes = "登录日志")
-    @Log(modul = "日志管理-登录日志", type = Constants.DELETE, desc = "登录日志")
+    @Log(modul = "日志管理", type = Constants.DELETE, desc = "登录日志")
     @GetMapping("/loginLog")
     public Wrapper<IPage<SysLoginLog>> loginLog(Page page) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysLoginLogService.page(page));
     }
 
     @ApiOperation(value = "操作日志", notes = "操作日志")
-    @Log(modul = "日志管理-操作日志", type = Constants.DELETE, desc = "操作日志")
+    @Log(modul = "日志管理", type = Constants.DELETE, desc = "操作日志")
     @GetMapping("/operLog")
     public Wrapper<IPage<SysOperLog>> operLog(Page page) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysOperLogService.page(page));

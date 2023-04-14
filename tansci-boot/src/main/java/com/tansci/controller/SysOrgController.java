@@ -34,7 +34,7 @@ public class SysOrgController {
     private SysOrgService sysOrgService;
 
     @ApiOperation(value = "列表", notes = "列表")
-    @Log(modul = "组织管理-列表", type = Constants.SELECT, desc = "列表")
+    @Log(modul = "组织管理", type = Constants.SELECT, desc = "列表")
     @GetMapping("/list")
     @SaCheckPermission("org:list")
     public Wrapper<List<SysOrg>> list(SysOrg org) {
@@ -42,7 +42,7 @@ public class SysOrgController {
     }
 
     @ApiOperation(value = "添加", notes = "添加")
-    @Log(modul = "组织管理-添加", type = Constants.INSERT, desc = "添加")
+    @Log(modul = "组织管理", type = Constants.INSERT, desc = "添加")
     @PostMapping("/save")
     @SaCheckPermission("org:save")
     public Wrapper<Object> save(@RequestBody SysOrg org) {
@@ -54,7 +54,7 @@ public class SysOrgController {
     }
 
     @ApiOperation(value = "删除", notes = "删除")
-    @Log(modul = "组织管理-删除", type = Constants.DELETE, desc = "删除")
+    @Log(modul = "组织管理", type = Constants.DELETE, desc = "删除")
     @GetMapping("/delete/{id}")
     @SaCheckPermission("org:delete")
     public Wrapper<Object> delete(@PathVariable String id) {
@@ -62,7 +62,7 @@ public class SysOrgController {
     }
 
     @ApiOperation(value = "修改", notes = "修改")
-    @Log(modul = "组织管理-修改", type = Constants.UPDATE, desc = "修改")
+    @Log(modul = "组织管理", type = Constants.UPDATE, desc = "修改")
     @PostMapping("/update")
     @SaCheckPermission("org:update")
     public Wrapper<Object> update(@RequestBody SysOrg org) {

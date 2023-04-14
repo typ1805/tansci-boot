@@ -69,13 +69,9 @@
         emit('onCurrentChange', e)
     }
 
-    // 根据属性获取对象值
     function onFind(arr:any,val:any){
         if(!arr) return 'info';
-        
-        let temp = arr.find(v=>{ return v.value == val});
-        if(temp) return temp.label;
-        return 'info';
+        return arr.find(v=>{ return v.value == val}).label;
     }
 </script>
 <template>
@@ -105,11 +101,15 @@
                             </el-icon>
                         </template>
                     </el-table-column>
-                    <!-- 金额格式化 -->
-                    <el-table-column v-else-if="item.type == 'price'" 
+                    <!-- el-statistic -->
+                    <el-table-column v-else-if="item.type == 'statistic'" 
                         :label="item.label" :align="item.align != null ? item.align : 'center'" :width="item.width">
                         <template #default="scope">
-                            <span>{{common.toDecimal(scope.row[item.prop])}}</span>
+                            <el-statistic :value="scope.row[item.prop]" 
+                            :precision="item.option.precision" 
+                            :formatter="item.option.formatter"
+                            :prefix="item.option.prefix" 
+                            :suffix="item.option.suffix"/>
                         </template>
                     </el-table-column>
                     <!-- el-image -->
@@ -167,13 +167,21 @@
                             :color="item.option.color"/>
                         </template>
                     </el-table-column>
+                    <!-- 字典值  -->
+                    <el-table-column v-else-if="item.type == 'dict'" 
+                        :label="item.label" :align="item.align != null ? item.align : 'center'" :width="item.width">
+                        <template #default="scope">
+                            <span>{{common.getDictLabel(item.dictType, scope.row[item.prop])}}</span>
+                        </template>
+                    </el-table-column>
                     <!-- 其他数据列 -->
                     <el-table-column v-else show-overflow-tooltip 
                         :prop="item.alias==null?item.prop:item.alias" 
                         :label="item.label" 
                         :align="item.align != null ? item.align : 'center'" 
                         :width="item.width"
-                        :fixed="item.fixed">
+                        :fixed="item.fixed"
+                        :formatter="item.function">
                     </el-table-column>
                 </template>
                 <!-- 自定义插槽  -->

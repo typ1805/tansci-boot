@@ -56,8 +56,6 @@ export function generateRoutes(){
             method: 'get'
         }).then( (res:any) => {
             const routers = filterRouter(res.data.result, 0)
-
-            console.log(routers)
             resolve(routers)
         })
     })

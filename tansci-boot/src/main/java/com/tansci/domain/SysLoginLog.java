@@ -57,6 +57,9 @@ public class SysLoginLog {
     @ApiModelProperty(value = "token")
     private String token;
 
+    @ApiModelProperty(value = "失败原因")
+    private String message;
+
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
     private LocalDateTime createTime;

@@ -34,14 +34,14 @@ public class SysRoleController {
     private SysRoleService sysRoleService;
 
     @ApiOperation(value = "分页", notes = "分页")
-    @Log(modul = "角色管理-分页", type = Constants.SELECT, desc = "列表")
+    @Log(modul = "角色管理", type = Constants.SELECT, desc = "列表")
     @GetMapping("/page")
     public Wrapper<IPage<SysRole>> page(Page page, SysRole role) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysRoleService.page(page, role));
     }
 
     @ApiOperation(value = "列表", notes = "列表")
-    @Log(modul = "角色管理-列表", type = Constants.SELECT, desc = "列表")
+    @Log(modul = "角色管理", type = Constants.SELECT, desc = "列表")
     @GetMapping("/list")
     @SaCheckPermission("role:list")
     public Wrapper<List<SysRole>> list(SysRole role) {
@@ -49,7 +49,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "添加", notes = "添加")
-    @Log(modul = "角色管理-添加", type = Constants.INSERT, desc = "添加")
+    @Log(modul = "角色管理", type = Constants.INSERT, desc = "添加")
     @PostMapping("/save")
     @SaCheckPermission("role:save")
     public Wrapper<Object> save(@RequestBody SysRole role) {
@@ -57,7 +57,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "删除", notes = "删除")
-    @Log(modul = "角色管理-删除", type = Constants.DELETE, desc = "删除")
+    @Log(modul = "角色管理", type = Constants.DELETE, desc = "删除")
     @GetMapping("/delete/{id}")
     @SaCheckPermission("role:delete")
     public Wrapper<Object> delete(@PathVariable String id) {
@@ -65,7 +65,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "修改", notes = "修改")
-    @Log(modul = "角色管理-修改", type = Constants.UPDATE, desc = "修改")
+    @Log(modul = "角色管理", type = Constants.UPDATE, desc = "修改")
     @PostMapping("/update")
     @SaCheckPermission("role:update")
     public Wrapper<Object> update(@RequestBody SysRole role) {
@@ -73,7 +73,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "数据权限", notes = "数据权限")
-    @Log(modul = "角色管理-数据权限", type = Constants.UPDATE, desc = "数据权限")
+    @Log(modul = "角色管理", type = Constants.UPDATE, desc = "数据权限")
     @PostMapping("/dataPermissions")
     @SaCheckPermission("role:data")
     public Wrapper<Object> dataPermissions(@RequestBody SysRole role) {
@@ -81,7 +81,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "获取权限组织", notes = "获取权限组织")
-    @Log(modul = "角色管理-获取权限组织", type = Constants.UPDATE, desc = "获取权限组织")
+    @Log(modul = "角色管理", type = Constants.UPDATE, desc = "获取权限组织")
     @GetMapping("/orgList/{roleId}")
     @SaCheckPermission("role:data")
     public Wrapper<Object> orgList(@PathVariable String roleId) {
@@ -89,7 +89,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "菜单权限", notes = "菜单权限")
-    @Log(modul = "角色管理-菜单权限", type = Constants.UPDATE, desc = "菜单权限")
+    @Log(modul = "角色管理", type = Constants.UPDATE, desc = "菜单权限")
     @PostMapping("/menuPermissions")
     @SaCheckPermission("role:menu")
     public Wrapper<Object> menuPermissions(@RequestBody SysRole role) {
@@ -97,7 +97,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "获取权限菜单", notes = "获取权限菜单")
-    @Log(modul = "角色管理-获取权限菜单", type = Constants.UPDATE, desc = "获取权限菜单")
+    @Log(modul = "角色管理", type = Constants.UPDATE, desc = "获取权限菜单")
     @GetMapping("/menuList/{roleId}")
     @SaCheckPermission("role:menu")
     public Wrapper<Object> menuList(@PathVariable String roleId) {

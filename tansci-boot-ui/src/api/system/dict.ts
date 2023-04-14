@@ -1,5 +1,20 @@
 import request from '@/utils/request'
 
+// 列表树
+export function tree(params:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/sysdict/tree',
+            method: 'get',
+            params: params
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
 // 列表
 export function list(params:any){
     return new Promise((resolve, reject) => {

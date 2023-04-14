@@ -11,7 +11,9 @@ import com.tansci.service.SysLoginLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName： SysLoginLogServiceImpl.java
@@ -26,11 +28,15 @@ public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLo
 
     @Override
     public IPage<SysLoginLog> onlineUser(Page page, String username) {
-        return this.baseMapper.selectPage(page,
-                Wrappers.<SysLoginLog>lambdaQuery()
-                        .in(SysLoginLog::getToken, StpUtil.searchTokenValue("", -1, 0, true))
-                        .eq(Objects.nonNull(username), SysLoginLog::getUsername, username)
-        );
+        List<String> tokens = StpUtil.searchTokenValue("", -1, 99999, true);
+        if (Objects.nonNull(tokens) && tokens.size() > 0) {
+            return this.baseMapper.selectPage(page,
+                    Wrappers.<SysLoginLog>lambdaQuery()
+                            .in(SysLoginLog::getToken, tokens.stream().map(item -> item.replace("token:login:token:", "")).collect(Collectors.toList()))
+                            .eq(Objects.nonNull(username), SysLoginLog::getUsername, username)
+            );
+        }
+        return new Page<>();
     }
 
 }

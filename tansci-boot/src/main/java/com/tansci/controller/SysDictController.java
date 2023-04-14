@@ -32,8 +32,16 @@ public class SysDictController {
     @Autowired
     private SysDictService sysDictService;
 
+    @ApiOperation(value = "列表树", notes = "列表树")
+    @Log(modul = "字典管理", type = Constants.SELECT, desc = "列表树")
+    @GetMapping("/tree")
+    @SaCheckPermission("dict:list")
+    public Wrapper<List<SysDict>> tree(SysDict dict) {
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysDictService.tree(dict));
+    }
+
     @ApiOperation(value = "列表", notes = "列表")
-    @Log(modul = "字典管理-列表", type = Constants.SELECT, desc = "列表")
+    @Log(modul = "字典管理", type = Constants.SELECT, desc = "列表")
     @GetMapping("/list")
     @SaCheckPermission("dict:list")
     public Wrapper<List<SysDict>> list(SysDict dict) {
@@ -41,7 +49,7 @@ public class SysDictController {
     }
 
     @ApiOperation(value = "添加", notes = "添加")
-    @Log(modul = "字典管理-添加", type = Constants.INSERT, desc = "添加")
+    @Log(modul = "字典管理", type = Constants.INSERT, desc = "添加")
     @PostMapping("/save")
     @SaCheckPermission("dict:save")
     public Wrapper<Object> save(@RequestBody SysDict dict) {
@@ -51,7 +59,7 @@ public class SysDictController {
     }
 
     @ApiOperation(value = "删除", notes = "删除")
-    @Log(modul = "字典管理-删除", type = Constants.DELETE, desc = "删除")
+    @Log(modul = "字典管理", type = Constants.DELETE, desc = "删除")
     @GetMapping("/delete/{id}")
     @SaCheckPermission("dict:delete")
     public Wrapper<Object> delete(@PathVariable String id) {
@@ -59,7 +67,7 @@ public class SysDictController {
     }
 
     @ApiOperation(value = "修改", notes = "修改")
-    @Log(modul = "字典管理-修改", type = Constants.UPDATE, desc = "修改")
+    @Log(modul = "字典管理", type = Constants.UPDATE, desc = "修改")
     @PostMapping("/update")
     @SaCheckPermission("dict:update")
     public Wrapper<Object> update(@RequestBody SysDict dict) {

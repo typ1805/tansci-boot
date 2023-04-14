@@ -70,6 +70,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                         .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
                         .eq(SysMenu::getIsShow, 1)
                         .eq(Objects.nonNull(menuIds) && menuIds.size() > 0, SysMenu::getId, menuIds)
+                        .orderByAsc(SysMenu::getSort)
         );
 
         List<SysMenuVo> newList = new ArrayList<>();

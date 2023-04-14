@@ -14,6 +14,8 @@ import java.util.List;
  **/
 public interface SysDictService extends IService<SysDict> {
 
+    List<SysDict> tree(SysDict dict);
+
     List<SysDict> list(SysDict dict);
 
     Object delete(String id);

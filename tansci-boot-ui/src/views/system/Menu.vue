@@ -19,13 +19,13 @@
             chineseName: '',
             englishName: '',
             sort: 0,
-            component: '',
+            component: null,
             openMode: 0,
             isDel: 0,
             keepAlive: 0,
             isShow: 0,
             remarks: '',
-            permission: ''
+            permission: null
         },
         menuId: null,
         iconVisible: false,
@@ -88,13 +88,13 @@
                 chineseName: '',
                 englishName: '',
                 sort: 0,
-                component: '',
+                component: null,
                 openMode: 0,
                 isDel: 0,
                 keepAlive: 0,
                 isShow: 0,
                 remarks: '',
-                permission: ''
+                permission: null
             }
         } else if(val == 2) {
             state.operate = 2;
@@ -128,7 +128,7 @@
                             keepAlive: 0,
                             isShow: 0,
                             remarks: '',
-                            permission: ''
+                            permission: null
                         };
                         onMenuTree();
                     }
@@ -173,7 +173,7 @@
                     chineseName: '',
                     englishName: '',
                     sort: 0,
-                    component: '',
+                    component: null,
                     openMode: 0,
                     isDel: 0,
                     keepAlive: 0,

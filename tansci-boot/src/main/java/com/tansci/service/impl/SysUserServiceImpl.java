@@ -126,13 +126,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             String code = (String) request.getSession().getAttribute("verifyCode");
             if (Objects.isNull(user.getCode()) || !Objects.equals(code, user.getCode())) {
                 loginLog.setType("失败");
+                loginLog.setMessage("验证码有误");
                 throw new BusinessException("验证码有误，请重新获取！");
             }
 
             SysUser sysUser = this.baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, user.getUsername()));
             if (Objects.isNull(sysUser) && !Objects.equals(sysUser.getPassword(), Sha256Util.getSHA256(user.getPassword()))) {
                 loginLog.setType("失败");
+                loginLog.setMessage("用户名或密码有误");
                 throw new BusinessException("登录失败，用户名或密码有误！");
+            }
+
+            if(Objects.equals(Constants.USER_IS_LOGIN_ON, sysUser.getIsLogin())){
+                loginLog.setType("失败");
+                loginLog.setMessage("该账号已被禁用");
+                throw new BusinessException("登录失败，该账号已被禁用！");
             }
 
             // 生成token

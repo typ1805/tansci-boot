@@ -24,14 +24,20 @@
       {prop:'',label:'',fixed:'left'},
       {prop:'username',label:'用户名称'},
       {prop:'nickname',label:'用户昵称'},
-      {prop:'type',label:'用户类型'},
+      {prop:'type',label:'用户类型',type:'dict',dictType:'user_type'},
       {prop:'avatar',label:'头像'},
       {prop:'phone',label:'手机号'},
-      {prop:'gender',label:'性别'},
+      {prop:'gender',label:'性别',type:'dict',dictType:'user_gender'},
       {prop:'birthday',label:'出生日期'},
       {prop:'email',label:'邮箱'},
       {prop:'address',label:'地址'},
-      {prop:'isLogin',label:'禁止登录'},
+      {prop:'isLogin',label:'是否禁用',type:'switch',
+        option:{
+          activeValue:0,activeColor:'#13ce66',activeText:'启用',
+          inactiveValue:1,inactiveColor:'#ff4949',inactiveText:'禁用',
+          inlinePrompt: false
+        }
+      },
       {prop:'updateTime',label:'更新时间'},
       {prop:'remarks',label:'描述'}
     ],
@@ -69,6 +75,18 @@
   }
   function onSearch(){
     onUserPage();
+  }
+
+  function onSwitchChange(row:any){
+    update({
+      id: row.id,
+      isLogin: row.isLogin
+    }).then(res=>{
+      if(res){
+        ElMessage.success('操作成功！');
+        onUserPage();
+      }
+    });
   }
 
   const formRef = ref<FormInstance>();
@@ -201,7 +219,7 @@
 <template>
   <el-card class="user-container" shadow="always">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="table.page" :loading="table.loading"
-      @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange">
+      @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange" @onSwitchChange="onSwitchChange">
       <template #search>
         <div><el-button type="primary" @click="onAddRole">添加</el-button></div>
         <div><el-input v-model="searchForm.username" placeholder="请输入名称"></el-input></div>

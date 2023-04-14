@@ -34,14 +34,14 @@ public class SysMenuController {
     private SysMenuService sysMenuService;
 
     @ApiOperation(value = "当前用户权限菜单列表", notes = "当前用户权限菜单列表")
-    @Log(modul = "菜单管理-当前用户权限菜单列表", type = Constants.SELECT, desc = "当前用户权限菜单列表")
+    @Log(modul = "菜单管理", type = Constants.SELECT, desc = "当前用户权限菜单列表")
     @GetMapping("/menus")
     public Wrapper<List<SysMenuVo>> menus() {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysMenuService.menus());
     }
 
     @ApiOperation(value = "菜单树", notes = "菜单树")
-    @Log(modul = "菜单管理-菜单树", type = Constants.SELECT, desc = "菜单树")
+    @Log(modul = "菜单管理", type = Constants.SELECT, desc = "菜单树")
     @GetMapping("/tree")
     @SaCheckPermission("menu:list")
     public Wrapper<List<SysMenu>> tree(SysMenu menu) {
@@ -49,7 +49,7 @@ public class SysMenuController {
     }
 
     @ApiOperation(value = "详情", notes = "详情")
-    @Log(modul = "菜单管理-详情", type = Constants.SELECT, desc = "详情")
+    @Log(modul = "菜单管理", type = Constants.SELECT, desc = "详情")
     @GetMapping("/getById/{id}")
     @SaCheckPermission("menu:view")
     public Wrapper<SysMenu> getById(@PathVariable String id) {
@@ -57,7 +57,7 @@ public class SysMenuController {
     }
 
     @ApiOperation(value = "添加", notes = "添加")
-    @Log(modul = "菜单管理-添加", type = Constants.INSERT, desc = "添加")
+    @Log(modul = "菜单管理", type = Constants.INSERT, desc = "添加")
     @PostMapping("/save")
     @SaCheckPermission("menu:save")
     public Wrapper<Object> save(@RequestBody SysMenu menu) {
@@ -68,7 +68,7 @@ public class SysMenuController {
     }
 
     @ApiOperation(value = "删除", notes = "删除")
-    @Log(modul = "菜单管理-删除", type = Constants.DELETE, desc = "删除")
+    @Log(modul = "菜单管理", type = Constants.DELETE, desc = "删除")
     @GetMapping("/delete/{id}")
     @SaCheckPermission("menu:delete")
     public Wrapper<Object> delete(@PathVariable String id) {
@@ -76,7 +76,7 @@ public class SysMenuController {
     }
 
     @ApiOperation(value = "修改", notes = "修改")
-    @Log(modul = "菜单管理-修改", type = Constants.UPDATE, desc = "修改")
+    @Log(modul = "菜单管理", type = Constants.UPDATE, desc = "修改")
     @PostMapping("/update")
     @SaCheckPermission("menu:update")
     public Wrapper<Object> update(@RequestBody SysMenu menu) {

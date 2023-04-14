@@ -24,10 +24,12 @@ import java.util.stream.Collectors;
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
 
     @Override
-    public List<SysDict> list(SysDict dict) {
+    public List<SysDict> tree(SysDict dict) {
         List<SysDict> list = this.baseMapper.selectList(
                 Wrappers.<SysDict>lambdaQuery()
                         .eq(Objects.nonNull(dict.getParentId()), SysDict::getParentId, dict.getParentId())
+                        .eq(Objects.nonNull(dict.getGroupName()), SysDict::getGroupName, dict.getGroupName())
+                        .eq(Objects.nonNull(dict.getDicValue()), SysDict::getDicValue, dict.getDicValue())
                         .orderByDesc(SysDict::getUpdateTime)
         );
         list = list.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(SysDict::getId))), ArrayList::new));
@@ -36,6 +38,17 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
         List<SysDict> orgList = map.get("0").stream().sorted(Comparator.comparing(SysDict::getSort)).collect(Collectors.toList());
         return orgList;
+    }
+
+    @Override
+    public List<SysDict> list(SysDict dict) {
+        return this.baseMapper.selectList(
+                Wrappers.<SysDict>lambdaQuery()
+                        .eq(Objects.nonNull(dict.getParentId()), SysDict::getParentId, dict.getParentId())
+                        .eq(Objects.nonNull(dict.getGroupName()), SysDict::getGroupName, dict.getGroupName())
+                        .eq(Objects.nonNull(dict.getDicValue()), SysDict::getDicValue, dict.getDicValue())
+                        .orderByDesc(SysDict::getUpdateTime)
+        );
     }
 
     @Override

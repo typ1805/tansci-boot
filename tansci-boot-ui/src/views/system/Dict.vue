@@ -2,8 +2,9 @@
   import {onMounted, reactive, ref} from 'vue'
   import {ElMessage, ElMessageBox} from 'element-plus'
   import type {FormInstance} from 'element-plus'
+  import common from '@/utils/common'
   import Table from '@/components/Table.vue'
-  import {list,save,update,del} from '@/api/system/dict'
+  import {tree,save,update,del} from '@/api/system/dict'
 
   const table = reactive({
     loading: false,
@@ -14,7 +15,7 @@
     tableTitle: [
     {prop:'dicLabel',label:'字典标签',align:'left'},
       {prop:'groupName',label:'分组名称'},
-      {prop:'type',label:'字典类型'},
+      {prop:'type',label:'字典类型',type:'dict',dictType:'business_type'},
       {prop:'dicValue',label:'字典值'},
       {prop:'sort',label:'排序'},
       {prop:'createTime',label:'创建时间'},
@@ -29,7 +30,7 @@
 
   function onDictList(){
     table.loading = true;
-    list({}).then((res:any)=>{
+    tree({}).then((res:any)=>{
       if(res){
         table.loading = false;
         table.tableData = res.result;
@@ -104,6 +105,7 @@
         if(res){
           ElMessage.success('删除成功!');
           onDictList();
+          common.getDictData()
         }
       })
     }).catch(e=>{
@@ -120,6 +122,7 @@
             if(res){
               ElMessage.success("添加成功！");
               onDictList()
+              common.getDictData()
             }
           })
         } else {
@@ -127,6 +130,7 @@
             if(res){
               ElMessage.success("更新成功！");
               onDictList()
+              common.getDictData()
             }
           })
         }
