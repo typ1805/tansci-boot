@@ -1,22 +1,18 @@
 <script setup lang="ts">
-    import { reactive, onMounted } from "vue"
+  import { reactive, getCurrentInstance } from "vue"
 
-    const state = reactive({
-        shadow: 'always',
-    })
+  const { proxy } = getCurrentInstance()
 
-    onMounted(()=>{
-        
-    })
+  const state = reactive({
+    url: proxy.$global.baseApi + '/tansci/magic/web/index.html'
+  })
 
 </script>
 <template>
-  <el-card class="interface-container" :shadow="state.shadow">
-    开发中
-  </el-card>
+  <e-card :shadow="proxy.$global.cardShadow">
+    <iframe :src="state.url" width="100%" height="90%" frameborder="0"></iframe>
+  </e-card>
 </template>
-<style lang="scss" scoped>
-  .interface-container{
-    
-  }
+<style scoped>
+  
 </style>

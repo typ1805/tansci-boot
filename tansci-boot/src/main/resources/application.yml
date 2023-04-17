@@ -55,3 +55,31 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: false
+
+# magic-api
+magic-api:
+  # 配置web页面入口
+  web: /magic/web
+  # 配置文件存储位置
+  resource:
+    type: database # 配置存储在数据库中
+    tableName: magic_api_file # 数据库中的表名
+#    datasource: tansci_boot # 指定数据源（单数据源时无需配置，多数据源时默认使用主数据源，如果存在其他数据源中需要指定。）
+    prefix: /magic-api # key前缀
+    readonly: false # 是否是只读模式
+#    location: data/magic-api #存储路径
+  prefix: / # 接口前缀，可以不配置
+  show-sql: true # 配置打印SQL
+  sql-column-case: camel # 启用驼峰命名转换
+  cache:
+    enable: true  #开启缓存，默认是不开启的
+    ttl: 3600000 #有效期1小时，默认-1 即永不过期
+  response-code:
+    success: 200 #执行成功的code值
+    invalid: 400 #参数验证未通过的code值
+    exception: 500 #执行出现异常的code值
+  date-pattern: # 配置请求参数支持的日期格式
+    - yyyy-MM-dd
+    - yyyy-MM-dd HH:mm:ss
+    - yyyyMMddHHmmss
+    - yyyyMMdd

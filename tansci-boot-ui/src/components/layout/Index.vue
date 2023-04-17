@@ -102,9 +102,10 @@
             </el-aside>
             <el-main> 
                 <TabsMenu></TabsMenu>
-                <router-view />
+                <router-view style="margin: 0 0.3rem 0 0.1rem"/>
             </el-main>
         </el-container>
+        <el-backtop target=".el-main"></el-backtop>
     </el-container>
   </div>
 </template>

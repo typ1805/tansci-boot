@@ -1,10 +1,11 @@
 <script setup lang="ts">
-  import {onMounted, reactive, ref, unref} from 'vue'
+  import {onMounted, reactive, ref, unref, getCurrentInstance} from 'vue'
   import {ElMessage, ElMessageBox} from 'element-plus'
   import type {FormInstance} from 'element-plus'
   import Table from '@/components/Table.vue'
   import {page,save,update,del,roleList} from '@/api/system/user'
   
+  const { proxy } = getCurrentInstance()
   const searchForm = reactive({
     username: null
   })
@@ -217,7 +218,7 @@
 
 </script>
 <template>
-  <el-card class="user-container" shadow="always">
+  <el-card class="user-container" :shadow="proxy.$global.cardShadow">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="table.page" :loading="table.loading"
       @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange" @onSwitchChange="onSwitchChange">
       <template #search>

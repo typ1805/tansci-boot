@@ -23,6 +23,7 @@
         <knife4j-spring-boot.version>3.0.3</knife4j-spring-boot.version>
         <hutool-all.version>5.7.22</hutool-all.version>
         <fastjson2.version>2.0.26</fastjson2.version>
+        <magic-api.version>2.1.0</magic-api.version>
     </properties>
 
     <dependencies>
@@ -81,6 +82,12 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${fastjson2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ssssssss</groupId>
+            <artifactId>magic-api-spring-boot-starter</artifactId>
+            <version>${magic-api.version}</version>
         </dependency>
 
         <dependency>

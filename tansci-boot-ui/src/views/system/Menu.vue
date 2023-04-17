@@ -1,10 +1,11 @@
 <script setup lang="ts">
-    import {onMounted, reactive, ref} from 'vue'
+    import {onMounted, reactive, ref, getCurrentInstance} from 'vue'
     import {ElMessage, ElMessageBox} from 'element-plus'
     import type {FormInstance} from 'element-plus'
     import {list,save,update,del} from '@/api/system/menu'
     import ElIcon from '@/components/ElIcon.vue'
 
+    const { proxy } = getCurrentInstance()
     const menuFormRef = ref<FormInstance>();
     const state = reactive({
         treeData: [],
@@ -187,7 +188,7 @@
     }
 </script>
 <template>
-    <el-card class="menu-container" shadow="always">
+    <el-card class="menu-container" :shadow="proxy.$global.cardShadow">
         <el-card class="menu-tree" shadow="never">
             <el-tree :data="state.treeData" :props="{children: 'children', label: 'chineseName'}" highlight-current @node-click="onNodeClick" empty-text="暂无菜单">
                 <template #default="{ node, data }">

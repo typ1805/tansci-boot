@@ -1,11 +1,12 @@
 <script setup lang="ts">
-  import {onMounted, reactive, ref} from 'vue'
+  import {onMounted, reactive, ref, getCurrentInstance} from 'vue'
   import {ElMessage, ElMessageBox} from 'element-plus'
   import type {FormInstance} from 'element-plus'
   import common from '@/utils/common'
   import Table from '@/components/Table.vue'
   import {tree,save,update,del} from '@/api/system/dict'
 
+  const { proxy } = getCurrentInstance()
   const table = reactive({
     loading: false,
     operation:{
@@ -143,7 +144,7 @@
 </script>
 
 <template>
-  <el-card class="dict-container" shadow="always">
+  <el-card class="dict-container" :shadow="proxy.$global.cardShadow">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="false" :loading="table.loading">
       <template #search>
         <div><el-button @click="onAdd(null)" type="primary">添加</el-button></div>

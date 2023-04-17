@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { reactive, onMounted } from "vue"
+  import { reactive, onMounted, getCurrentInstance } from "vue"
   import Table from '@/components/Table.vue'
   import { page } from "@/api/monitor/loginLog"
 
+  const { proxy } = getCurrentInstance()
   const state = reactive({
     loading: false,
     page: {
@@ -73,7 +74,7 @@
 
 </script>
 <template>
-  <el-card class="loginlog-container" shadow="always">
+  <el-card class="loginlog-container" :shadow="proxy.$global.cardShadow">
     <Table :data="state.tableData" :column="state.tableTitle" :operation="state.operation" :page="state.page" :loading="state.loading"
       @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange" @setCellColor="setCellColor">
     </Table>

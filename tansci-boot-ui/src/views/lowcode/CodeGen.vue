@@ -1,5 +1,7 @@
 <script setup lang="ts">
-    import { reactive, onMounted } from "vue"
+    import { reactive, onMounted, getCurrentInstance } from "vue"
+    
+    const { proxy } = getCurrentInstance()
 
     const state = reactive({
         shadow: 'always',
@@ -11,7 +13,7 @@
 
 </script>
 <template>
-  <el-card class="codegen-container" :shadow="state.shadow">
+  <el-card class="codegen-container" :shadow="proxy.$global.cardShadow">
     开发中
   </el-card>
 </template>

@@ -7,8 +7,10 @@ import './styles/index.scss'
 import * as ElIcons from '@element-plus/icons-vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'uno.css'
+import globalProperties from './utils/globalProperties'
 
 const app = createApp(App)
+app.use(globalProperties)
 app.use(router)
 app.use(ElementPlus,{
     locale: zhCn,
