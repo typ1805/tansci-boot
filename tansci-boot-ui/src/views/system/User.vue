@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import {onMounted, reactive, ref, unref, getCurrentInstance} from 'vue'
+  import {onMounted, reactive, ref, unref} from 'vue'
   import {ElMessage, ElMessageBox} from 'element-plus'
   import type {FormInstance} from 'element-plus'
   import Table from '@/components/Table.vue'
   import {page,save,update,del,roleList} from '@/api/system/user'
   
-  const { proxy } = getCurrentInstance()
   const searchForm = reactive({
     username: null
   })
@@ -218,7 +217,7 @@
 
 </script>
 <template>
-  <el-card class="user-container" :shadow="proxy.$global.cardShadow">
+  <div class="user-container">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="table.page" :loading="table.loading"
       @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange" @onSwitchChange="onSwitchChange">
       <template #search>
@@ -252,7 +251,7 @@
             <el-col :span="12">
               <el-form-item v-if="form.operate == 0" label="密码" prop="password" :rules="[{required: true, message: '请输入密码', trigger: 'blur'},
                 {pattern: /^[a-zA-Z]\w{5,17}$/, message: '以字母开头，长度在6~18之间，只能包含字母、数字和下划线', trigger: 'blur'}]">
-                <el-input v-model="form.userForm.password" placeholder="请输入密码" style="width: 100%"/>
+                <el-input v-model="form.userForm.password" type="password" placeholder="请输入密码" style="width: 100%"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -327,7 +326,7 @@
             </span>
         </template>
     </el-dialog>
-  </el-card>
+  </div>
 </template>
 <style scoped lang="scss">
   .user-container{

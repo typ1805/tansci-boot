@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import {onMounted, reactive, ref, getCurrentInstance} from 'vue'
+  import {onMounted, reactive, ref} from 'vue'
   import {ElMessage, ElMessageBox} from 'element-plus'
   import type {FormInstance} from 'element-plus'
   import Table from '@/components/Table.vue'
   import {list,save,update,del} from '@/api/system/org'
 
-  const { proxy } = getCurrentInstance()
   const table = reactive({
     loading: false,
     operation:{
@@ -127,7 +126,7 @@
 </script>
 
 <template>
-  <el-card class="org-container" :shadow="proxy.$global.cardShadow">
+  <div class="org-container">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="false" :loading="table.loading">
       <template #search>
         <div><el-button @click="onAdd(null)" type="primary">添加</el-button></div>
@@ -157,7 +156,7 @@
         </span>
       </template>
     </el-dialog>
-  </el-card>
+  </div>
 </template>
 <style lang="scss" scoped>
   .org-container{

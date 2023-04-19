@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tansci.domain.SysUser;
 import com.tansci.domain.vo.SysUserVo;
+import com.tansci.domain.vo.UserAuthVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -21,6 +22,8 @@ public interface SysUserService extends IService<SysUser> {
     IPage<SysUser> page(Page page, SysUser user);
 
     List<SysUser> list(SysUser user);
+
+    UserAuthVo info();
 
     Object insert(SysUser user);
 

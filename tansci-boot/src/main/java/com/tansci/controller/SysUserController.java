@@ -8,6 +8,7 @@ import com.tansci.common.Wrapper;
 import com.tansci.common.annotation.Log;
 import com.tansci.common.constant.Constants;
 import com.tansci.domain.SysUser;
+import com.tansci.domain.vo.UserAuthVo;
 import com.tansci.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +47,13 @@ public class SysUserController {
     @SaCheckPermission("user:list")
     public Wrapper<List<SysUser>> list(SysUser user) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.list(user));
+    }
+
+    @ApiOperation(value = "用户信息", notes = "用户信息")
+    @Log(modul = "用户管理", type = Constants.SELECT, desc = "用户信息")
+    @GetMapping("/info")
+    public Wrapper<UserAuthVo> info() {
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysUserService.info());
     }
 
     @ApiOperation(value = "添加", notes = "添加")

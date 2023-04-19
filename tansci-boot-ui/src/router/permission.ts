@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import common from '@/utils/common'
 import Layout from '@/components/layout/Index.vue'
 
 const modules = import.meta.glob('../views/**/**.vue')
@@ -13,7 +12,7 @@ export const filterRouter = (routers:any, level:any) => {
             var setIframe = () => {
                 router.component = loadView(`/common/Iframe`)
                 router.props = { url: router.path }
-                router.path = "/" + common.uuid()
+                router.path = "/" + router.name
             }
 
             if(router.path && router.path.startsWith('http') && router.meta.openMode === 1){

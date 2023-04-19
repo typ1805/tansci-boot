@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import {onMounted, reactive, ref, unref, getCurrentInstance} from 'vue'
+  import {onMounted, reactive, ref, unref} from 'vue'
   import {ElMessage, ElMessageBox} from 'element-plus'
   import type {FormInstance} from 'element-plus'
   import Table from '@/components/Table.vue'
   import {page,kick} from '@/api/monitor/onlineUser'
   
-  const { proxy } = getCurrentInstance()
   const searchForm = reactive({
     username: null
   })
@@ -85,7 +84,7 @@
 
 </script>
 <template>
-  <el-card class="onlineuser-container" :shadow="proxy.$global.cardShadow">
+  <div class="onlineuser-container">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="table.page" :loading="table.loading"
       @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange">
       <template #search>
@@ -97,7 +96,7 @@
         <el-button @click="onKick(scope)" type='primary' text='primary' style="color:var(--edit); padding:0;">踢人</el-button>
       </template>
     </Table>
-  </el-card>
+  </div>
 </template>
 <style scoped lang="scss">
   .onlineuser-container{

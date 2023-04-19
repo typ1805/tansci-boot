@@ -1,21 +1,19 @@
 <script setup lang="ts">
-    import { reactive, onMounted, getCurrentInstance } from "vue"
-    
-    const { proxy } = getCurrentInstance()
+  import { reactive, onMounted } from "vue"
 
-    const state = reactive({
-        shadow: 'always',
-    })
+  const state = reactive({
+      shadow: 'always',
+  })
 
-    onMounted(()=>{
-        
-    })
+  onMounted(()=>{
+      
+  })
 
 </script>
 <template>
-  <el-card class="codegen-container" :shadow="proxy.$global.cardShadow">
+  <div class="codegen-container">
     开发中
-  </el-card>
+  </div>
 </template>
 <style lang="scss" scoped>
   .codegen-container{

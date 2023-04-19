@@ -12,6 +12,7 @@ import com.tansci.domain.SysUser;
 import com.tansci.domain.SysUserRole;
 import com.tansci.domain.vo.SysUserSessionVo;
 import com.tansci.domain.vo.SysUserVo;
+import com.tansci.domain.vo.UserAuthVo;
 import com.tansci.mapper.SysUserMapper;
 import com.tansci.service.SysLoginLogService;
 import com.tansci.service.SysUserRoleService;
@@ -27,7 +28,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName： SysUserServiceImpl.java
@@ -75,6 +75,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         .eq(SysUser::getIsDel, Constants.NOT_DEL_FALG)
                         .eq(Objects.nonNull(user.getType()), SysUser::getType, user.getType())
         );
+    }
+
+    @Override
+    public UserAuthVo info() {
+        SysUser user = this.baseMapper.selectById(String.valueOf(StpUtil.getLoginId()));
+        return UserAuthVo.builder()
+                .username(user.getUsername())
+                .nickname(user.getNickname())
+                .type(user.getType())
+                .phone(user.getPhone())
+                .email(user.getEmail())
+                .build();
     }
 
     @Override
@@ -137,7 +149,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 throw new BusinessException("登录失败，用户名或密码有误！");
             }
 
-            if(Objects.equals(Constants.USER_IS_LOGIN_ON, sysUser.getIsLogin())){
+            if (Objects.equals(Constants.USER_IS_LOGIN_ON, sysUser.getIsLogin())) {
                 loginLog.setType("失败");
                 loginLog.setMessage("该账号已被禁用");
                 throw new BusinessException("登录失败，该账号已被禁用！");
@@ -174,7 +186,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Object modifyPass(SysUser user) {
         SysUser sysUser = this.baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, user.getUsername()));
 
-        if (Objects.isNull(sysUser) || !Objects.equals(Sha256Util.getSHA256(sysUser.getPassword()), Sha256Util.getSHA256(user.getPassword()))) {
+        if (Objects.isNull(sysUser) || !Objects.equals(sysUser.getPassword(), Sha256Util.getSHA256(user.getOldPassword()))) {
             throw new BusinessException("原始密码错误，请重新输入！");
         }
 

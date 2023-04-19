@@ -5,6 +5,9 @@
   // 主题
   --theme: #2F9688;
 
+  // 文字
+  --t: #1d1d1f;
+
   // 局部背景
   // --el-bg-color: radial-gradient( white 0%, #FAFDFE 10%, #ddf8e7 50%, #FAFDFE 90%, white 100%);
   // --el-bg-color: radial-gradient(#d9f8e5 0%, #FAFDFE 80%, #e7fcef 100%);
@@ -36,7 +39,7 @@ body {
  * Dialog 对话框
  */
  .el-dialog__header{
-  background-color: var(--el-color-primary);
+  border-bottom: 1px solid var(--el-border-color);
   margin-right: 0;
   padding: 0.5rem 1rem;
 }

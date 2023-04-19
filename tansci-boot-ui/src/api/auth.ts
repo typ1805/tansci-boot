@@ -1,6 +1,6 @@
 import request from '@/utils/request'
+import global from '@/utils/global'
 
-const userKey:string = 'tansci_boot_user'
 const tokenKey:string = 'tansci_boot_token'
 const menuKey:string = 'tansci_boot_menu'
 
@@ -13,18 +13,6 @@ export function setToken(token:string) {
 }
 export function removeToken() {
     sessionStorage.removeItem(tokenKey);
-}
-
-// 用户信息
-export function getUser() {
-    let user = sessionStorage.getItem(userKey);
-    return user ? JSON.parse(user) : null;
-}
-export function setUser(data:any) {
-    return sessionStorage.setItem(userKey, JSON.stringify(data));
-}
-export function removeUser() {
-    return sessionStorage.removeItem(userKey);
 }
 
 // 菜单信息
@@ -50,11 +38,10 @@ export function login(data:any){
                 code: data.code
             }
         }).then((res:any) => {
-                setToken(res.data.result.token)
-                setUser(res.data.result)
-                resolve(res.data.result.token)
+            setToken(res.data.result.token)
+            resolve(res.data.result.token)
         }).catch((e:any) => {
-                reject(e)
+            reject(e)
         })
     })
 }
@@ -66,7 +53,6 @@ export function logout(){
         method: 'get'
     }).then(() => {
         removeToken()
-        removeUser()
         location.reload()
     })
 }
@@ -82,5 +68,16 @@ export function getCode(){
         }).catch((e:any) => {
             reject(e)
         })
+    })
+}
+
+export async function getUserInfo() {
+    await request({
+        url: '/tansci/sysuser/info',
+        method: 'get'
+    }).then((res:any) => {
+        if(res.data.result){
+            global.user.info = res.data.result
+        }
     })
 }

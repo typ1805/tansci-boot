@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import {onMounted, reactive, ref, unref, getCurrentInstance} from 'vue'
+  import {onMounted, reactive, ref, unref} from 'vue'
   import {ElMessage, ElMessageBox} from 'element-plus'
   import type {FormInstance} from 'element-plus'
   import {page,save,update,del,dataPermissions,orgList,menuPermissions,menuList} from '@/api/system/role'
   import Table from '@/components/Table.vue'
 
-  const { proxy } = getCurrentInstance()
   const searchForm = reactive({
     name: null,
   })
@@ -209,7 +208,7 @@
 
 </script>
 <template>
-  <el-card class="role-container" :shadow="proxy.$global.cardShadow">
+  <div class="role-container">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="table.page" :loading="table.loading"
       @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange">
       <template #search>
@@ -263,7 +262,7 @@
             </span>
         </template>
     </el-dialog>
-  </el-card>
+  </div>
 </template>
 <style scoped lang="scss">
   .role-container{

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-    import {onMounted, reactive, ref, getCurrentInstance} from 'vue'
+    import {onMounted, reactive, ref} from 'vue'
     import {ElMessage, ElMessageBox} from 'element-plus'
     import type {FormInstance} from 'element-plus'
     import {list,save,update,del} from '@/api/system/menu'
     import ElIcon from '@/components/ElIcon.vue'
 
-    const { proxy } = getCurrentInstance()
     const menuFormRef = ref<FormInstance>();
     const state = reactive({
         treeData: [],
@@ -188,20 +187,22 @@
     }
 </script>
 <template>
-    <el-card class="menu-container" :shadow="proxy.$global.cardShadow">
-        <el-card class="menu-tree" shadow="never">
-            <el-tree :data="state.treeData" :props="{children: 'children', label: 'chineseName'}" highlight-current @node-click="onNodeClick" empty-text="暂无菜单">
-                <template #default="{ node, data }">
-                    <span class="custom-tree-node">
-                        <el-icon v-if="data.icon" style="vertical-align: middle;padding-right:10px;">
-                            <component :is="data.icon"></component>
-                        </el-icon>
-                        <span>{{ node.label }}</span>
-                    </span>
-                </template>    
-            </el-tree>
-        </el-card>
-        <el-card class="menu-form" shadow="never">
+    <div class="menu-container">
+        <div class="menu-tree">
+            <el-scrollbar height="45rem">
+                <el-tree :data="state.treeData" :props="{children: 'children', label: 'chineseName'}" highlight-current @node-click="onNodeClick" empty-text="暂无菜单">
+                    <template #default="{ node, data }">
+                        <span class="custom-tree-node">
+                            <el-icon v-if="data.icon" style="vertical-align: middle;padding-right:10px;">
+                                <component :is="data.icon"></component>
+                            </el-icon>
+                            <span>{{ node.label }}</span>
+                        </span>
+                    </template>    
+                </el-tree>
+            </el-scrollbar>
+        </div>
+        <div class="menu-form">
             <el-radio-group @change="onTypeChange" v-model="state.type">
                 <el-radio-button :label="1">菜单</el-radio-button>
                 <el-radio-button :label="2">按钮</el-radio-button>
@@ -268,17 +269,17 @@
                     <el-button type="primary" @click="onSubmit(menuFormRef)">提交</el-button>
                 </el-form-item>
             </el-form>
-        </el-card>
-    </el-card>
+        </div>
+    </div>
 </template>
 <style lang="scss">
     .menu-container{
         padding-bottom: 1.5rem;
+        display: flex;
         .menu-tree{
-            float: left;
-            margin-right: 1rem;
-            min-width: 300px;
-            min-height: 700px;
+            border-right: 1px solid #e4e7ed;
+            margin: 0 4rem 0 1rem;
+            min-width: 12rem;
             .el-tree-node:hover>.el-tree-node__content{
                 background-color: #fff !important;
                 color: var(--theme) !important;
@@ -290,6 +291,7 @@
             }
         }
         .menu-form{
+            width: 100%;
         }
     }
 </style>

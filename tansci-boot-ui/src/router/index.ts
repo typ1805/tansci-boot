@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
 import { ElMessage } from 'element-plus'
-import { getToken, removeToken, removeUser, setMenus } from "@/api/auth"
+import { getToken, removeToken, setMenus, getUserInfo } from "@/api/auth"
 import common from '@/utils/common'
 import { generateRoutes } from "./permission"
 
@@ -42,11 +42,11 @@ router.beforeEach(async (to:any, from:any, next) => {
                         setMenus([...routers])
                     })
                     await common.getDictData()
-    
+                    await getUserInfo()
+
                     next({ ...to, replace: true })
                 } catch (error:any) {
                     removeToken()
-                    removeUser()
                     ElMessage.error(error.data || 'Has Error')
                     next(`/login`)
                 }

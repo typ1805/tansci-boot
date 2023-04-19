@@ -8,7 +8,7 @@
 	const loginFormRef = ref<FormInstance>() 
 	
 	const logo = new URL('../../assets/image/logo.png', import.meta.url).href
-	const loginLogo = new URL('../../assets/image/login-icon.png', import.meta.url).href
+	const loginLogo = new URL('../../assets/image/login-left.png', import.meta.url).href
 	const codeImg = ref()
 
 	const state = reactive({
@@ -81,7 +81,7 @@
 			<div class="main-title">帐号登录</div>
 			<div class="main-container">
 				<div class="logo">
-					<el-image :src="loginLogo"  style="width: 100%; height: 100%;"></el-image>
+					<el-image :src="loginLogo"  style="width: 100%; height: 80%;"></el-image>
 				</div>
 				<div class="form">
 					<el-form :model="state.loginForm" :rules="rules" size="large" ref="loginFormRef">
@@ -95,8 +95,8 @@
 							<el-input type="password" v-model="state.loginForm.password" prefix-icon="Lock" show-password placeholder="请输入密码" style="width:100%"></el-input>
 						</el-form-item>
 						<el-form-item prop="code" :rules="[{required: true,message: '请输入验证码',trigger: 'blur'}]">
-							<el-input v-model="state.loginForm.code" prefix-icon="HelpFilled" placeholder="请输入验证码" style="width:70%; margin-right: 1%"></el-input>
-							<img :src="codeImg" @click="onCode" style="width: 29%; height: 38px;">
+							<el-input v-model="state.loginForm.code" prefix-icon="HelpFilled" placeholder="请输入验证码" style="width: calc(100% - 110px); margin-right: 6px;"></el-input>
+							<el-image @click="onCode" :src="codeImg" fit="fill" style="width: 102px; height: 38px; border: 1px solid #dcdfe6; border-radius: 4px;"/>
 						</el-form-item>
 						<el-form-item>
 							<el-checkbox v-model="state.loginForm.remember">记住密码</el-checkbox>
@@ -134,7 +134,7 @@
 			padding: 0 20%;
 			.title{
 				padding: 0 1rem;
-				color: var(--t9);
+				color: var(--t);
 				font-size: 20px;
 				font-weight: 700;
 			}
@@ -145,6 +145,7 @@
 				font-size: 32px;
 				text-align: center;
 				padding: 5rem 0;
+				color: var(--t);
 			}
 			.main-container{
 				display: flex;
@@ -169,7 +170,7 @@
 		.login-footer{
 			height: 100%;
 			text-align: center;
-			color: #606266;
+			color: #1d1d1f;
 			padding-top: 1.2rem;
 			.copy{
 				padding-top: 1rem;

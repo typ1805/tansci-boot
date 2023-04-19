@@ -94,6 +94,10 @@ public class SysUser {
     private String remarks;
 
     @TableField(exist = false)
+    @ApiModelProperty(value = "原密码")
+    private String oldPassword;
+
+    @TableField(exist = false)
     @ApiModelProperty(value = "角色ID")
     private String roleId;
 

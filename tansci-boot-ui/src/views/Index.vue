@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { reactive, onMounted, getCurrentInstance } from "vue"
+  import { reactive, onMounted } from "vue"
 
-  const { proxy } = getCurrentInstance()
   const state = reactive({
     
   })
@@ -12,9 +11,9 @@
 
 </script>
 <template>
-  <el-card class="home-container" :shadow="proxy.$global.cardShadow">
+  <div class="home-container">
     首页
-  </el-card>
+  </div>
 </template>
 <style lang="scss" scoped>
   .home-container{

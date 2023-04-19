@@ -9,10 +9,16 @@
 
 </script>
 <template>
-  <e-card :shadow="proxy.$global.cardShadow">
-    <iframe :src="state.url" width="100%" height="90%" frameborder="0"></iframe>
-  </e-card>
+  <div>
+    <iframe :src="state.url" width="100%" height="100%" frameborder="0"></iframe>
+  </div>
 </template>
 <style scoped>
-  
+  iframe{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
 </style>
