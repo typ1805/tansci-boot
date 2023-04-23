@@ -3,7 +3,7 @@
 
 :root {
   // 主题
-  --theme: #2F9688;
+  --theme: #45a79a;
 
   // 文字
   --t: #1d1d1f;
@@ -49,29 +49,36 @@ body {
  */
  .table-container{
   .search-wrap{
-      display: flex;
-      flex-wrap: wrap;
-      // background: var(--bg1);
+    display: flex;
+    flex-wrap: wrap;
+    // background: var(--bg1);
+    border: 1px solid var(--el-border-color);
+    border-radius: var(--el-border-radius-base);
+    padding: 1.2rem 0;
   }
   .search-wrap>div{
-      line-height: 40px;
-      padding: 0.2rem 0.8rem;
+    line-height: 40px;
+    padding: 0.2rem 0.8rem;
   }
   .button-wrap{
-      display: flex;
-      flex-wrap: wrap;
-      padding-top: 0.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 0.6rem;
   }
   .button-wrap>div{
-      line-height: 40px;
-      padding: 0.2rem 0.8rem;
+    line-height: 40px;
+    padding: 0.2rem 0.8rem;
   }
   .table-wrap{
-      padding: 1rem 0;
+    padding: 1rem 0;
+    .header{
+      float: right;
+      padding-bottom: 0.4rem;
+    }
   }
   .pagination-wrap{
-      padding-bottom: 0.2rem;
-      text-align: right;
+    padding-bottom: 0.2rem;
+    float: right;
   }
 }
 
