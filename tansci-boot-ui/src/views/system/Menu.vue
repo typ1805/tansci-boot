@@ -209,9 +209,9 @@
             </el-radio-group>
             <el-divider direction="vertical" style="margin: 0 1rem;"/>
             <el-radio-group @change="onOperateChange" v-model="state.operate">
-                <el-radio-button :label="1">添加</el-radio-button>
-                <el-radio-button :label="2">编辑</el-radio-button>
-                <el-radio-button :label="3">删除</el-radio-button>
+                <el-radio-button v-permission="'menu:save'" :label="1">添加</el-radio-button>
+                <el-radio-button v-permission="'menu:update'" :label="2">编辑</el-radio-button>
+                <el-radio-button v-permission="'menu:delete'" :label="3">删除</el-radio-button>
             </el-radio-group>
             <el-divider content-position="left">菜单详情</el-divider>
             <el-form :model="state.menuForm" :rules="rules" ref="menuFormRef" :disabled="state.operate==0 || state.operate==3?true:false" label-position="right" label-width="150px">

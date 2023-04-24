@@ -88,7 +88,7 @@
     <Table :data="state.tableData" :column="state.tableTitle" :operation="state.operation" :page="state.page" :loading="state.loading"
       @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange" @setCellColor="setCellColor">
       <template #column="scope">
-        <el-button @click="onDetail(scope)" type='primary' text='primary' style="color:var(--theme); padding:0;">详情</el-button>
+        <el-button @click="onDetail(scope)" link style="color:var(--theme); padding:0;">详情</el-button>
       </template>
     </Table>
     <el-dialog v-model="state.detailVisible" title="日志详情" :show-close="false" width="60%">

@@ -212,16 +212,16 @@
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="table.page" :loading="table.loading"
       @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange">
       <template #search>
-        <div><el-button type="primary" @click="onAddRole">添加</el-button></div>
+        <div><el-button v-permission="'role:save'" type="primary" @click="onAddRole">添加</el-button></div>
         <div><el-input v-model="searchForm.name" placeholder="请输入名称"></el-input></div>
         <div><el-button @click="onRefresh" icon="RefreshRight" circle></el-button></div>
         <div><el-button @click="onSearch" type="primary" icon="Search">查询</el-button></div>
       </template>
       <template #column="scope">
-        <el-button @click="onEdit(scope)" type='primary' text='primary' style="color:var(--edit); padding:0;">编辑</el-button>
-        <el-button @click="onDelete(scope)" type='primary' text='primary' style="color:var(--delete); padding:0;">删除</el-button>
-        <el-button @click="onAuth(scope, 'menu')" type='primary' text='primary' style="color:var(--add); padding:0;">菜单权限</el-button>
-        <el-button @click="onAuth(scope, 'org')" type='primary' text='primary' style="color:var(--role); padding:0;">数据权限</el-button>
+        <el-button @click="onEdit(scope)" v-permission="'role:update'" type='primary' link style="color:var(--edit); padding:0;">编辑</el-button>
+        <el-button @click="onDelete(scope)" v-permission="'role:delete'" type='primary' link style="color:var(--delete); padding:0;">删除</el-button>
+        <el-button @click="onAuth(scope, 'menu')" v-permission="'role:menu'" type='primary' link style="color:var(--add); padding:0;">菜单权限</el-button>
+        <el-button @click="onAuth(scope, 'org')" v-permission="'role:data'" type='primary' link style="color:var(--role); padding:0;">数据权限</el-button>
       </template>
     </Table>
     <el-dialog title="角色信息" v-model="form.roleVisible" :show-close="false" width="40%">

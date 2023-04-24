@@ -129,12 +129,12 @@
   <div class="org-container">
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="false" :loading="table.loading">
       <template #search>
-        <div><el-button @click="onAdd(null)" type="primary">添加</el-button></div>
+        <div><el-button @click="onAdd(null)" v-permission="'org:save'" type="primary">添加</el-button></div>
       </template>
       <template #column="scope">
-        <el-button @click="onAdd(scope)" type="text" style="color:var(--add)">添加下级</el-button>
-        <el-button @click="onEdit(scope)" type="text" style="color:var(--edit)">编辑</el-button>
-        <el-button @click="onDelete(scope)" type="text" style="color:var(--delete)">删除</el-button>
+        <el-button @click="onAdd(scope)" v-permission="'org:save'" link style="color:var(--add)">添加下级</el-button>
+        <el-button @click="onEdit(scope)" v-permission="'org:update'" link style="color:var(--edit)">编辑</el-button>
+        <el-button @click="onDelete(scope)" v-permission="'org:delete'" link style="color:var(--delete)">删除</el-button>
       </template>
     </Table>
     <el-dialog title="组织信息" v-model="form.orgVisible" :show-close="false" width="40%">

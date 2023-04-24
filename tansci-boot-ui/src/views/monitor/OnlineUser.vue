@@ -93,7 +93,7 @@
         <div><el-button @click="onSearch" type="primary" icon="Search">查询</el-button></div>
       </template>
       <template #column="scope">
-        <el-button @click="onKick(scope)" type='primary' text='primary' style="color:var(--edit); padding:0;">踢人</el-button>
+        <el-button @click="onKick(scope)" link style="color:var(--edit); padding:0;">踢人</el-button>
       </template>
     </Table>
   </div>
