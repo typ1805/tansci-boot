@@ -13,6 +13,10 @@ export function setToken(token:string) {
 }
 export function removeToken() {
     sessionStorage.removeItem(tokenKey);
+    global.user = {
+        authorities: [],
+        info: {},
+    }
 }
 
 // 菜单信息
@@ -77,7 +81,11 @@ export async function getUserInfo() {
         method: 'get'
     }).then((res:any) => {
         if(res.data.result){
-            global.user.info = res.data.result
+            // 用户信息
+            let user = res.data.result
+            global.user.info = user
+            // 权限信息
+            global.user.authorities = user.authorities
         }
     })
 }

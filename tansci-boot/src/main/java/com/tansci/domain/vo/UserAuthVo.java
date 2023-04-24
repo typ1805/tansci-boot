@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @ClassName： UserAuthVo.java
  * @ClassPath： com.tansci.domain.vo.UserAuthVo.java
@@ -38,5 +40,8 @@ public class UserAuthVo {
 
     @ApiModelProperty(value = "邮箱")
     private String email;
+
+    @ApiModelProperty(value = "权限code")
+    private List<String> authorities;
 
 }

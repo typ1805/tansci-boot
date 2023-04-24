@@ -4,6 +4,7 @@ export default {
   baseApi: import.meta.env.VITE_BASE_API,
   cardShadow: 'never',
   user: {
-    info: {}
+    info: {},
+    authorities: [],
   },
 }

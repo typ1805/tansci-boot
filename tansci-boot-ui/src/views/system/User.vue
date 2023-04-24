@@ -221,14 +221,14 @@
     <Table :data="table.tableData" :column="table.tableTitle" :operation="table.operation" :page="table.page" :loading="table.loading"
       @onSizeChange="onSizeChange" @onCurrentChange="onCurrentChange" @onSwitchChange="onSwitchChange">
       <template #search>
-        <div><el-button type="primary" @click="onAddRole">添加</el-button></div>
+        <div><el-button v-permission="'user:save'" type="primary" @click="onAddRole">添加</el-button></div>
         <div><el-input v-model="searchForm.username" placeholder="请输入名称"></el-input></div>
         <div><el-button @click="onRefresh" icon="RefreshRight" circle></el-button></div>
         <div><el-button @click="onSearch" type="primary" icon="Search">查询</el-button></div>
       </template>
       <template #column="scope">
-        <el-button @click="onEdit(scope)" type='primary' text='primary' style="color:var(--edit); padding:0;">编辑</el-button>
-        <el-button @click="onDelete(scope)" type='primary' text='primary' style="color:var(--delete); padding:0;">删除</el-button>
+        <el-button @click="onEdit(scope)" v-permission="'user:update'" type='primary' link style="color:var(--edit); padding:0;">编辑</el-button>
+        <el-button @click="onDelete(scope)" v-permission="'user:delete'" type='primary' link style="color:var(--delete); padding:0;">删除</el-button>
       </template>
     </Table>
     <el-dialog title="用户信息" v-model="form.userVisible" :show-close="false" width="50%">

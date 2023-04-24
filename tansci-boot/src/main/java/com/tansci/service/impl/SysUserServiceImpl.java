@@ -80,12 +80,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public UserAuthVo info() {
         SysUser user = this.baseMapper.selectById(String.valueOf(StpUtil.getLoginId()));
+        // 获取当前用户权限code
+        List<String> authorities = this.baseMapper.authorities(String.valueOf(StpUtil.getLoginId()));
         return UserAuthVo.builder()
                 .username(user.getUsername())
                 .nickname(user.getNickname())
                 .type(user.getType())
                 .phone(user.getPhone())
                 .email(user.getEmail())
+                .authorities(authorities)
                 .build();
     }
 
