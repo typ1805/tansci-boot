@@ -2,7 +2,7 @@
 export default {
   title: 'Tansci Boot',
   baseApi: import.meta.env.VITE_BASE_API,
-  cardShadow: 'never',
+  cardShadow: 'always',
   user: {
     info: {},
     authorities: [],

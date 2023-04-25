@@ -12,7 +12,7 @@
     const logo = new URL('../../assets/image/logo.png', import.meta.url).href
     const state = reactive({
         headerHeight: '52px',
-        asideWidth: '260px',
+        asideWidth: '180px',
         routers: [],
         defaultHeight: null,
         userVisible: false,
@@ -54,8 +54,12 @@
     function onDefaultHeight(){
         state.defaultHeight = window.innerHeight
     }
-    function onPersonal(){
-        state.userVisible = true
+    function onHeaderCommand(command:any){
+        if('logout' === command){
+            logout()
+        } else if('personal' === command){
+            state.userVisible = true
+        }
     }
 
     const userRef = ref<FormInstance>();
@@ -96,72 +100,61 @@
 <template>
   <div class="layout-container">
     <el-container>
-        <el-aside :width="state.asideWidth">
-            <el-card :shadow="proxy.$global.cardShadow" :body-style="{padding: '1rem'}">
-                <div class="logo">
-                    <el-image :src="logo" fit="fit" style="width: 20%; height:00%"></el-image>
-                    <span class="title">{{proxy.$global.title}}</span>
-                </div>
-                <el-scrollbar :height="state.defaultHeight-115">
-                    <el-menu router :default-active="$route.path">
-                        <template v-for="item in state.routers" :key="item">
-                            <el-menu-item v-if="!item.children || item.children.length <= 1" :index="item.path">
-                                <el-icon v-if="item.icon" style="vertical-align: middle;">
-                                    <component :is="item.icon"></component>
-                                </el-icon>
-                                <span style="vertical-align: middle;">{{item.meta.title}}</span>
-                            </el-menu-item>
-                            <Submenu v-else :data="item"></Submenu>
+        <el-header :height="state.headerHeight">
+            <div class="header-logo">
+                <el-image :src="logo"></el-image>
+                <span class="title">{{proxy.$global.title}}</span>
+            </div>
+            <div class="header-content">
+                <div class="header-dark">
+                    <el-button @click="toggleDark()" link type="primary">
+                        <template #icon>
+                            <el-icon :size="20"><Sunny v-show="!isDark"/></el-icon>
+                            <el-icon :size="20"><Moon v-show="isDark"/></el-icon>
                         </template>
-                    </el-menu>
-                </el-scrollbar>
-            </el-card>
-        </el-aside>
+                    </el-button>
+                </div>
+                <div class="header-login">
+                    <el-dropdown @command="onHeaderCommand">
+                        <span class="el-dropdown-link">
+                            <span>{{state.user.nickname}}</span>
+                            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+                        </span>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item command="personal">个人中心</el-dropdown-item>
+                                <el-dropdown-item command="logout">退出</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </div>
+            </div>
+        </el-header>
         <el-container>
-            <el-header :height="state.headerHeight">
+            <el-aside :width="state.asideWidth" :style="{height: state.defaultHeight+'px'}">
+                <el-menu router :default-active="$route.path">
+                    <template v-for="item in state.routers" :key="item">
+                        <el-menu-item v-if="!item.children || item.children.length <= 1" :index="item.path">
+                            <el-icon v-if="item.icon" style="vertical-align: middle;">
+                                <component :is="item.icon"></component>
+                            </el-icon>
+                            <span style="vertical-align: middle;">{{item.meta.title}}</span>
+                        </el-menu-item>
+                        <Submenu v-else :data="item"></Submenu>
+                    </template>
+                </el-menu>
+            </el-aside>
+            <el-main> 
                 <TabsMenu></TabsMenu>
-                <div>
-                <el-card :shadow="proxy.$global.cardShadow" :body-style="{padding: '0 1rem', 'line-height': state.headerHeight+'px'}">
-                    <el-button link>
-                        <template #icon>
-                            <el-icon :size="24"><Monitor /></el-icon>
-                        </template>
-                    </el-button>
-                    <el-button link>
-                        <template #icon>
-                            <el-icon :size="24"><FullScreen /></el-icon>
-                        </template>
-                    </el-button>
-                    <el-button @click="toggleDark()" link>
-                        <template #icon>
-                            <el-icon :size="24"><Sunny v-show="!isDark"/></el-icon>
-                            <el-icon :size="24"><Sunrise v-show="isDark"/></el-icon>
-                        </template>
-                    </el-button>
-                    <el-popover placement="bottom" :width="260"  trigger="click">
-                        <template #reference>
-                            <el-button link>{{state.user.nickname}}</el-button>
-                        </template>
-                        <div style="text-align: center;">
-                            <div><el-avatar :size="50" :src="state.user.avatar" /></div>
-                            <div style="font-size: 22px; padding: 0.4rem 0;">{{state.user.username}}</div>
-                            <el-button @click="onPersonal()" type="primary" plain>个人中心</el-button>
-                            <el-button @click="logout()" type="danger" plain>注销登录</el-button>
-                        </div>
-                    </el-popover>
-                </el-card>
-                </div>
-            </el-header>
-            <el-main>
-                <el-card :shadow="proxy.$global.cardShadow">
+                <el-card :shadow="proxy.$global.cardShadow" style="margin: 0.3rem;">
                     <el-scrollbar :height="state.defaultHeight-150">
                         <router-view />
                     </el-scrollbar>
                 </el-card>
             </el-main>
         </el-container>
+        <el-backtop target=".el-main"></el-backtop>
     </el-container>
-    <el-backtop target=".el-main"></el-backtop>
     <el-dialog v-model="state.userVisible" title="个人中心" width="40%" :show-close="false">
         <el-form :model="state.user" ref="userRef" :rules="rules" label-width="80px" status-icon>
             <el-row :gutter="20">
@@ -230,24 +223,12 @@
         .el-header{
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            .el-card{
-                margin-top: 1.2rem;
-                .el-button{
-                    margin: 1rem 0.8rem;
-                }
-            }
-        }
-        .el-aside{
-            margin: 0.6rem;
-            padding: 0.4rem;
-            overflow-x: auto;
-            overflow-y: hidden;
-            .logo{
+            line-height: 52px;
+            .header-logo{
                 display: flex;
-                justify-content: center;
-                align-items: center;
-                padding-top: 0.4rem;
+                height: 52px;
+                line-height: 52px;
+                padding-left: 0.2rem;
                 cursor: pointer;
                 .title{
                     padding-left: 0.6rem;
@@ -256,12 +237,34 @@
                     font-size: 18px;
                 }
             }
+            .header-content{
+                display: flex;
+                justify-content: right;
+                .header-dark{
+                    padding-right: 1rem;
+                }
+                .header-login{
+                    .el-dropdown{
+                        cursor: pointer;
+                        line-height: 52px;
+                    }
+                }
+            }
+        }
+        .el-aside{
             :deep(.el-menu) {
-                padding-left: 0;
+                margin: 0 0.6rem;
+                padding: 0 0.2rem;
                 border-right: none;
                 background: transparent;
                 .el-menu-item, .el-sub-menu__title {
+                    border-radius: 0.2rem;
+                    height: 36px;
+                    line-height: 36px;
                     margin: 0.4rem 0;
+                }
+                .el-menu-item, .el-menu-item-group__title, .el-sub-menu, .el-sub-menu__title{
+                    padding-left: 0;
                 }
                 .el-sub-menu__title:hover{
                     background: transparent;
@@ -276,9 +279,16 @@
                 }
             }
         }
+        .el-aside::-webkit-scrollbar{
+            width: 0px;
+        }
         .el-main{
+            padding: 0;
             overflow-x: hidden;
             overflow-y: hidden;
+        }
+        .el-main::-webkit-scrollbar{
+            width: 0px;
         }
     }
 </style>
