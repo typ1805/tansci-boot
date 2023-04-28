@@ -8,9 +8,9 @@ const baseURL = import.meta.env.VITE_BASE_URL as string;
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: baseURL,
     timeout: 30 * 1000, // 超时时间
-    headers: {
-        'Content-Type': 'application/json'
-    },
+    // headers: {
+    //     'Content-Type': 'application/json'
+    // },
 })
 
 // axios实例拦截请求

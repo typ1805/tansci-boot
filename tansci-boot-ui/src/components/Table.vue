@@ -58,7 +58,6 @@
             emit('setCellColor', e, (color = {}) =>{
                 obj = color;
             });
-            obj.padding = '2px';
             return obj;
         },
     })
@@ -102,8 +101,10 @@
 </script>
 <template>
     <div class="table-container">
-        <div class="search-wrap">
-            <slot name="search"></slot>
+        <div class="search-wrap" v-if="$slots.search">
+            <el-space wrap>
+                <slot name="search"></slot>
+            </el-space>
         </div>
         <div class="table-wrap">
             <div class="header">
@@ -260,4 +261,36 @@
     </div>
 </template>
 <style scoped lang="scss">
+    .table-container{
+        .search-wrap{
+            // background: var(--bg1);
+            border: 1px solid var(--el-border-color);
+            border-radius: var(--el-border-radius-base);
+            padding: 1rem;
+        }
+        .table-wrap{
+            padding: 1rem 0;
+            .header{
+            float: right;
+            padding-bottom: 0.4rem;
+            }
+        }
+        .pagination-wrap{
+            padding-bottom: 0.2rem;
+            float: right;
+        }
+    }
+
+    .el-table__body-wrapper::-webkit-scrollbar {
+        width: 5px;
+        height: 1px;
+    }
+    .el-table__body-wrapper::-webkit-scrollbar-thumb {
+        background-color: #909399;
+        border-radius: 5px;
+    }
+    .el-table__body-wrapper::-webkit-scrollbar-track {
+        border-radius: 5px;
+        background: #ededed;
+    }
 </style>

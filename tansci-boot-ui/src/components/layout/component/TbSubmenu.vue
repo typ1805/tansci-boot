@@ -19,7 +19,7 @@
 				</el-icon>
 				<span style="vertical-align: middle;">{{item.meta.title}}</span>
 			</el-menu-item>
-			<Submenu v-else :data='item'></Submenu>
+			<TbSubmenu v-else :data='item'></TbSubmenu>
 		</template>
 	</el-sub-menu>
 </template>

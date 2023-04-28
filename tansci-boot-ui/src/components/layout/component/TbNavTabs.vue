@@ -23,7 +23,7 @@
             let params = {
                 title: route.meta.title as string,
                 path: route.path,
-                close: true
+                close: false
             };
             onAddTabManu(params);
         },
@@ -42,12 +42,13 @@
         router.push(tabItem.path);
     }
 
-    const onTabMenuClick = (tabItem: TabsPaneContext) =>{
+    function onTabMenuClick(tabItem: TabsPaneContext){
+        console.log(tabItem)
         let path = tabItem.props.name as string;
         router.push(path);
     }
 
-    const onTabMenuRemove = (tabItem: String) =>{
+    function onTabMenuRemove(tabItem: String){
         let _tabsMenuValue = state.tabsMenuValue;
         let _tabsMenuList = state.tabsMenuList;
         if (_tabsMenuValue === tabItem) {
@@ -65,18 +66,18 @@
         state.tabsMenuList = _tabsMenuList.filter(item => item.path !== tabItem);
     }
 
-    const onCloseCurrentTab = () =>{
+    function onCloseCurrentTab(){
         if (state.tabsMenuValue === HOME_URL) return;
         onTabMenuRemove(state.tabsMenuValue);
     }
 
-    const onCloseOtherTab = () =>{
+    function onCloseOtherTab(){
         state.tabsMenuList = state.tabsMenuList.filter(item => {
 			return item.path === state.tabsMenuValue || item.path === HOME_URL;
 		});
     }
 
-    const onCloseAllTab = () =>{
+    function onCloseAllTab(){
         state.tabsMenuList = state.tabsMenuList.filter(item => {
 			return item.path === HOME_URL;
 		});
@@ -86,79 +87,32 @@
 </script>
 <template>
     <div class="tabs-menu">
-        <el-tabs v-model="tabsMenuValue" type="card" @tab-click="onTabMenuClick" @tab-remove="onTabMenuRemove">
+        <el-tabs v-model="tabsMenuValue" @tab-click="onTabMenuClick" @tab-remove="onTabMenuRemove">
             <el-tab-pane v-for="item in tabsMenuList"
                 :key="item.path"
                 :path="item.path"
                 :label="item.title"
                 :name="item.path"
-                :closable="item.close">
+                :closable="item.close"
+                @node-contextmenu="onTabMenuRemove">
                 <template #label>
-                    <el-icon v-if="item.icon" style="vertical-align: middle; padding-right: 0.2rem;">
-                        <component :is="item.icon"></component>
-                    </el-icon>
-                    <span style="vertical-align: middle">{{ item.title }}</span>
+                    <el-dropdown :id="item.path" trigger="contextmenu">
+                        <span style="vertical-align: middle">{{ item.title }}</span>
+                         <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item icon="CircleCloseFilled" @click="onCloseCurrentTab">关闭当前</el-dropdown-item>
+                                <el-dropdown-item icon="CircleClose" @click="onCloseOtherTab">关闭其他</el-dropdown-item>
+                                <el-dropdown-item icon="CloseBold" @click="onCloseAllTab">关闭所有</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                 </template>
             </el-tab-pane>
         </el-tabs>
-        <el-dropdown trigger="hover">
-            <!-- <el-button size="small" type="primary">
-                <span>更多</span>
-                <el-icon class="el-icon--right"><arrow-down /></el-icon>
-            </el-button> -->
-            <span class="el-dropdown-link" style="cursor: pointer;">
-                <el-icon :size="18"><Tools /></el-icon>
-            </span>
-            <template #dropdown>
-                <el-dropdown-menu>
-                    <el-dropdown-item icon="CircleCloseFilled" @click="onCloseCurrentTab">关闭当前</el-dropdown-item>
-                    <el-dropdown-item icon="CircleClose" @click="onCloseOtherTab">关闭其他</el-dropdown-item>
-                    <el-dropdown-item icon="CloseBold" @click="onCloseAllTab">关闭所有</el-dropdown-item>
-                </el-dropdown-menu>
-            </template>
-        </el-dropdown>
     </div>
 </template>
-<style lang="scss" >
+<style lang="scss">
     .tabs-menu{
-        position: relative;
-		width: 100%;
-        // border-top: 1px transparent solid;
-        // border-image: linear-gradient(to right, var(--bg1),#DCDFE6, var(--bg1)) 1 10;
-        // box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
-        // margin-bottom: 0.2rem;
-
-        .el-dropdown {
-			position: absolute;
-			top: 8px;
-			right: 13px;
-		}
-
-		.el-tabs__nav-wrap {
-			position: absolute;
-			width: calc(100% - 120px);
-		}
-		.el-tabs--card > .el-tabs__header {
-			box-sizing: border-box;
-			height: 40px;
-			padding: 0;
-			margin: 0;
-		}
-        .el-tabs--card > .el-tabs__header{
-            border: none;
-        }
-		.el-tabs--card > .el-tabs__header .el-tabs__nav {
-			border: none;
-		}
-		.el-tabs--card > .el-tabs__header .el-tabs__item {
-			border: none;
-		}
-		.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
-			color: var(--theme);
-            border: none;
-		}
-		.el-tabs__item .is-icon-close svg {
-			margin-top: 0.5px;
-		}
+        margin-top: 1.2rem;
     }
 </style>

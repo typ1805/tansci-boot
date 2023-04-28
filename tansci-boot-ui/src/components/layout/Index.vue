@@ -1,29 +1,16 @@
 <script setup lang="ts">
-    import { reactive, onMounted, onBeforeMount, onDeactivated, getCurrentInstance, ref } from "vue"
-    import type { FormInstance, Action } from 'element-plus'
-    import { ElMessageBox } from 'element-plus'
-    import { isDark, toggleDark } from '@/composables'
-    import { getMenus, logout } from "@/api/auth"
-    import { modifyPass } from "@/api/system/user"
-    import Submenu from "@/components/Submenu.vue"
-    import TabsMenu from "@/components/TabsMenu.vue"
+    import { reactive, onMounted, onBeforeMount, onDeactivated, getCurrentInstance } from "vue"
+    import { getMenus } from "@/api/auth"
+    import TbMenu from "./component/TbMenu.vue"
+    import TbHeader from "./component/TbHeader.vue"
 
     const { proxy } = getCurrentInstance()
     const logo = new URL('../../assets/image/logo.png', import.meta.url).href
     const state = reactive({
         headerHeight: '52px',
         asideWidth: '260px',
-        routers: [],
         defaultHeight: null,
-        userVisible: false,
-        user: {
-            avatar: '',
-            username: '',
-            nickname: '未登录',
-            password: '',
-            rePassword: '',
-            oldPassword: ''
-        }
+        routers: [],
     })
 
     onBeforeMount(() => {
@@ -42,8 +29,6 @@
         })
         state.routers = routers
 
-        state.user = proxy.$global.user.info
-
         window.addEventListener('resize', onDefaultHeight);
     })
 
@@ -54,229 +39,48 @@
     function onDefaultHeight(){
         state.defaultHeight = window.innerHeight
     }
-    function onPersonal(){
-        state.userVisible = true
-    }
-
-    const userRef = ref<FormInstance>();
-    const validatePass = (rule, value, callback) => {
-        if (value === '') {
-            callback(new Error('请输入确认密码'));
-        } else if (value !== state.user.password) {
-            callback(new Error('两次输入密码不一致!'));
-        } else {
-            callback();
-        }
-    }
-    const onUserSubmit = async (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
-    await formEl.validate((valid)=>{
-      if(valid){
-        modifyPass({
-            username: state.user.username, 
-            password: state.user.password,
-            oldPassword: state.user.oldPassword
-        }).then(res=>{
-            if(res){
-                state.userVisible = false
-                ElMessageBox.alert('修改密码成功，请重新登录！', '提示', {
-                    confirmButtonText: '确定',
-                    type: 'warning',
-                    callback: (action: Action) =>{
-                        logout()
-                    }
-                })
-            }
-        })
-      }
-    })
-  }
 
 </script>
 <template>
   <div class="layout-container">
     <el-container>
         <el-aside :width="state.asideWidth">
-            <el-card :shadow="proxy.$global.cardShadow" :body-style="{padding: '1rem'}">
-                <div class="logo">
-                    <el-image :src="logo" fit="fit" style="width: 20%; height:00%"></el-image>
-                    <span class="title">{{proxy.$global.title}}</span>
-                </div>
-                <el-scrollbar :height="state.defaultHeight-115">
-                    <el-menu router :default-active="$route.path">
-                        <template v-for="item in state.routers" :key="item">
-                            <el-menu-item v-if="!item.children || item.children.length <= 1" :index="item.path">
-                                <el-icon v-if="item.icon" style="vertical-align: middle;">
-                                    <component :is="item.icon"></component>
-                                </el-icon>
-                                <span style="vertical-align: middle;">{{item.meta.title}}</span>
-                            </el-menu-item>
-                            <Submenu v-else :data="item"></Submenu>
-                        </template>
-                    </el-menu>
-                </el-scrollbar>
-            </el-card>
+            <TbMenu :routers="state.routers" 
+                :logo="logo" 
+                :shadow="proxy.$global.cardShadow" 
+                :title="proxy.$global.title" 
+                :height="state.defaultHeight-105"/>
         </el-aside>
         <el-container>
             <el-header :height="state.headerHeight">
-                <TabsMenu></TabsMenu>
-                <div>
-                <el-card :shadow="proxy.$global.cardShadow" :body-style="{padding: '0 1rem', 'line-height': state.headerHeight+'px'}">
-                    <el-button link>
-                        <template #icon>
-                            <el-icon :size="24"><Monitor /></el-icon>
-                        </template>
-                    </el-button>
-                    <el-button link>
-                        <template #icon>
-                            <el-icon :size="24"><FullScreen /></el-icon>
-                        </template>
-                    </el-button>
-                    <el-button @click="toggleDark()" link>
-                        <template #icon>
-                            <el-icon :size="24"><Sunny v-show="!isDark"/></el-icon>
-                            <el-icon :size="24"><Sunrise v-show="isDark"/></el-icon>
-                        </template>
-                    </el-button>
-                    <el-popover placement="bottom" :width="260"  trigger="click">
-                        <template #reference>
-                            <el-button link>{{state.user.nickname}}</el-button>
-                        </template>
-                        <div style="text-align: center;">
-                            <div><el-avatar :size="50" :src="state.user.avatar" /></div>
-                            <div style="font-size: 22px; padding: 0.4rem 0;">{{state.user.username}}</div>
-                            <el-button @click="onPersonal()" type="primary" plain>个人中心</el-button>
-                            <el-button @click="logout()" type="danger" plain>注销登录</el-button>
-                        </div>
-                    </el-popover>
-                </el-card>
-                </div>
+                <TbHeader :height="state.headerHeight"/>
             </el-header>
             <el-main>
                 <el-card :shadow="proxy.$global.cardShadow">
-                    <el-scrollbar :height="state.defaultHeight-150">
+                    <el-scrollbar :height="state.defaultHeight-126">
                         <router-view />
                     </el-scrollbar>
                 </el-card>
             </el-main>
         </el-container>
     </el-container>
-    <el-backtop target=".el-main"></el-backtop>
-    <el-dialog v-model="state.userVisible" title="个人中心" width="40%" :show-close="false">
-        <el-form :model="state.user" ref="userRef" :rules="rules" label-width="80px" status-icon>
-            <el-row :gutter="20">
-                <el-col :span="24">
-                    <el-form-item label="用户头像" prop="avatar">
-                        <el-avatar :size="50" :src="state.user.avatar" />
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="用户名称" prop="username">
-                        <el-input v-model="state.user.username" disabled style="width: 100%"/>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="用户昵称" prop="nickname">
-                        <el-input v-model="state.user.nickname" disabled placeholder="请输入昵称" style="width: 100%"/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="用户电话" prop="phone">
-                        <el-input v-model="state.user.phone" disabled style="width: 100%"/>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="用户邮箱" prop="email">
-                        <el-input v-model="state.user.email" disabled style="width: 100%"/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="24">
-                    <el-form-item label="原始密码" prop="oldPassword" :rules="[{required: true, message: '请输入原始密码', trigger: 'blur'}]">
-                        <el-input v-model="state.user.oldPassword" type="password" placeholder="请输入原始密码" style="width: 100%"/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="24">
-                    <el-form-item label="用户密码" prop="password" :rules="[{required: true, message: '请输入密码', trigger: 'blur'},
-                        {pattern: /^[a-zA-Z]\w{5,17}$/, message: '以字母开头，长度在6~18之间，只能包含字母、数字和下划线', trigger: 'blur'}]">
-                        <el-input v-model="state.user.password" type="password" placeholder="请输入密码" style="width: 100%"/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="24">
-                    <el-form-item prop="rePassword" label="确认密码" :rules="[{required: true, message: '请输入确认密码', trigger: 'blur'},{validator: validatePass, trigger: 'blur'}]">
-                        <el-input v-model="state.user.rePassword" type="password" placeholder="请输入确认密码"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
-        <template #footer>
-            <el-button @click="onUserSubmit(userRef)" type="primary">修改密码</el-button>
-        </template>
-    </el-dialog>
   </div>
 </template>
 <style lang="scss" scoped>
     .layout-container{
+        height: 100%;
         background: var(--el-bg-color);
-        .el-header{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            .el-card{
-                margin-top: 1.2rem;
-                .el-button{
-                    margin: 1rem 0.8rem;
-                }
-            }
-        }
         .el-aside{
-            margin: 0.6rem;
+            margin: 0.2rem;
             padding: 0.4rem;
             overflow-x: auto;
             overflow-y: hidden;
-            .logo{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding-top: 0.4rem;
-                cursor: pointer;
-                .title{
-                    padding-left: 0.6rem;
-                    color: var(-t);
-                    font-weight: 700;
-                    font-size: 18px;
-                }
-            }
-            :deep(.el-menu) {
-                padding-left: 0;
-                border-right: none;
-                background: transparent;
-                .el-menu-item, .el-sub-menu__title {
-                    margin: 0.4rem 0;
-                }
-                .el-sub-menu__title:hover{
-                    background: transparent;
-                    color: var(--theme);
-                }
-                .el-menu-item:hover{
-                    background: transparent;
-                    color: var(--theme);
-                }
-                .el-menu-item.is-active {
-                    background: transparent;
-                }
-            }
+        }
+        .el-header{
+            padding: 0 0.6rem 0 0;
         }
         .el-main{
+            padding: 1.2rem 0.6rem 0 0;
             overflow-x: hidden;
             overflow-y: hidden;
         }

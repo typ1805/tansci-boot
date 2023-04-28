@@ -33,6 +33,9 @@ public class ColumnsVo {
     @ApiModelProperty(value = "列描述")
     private String columnComment;
 
+    @ApiModelProperty(value = "键值")
+    private String columnKey;
+
     @ApiModelProperty(value = "数据类型")
     private String dataType;
 

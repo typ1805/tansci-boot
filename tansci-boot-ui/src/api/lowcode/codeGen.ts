@@ -27,12 +27,26 @@ export function del(id:String){
     })
 }
 
-export function execute(param:any){
+export function save(data:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/lowcode/code/save',
+            method: 'post',
+            data
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+export function execute(data:any){
     return new Promise((resolve, reject) => {
         request({
             url: '/tansci/lowcode/code/execute',
             method: 'post',
-            data: param
+            data
         }).then((res:any) => {
             resolve(res.data)
         }).catch((e:any) => {

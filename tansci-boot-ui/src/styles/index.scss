@@ -23,7 +23,6 @@
   --down: #E6A23C;
   --upper: #67C23A;
   --role: #006000;
-
 }
 
 body {
@@ -42,61 +41,6 @@ body {
   border-bottom: 1px solid var(--el-border-color);
   margin-right: 0;
   padding: 0.5rem 1rem;
-}
-
-/**
- * table组件样式
- */
- .table-container{
-  .search-wrap{
-    display: flex;
-    flex-wrap: wrap;
-    // background: var(--bg1);
-    border: 1px solid var(--el-border-color);
-    border-radius: var(--el-border-radius-base);
-    padding: 1.2rem 0;
-  }
-  .search-wrap>div{
-    line-height: 40px;
-    padding: 0.2rem 0.8rem;
-  }
-  .button-wrap{
-    display: flex;
-    flex-wrap: wrap;
-    padding-top: 0.6rem;
-  }
-  .button-wrap>div{
-    line-height: 40px;
-    padding: 0.2rem 0.8rem;
-  }
-  .table-wrap{
-    padding: 1rem 0;
-    .header{
-      float: right;
-      padding-bottom: 0.4rem;
-    }
-  }
-  .pagination-wrap{
-    padding-bottom: 0.2rem;
-    float: right;
-  }
-}
-
-
-/**
- * el-table 滚动条样式
- */
- .el-table__body-wrapper::-webkit-scrollbar {
-  width: 5px;
-  height: 1px;
-}
-.el-table__body-wrapper::-webkit-scrollbar-thumb {
-  background-color: #909399;
-  border-radius: 5px;
-}
-.el-table__body-wrapper::-webkit-scrollbar-track {
-  border-radius: 5px;
-  background: #ededed;
 }
 
 /**
