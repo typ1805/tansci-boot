@@ -23,7 +23,7 @@
             let params = {
                 title: route.meta.title as string,
                 path: route.path,
-                close: false
+                close: true
             };
             onAddTabManu(params);
         },
