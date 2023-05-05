@@ -10,6 +10,7 @@
         headerHeight: '52px',
         asideWidth: '260px',
         defaultHeight: null,
+        isCollapse: false,
         routers: [],
     })
 
@@ -40,6 +41,16 @@
         state.defaultHeight = window.innerHeight
     }
 
+    function onCollapse(val:Boolean){
+        if(val){
+            state.isCollapse = false
+            state.asideWidth = "260px"
+        } else {
+            state.isCollapse = true
+            state.asideWidth = "110px"
+        }
+    }
+
 </script>
 <template>
   <div class="layout-container">
@@ -49,11 +60,13 @@
                 :logo="logo" 
                 :shadow="proxy.$global.cardShadow" 
                 :title="proxy.$global.title" 
-                :height="state.defaultHeight-105"/>
+                :height="state.defaultHeight-105"
+                :isCollapse="state.isCollapse"
+                @onCollapse="onCollapse"/>
         </el-aside>
         <el-container>
             <el-header :height="state.headerHeight">
-                <TbHeader :height="state.headerHeight"/>
+                <TbHeader :height="state.headerHeight" :isCollapse="state.isCollapse"/>
             </el-header>
             <el-main>
                 <el-card :shadow="proxy.$global.cardShadow">
@@ -75,6 +88,7 @@
             padding: 0.4rem;
             overflow-x: auto;
             overflow-y: hidden;
+            transition: all .5s;
         }
         .el-header{
             padding: 0 0.6rem 0 0;

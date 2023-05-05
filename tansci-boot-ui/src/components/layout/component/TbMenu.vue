@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import {defineProps} from 'vue'
+    import {useRouter} from 'vue-router'
     import TbSubmenu from "./TbSubmenu.vue"
 
 	const props = defineProps({
@@ -7,18 +8,26 @@
         height: Number,
         logo: Object,
         shadow: String,
-        title: String
+        title: String,
+        isCollapse: Boolean
 	})
+
+    const emit = defineEmits(['onCollapse'])
+    const router = useRouter()
+
+    function toHome(){
+        router.push({path: '/index'});
+    }
 
 </script>
 <template>
-    <el-card :shadow="shadow" :body-style="{padding: '1rem'}">
-        <div class="logo">
-            <el-image :src="logo" fit="fit" style="width: 20%; height:00%"></el-image>
-            <span class="title">{{title}}</span>
+    <el-card :shadow="shadow" :body-style="{padding: '1rem 0.8rem', position: 'relative'}">
+        <div @click="toHome" class="logo">
+            <el-image :src="logo" fit="fit" :style="{width: isCollapse?'60%':'20%', height: '100%'}"></el-image>
+            <span v-show="!isCollapse" class="title">{{title}}</span>
         </div>
         <el-scrollbar :height="height">
-            <el-menu router :default-active="$route.path">
+            <el-menu router :default-active="$route.path" :collapse="isCollapse">
                 <template v-for="item in routers" :key="item">
                     <el-menu-item v-if="!item.children || item.children.length <= 1" :index="item.path">
                         <el-icon v-if="item.icon" style="vertical-align: middle;">
@@ -30,6 +39,7 @@
                 </template>
             </el-menu>
         </el-scrollbar>
+        <el-button @click="$emit('onCollapse', isCollapse)" :icon="isCollapse ? 'ArrowRightBold':'ArrowLeftBold'" circle size="small" class="collapse"></el-button>
     </el-card>
 </template>
 <style lang="scss" scoped>
@@ -61,5 +71,10 @@
         .el-menu-item.is-active {
             background: transparent;
         }
+    }
+    .collapse{
+        position: absolute;
+        right: -10px;
+        top: 25%;
     }
 </style>
