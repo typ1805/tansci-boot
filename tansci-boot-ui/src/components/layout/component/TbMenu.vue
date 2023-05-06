@@ -21,12 +21,12 @@
 
 </script>
 <template>
-    <el-card :shadow="shadow" :body-style="{padding: '1rem 0.8rem', position: 'relative'}">
+    <el-card :shadow="shadow" :body-style="{padding: '1rem 0.2rem', position: 'relative'}">
         <div @click="toHome" class="logo">
             <el-image :src="logo" fit="fit" :style="{width: isCollapse?'60%':'20%', height: '100%'}"></el-image>
             <span v-show="!isCollapse" class="title">{{title}}</span>
         </div>
-        <el-scrollbar :height="height">
+        <el-scrollbar :height="height" :min-size="10">
             <el-menu router :default-active="$route.path" :collapse="isCollapse">
                 <template v-for="item in routers" :key="item">
                     <el-menu-item v-if="!item.children || item.children.length <= 1" :index="item.path">
@@ -39,7 +39,7 @@
                 </template>
             </el-menu>
         </el-scrollbar>
-        <el-button @click="$emit('onCollapse', isCollapse)" :icon="isCollapse ? 'ArrowRightBold':'ArrowLeftBold'" circle size="small" class="collapse"></el-button>
+        <el-button @click="$emit('onCollapse', isCollapse)" :icon="isCollapse ? 'CaretRight':'CaretLeft'" circle size="small" class="collapse"></el-button>
     </el-card>
 </template>
 <style lang="scss" scoped>
@@ -74,7 +74,8 @@
     }
     .collapse{
         position: absolute;
-        right: -10px;
-        top: 25%;
+        right: -7px;
+        bottom: -7px;
+        transform:rotate(50deg);
     }
 </style>

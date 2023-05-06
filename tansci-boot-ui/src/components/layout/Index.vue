@@ -1,5 +1,7 @@
 <script setup lang="ts">
-    import { reactive, onMounted, onBeforeMount, onDeactivated, getCurrentInstance } from "vue"
+    import { computed, reactive, onMounted, onBeforeMount, onDeactivated, getCurrentInstance } from "vue"
+    import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+    import en from 'element-plus/dist/locale/en.mjs'
     import { getMenus } from "@/api/auth"
     import TbMenu from "./component/TbMenu.vue"
     import TbHeader from "./component/TbHeader.vue"
@@ -8,9 +10,10 @@
     const logo = new URL('../../assets/image/logo.png', import.meta.url).href
     const state = reactive({
         headerHeight: '52px',
-        asideWidth: '260px',
+        asideWidth: '220px',
         defaultHeight: null,
         isCollapse: false,
+        language: 'zh-cn',
         routers: [],
     })
 
@@ -44,40 +47,47 @@
     function onCollapse(val:Boolean){
         if(val){
             state.isCollapse = false
-            state.asideWidth = "260px"
+            state.asideWidth = "220px"
         } else {
             state.isCollapse = true
-            state.asideWidth = "110px"
+            state.asideWidth = "80px"
         }
+    }
+
+    const locale = computed(() => (state.language === 'zh-cn' ? zhCn : en))
+    function onLanguage(val:any){
+        state.language = val
     }
 
 </script>
 <template>
-  <div class="layout-container">
-    <el-container>
-        <el-aside :width="state.asideWidth">
-            <TbMenu :routers="state.routers" 
-                :logo="logo" 
-                :shadow="proxy.$global.cardShadow" 
-                :title="proxy.$global.title" 
-                :height="state.defaultHeight-105"
-                :isCollapse="state.isCollapse"
-                @onCollapse="onCollapse"/>
-        </el-aside>
-        <el-container>
-            <el-header :height="state.headerHeight">
-                <TbHeader :height="state.headerHeight" :isCollapse="state.isCollapse"/>
-            </el-header>
-            <el-main>
-                <el-card :shadow="proxy.$global.cardShadow">
-                    <el-scrollbar :height="state.defaultHeight-126">
-                        <router-view />
-                    </el-scrollbar>
-                </el-card>
-            </el-main>
-        </el-container>
-    </el-container>
-  </div>
+    <div class="layout-container">
+        <el-config-provider :locale="locale">
+            <el-container>
+                <el-aside :width="state.asideWidth">
+                    <TbMenu :routers="state.routers" 
+                        :logo="logo" 
+                        :shadow="proxy.$global.cardShadow" 
+                        :title="proxy.$global.title" 
+                        :height="state.defaultHeight-105"
+                        :isCollapse="state.isCollapse"
+                        @onCollapse="onCollapse"/>
+                </el-aside>
+                <el-container>
+                    <el-header :height="state.headerHeight">
+                        <TbHeader :height="state.headerHeight" :isCollapse="state.isCollapse" @onLanguage="onLanguage"/>
+                    </el-header>
+                    <el-main>
+                        <el-card :shadow="proxy.$global.cardShadow">
+                            <el-scrollbar :height="state.defaultHeight-126">
+                                <router-view />
+                            </el-scrollbar>
+                        </el-card>
+                    </el-main>
+                </el-container>
+            </el-container>
+        </el-config-provider>
+    </div>
 </template>
 <style lang="scss" scoped>
     .layout-container{
@@ -85,7 +95,7 @@
         background: var(--el-bg-color);
         .el-aside{
             margin: 0.2rem;
-            padding: 0.4rem;
+            padding: 0.1rem;
             overflow-x: auto;
             overflow-y: hidden;
             transition: all .5s;

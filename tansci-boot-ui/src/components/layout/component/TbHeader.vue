@@ -8,8 +8,9 @@
     import { modifyPass } from "@/api/system/user"
 
     const { proxy } = getCurrentInstance()
+    const emit = defineEmits(['onLanguage'])
 	const props = defineProps({
-        height: Number,
+        height: Number
 	})
     
     const state = reactive({
@@ -78,6 +79,19 @@
         <TbNavTabs />
         <div>
             <el-card :shadow="proxy.$global.cardShadow" :body-style="{padding: '0 1rem', 'line-height': height +'px'}">
+                <el-popover placement="bottom"  trigger="hover">
+                    <template #reference>
+                        <el-button link>
+                            <template #icon>
+                                <el-icon :size="24"><ChromeFilled /></el-icon>
+                            </template>
+                        </el-button>
+                    </template>
+                    <div>
+                        <el-button @click="$emit('onLanguage', 'zh-cn')" link>中文</el-button><br/>
+                        <el-button @click="$emit('onLanguage', 'en')" link>English</el-button>
+                    </div>
+                </el-popover>
                 <el-button link>
                     <template #icon>
                         <el-icon :size="24"><Monitor /></el-icon>
@@ -94,7 +108,7 @@
                         <el-icon :size="24"><Sunrise v-show="isDark"/></el-icon>
                     </template>
                 </el-button>
-                <el-popover placement="bottom" :width="260"  trigger="click">
+                <el-popover placement="bottom" :width="260"  trigger="hover">
                     <template #reference>
                         <el-button link>{{state.user.nickname}}</el-button>
                     </template>
