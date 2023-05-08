@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.tansci.common.constant.Constants;
+import com.tansci.common.constant.Enums;
 import com.tansci.domain.SysMenu;
 import com.tansci.domain.SysRoleMenu;
 import com.tansci.domain.vo.SysMenuVo;
+import com.tansci.domain.vo.SysUserSessionVo;
 import com.tansci.mapper.SysMenuMapper;
 import com.tansci.service.SysMenuService;
 import com.tansci.service.SysRoleMenuService;
@@ -35,20 +37,33 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<SysMenu> tree(SysMenu menu) {
         List<String> menuIds = Lists.newArrayList();
-        if (Objects.nonNull(StpUtil.getRoleList()) && StpUtil.getRoleList().size() > 0) {
-            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, StpUtil.getRoleList()));
+        SysUserSessionVo userSession = (SysUserSessionVo) StpUtil.getSession().get(StpUtil.getLoginId().toString());
+        if (Objects.nonNull(userSession) && Objects.equals(Enums.USER_TYPE_1.getKey(), userSession.getType())) {
+            menuIds.addAll(this.list().stream().map(SysMenu::getId).collect(Collectors.toList()));
+        } else {
+            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().
+                    in(Objects.nonNull(StpUtil.getRoleList()) && StpUtil.getRoleList().size() > 0, SysRoleMenu::getRoleId, StpUtil.getRoleList())
+            );
             menuIds.addAll(menus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList()));
+        }
+        if (Objects.isNull(menuIds) || menuIds.size() == 0) {
+            return Lists.newArrayList();
         }
 
         List<SysMenu> list = this.baseMapper.selectList(
                 Wrappers.<SysMenu>lambdaQuery()
                         .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
-                        .eq(Objects.nonNull(menuIds) && menuIds.size() > 0, SysMenu::getId, menuIds)
+                        .in(Objects.nonNull(menuIds) && menuIds.size() > 0, SysMenu::getId, menuIds)
                         .eq(Objects.nonNull(menu.getParentId()), SysMenu::getParentId, menu.getParentId())
                         .like(Objects.nonNull(menu.getName()), SysMenu::getName, menu.getName())
                         .like(Objects.nonNull(menu.getChineseName()), SysMenu::getChineseName, menu.getChineseName())
                         .orderByDesc(SysMenu::getUpdateTime)
         );
+
+        if (Objects.isNull(list) || list.size() == 0) {
+            return Lists.newArrayList();
+        }
+
         list = list.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(SysMenu::getId))), ArrayList::new));
         Map<String, List<SysMenu>> map = list.stream().collect(Collectors.groupingBy(SysMenu::getParentId, Collectors.toList()));
         list.stream().forEach(item -> item.setChildren(map.get(item.getId())));
@@ -60,18 +75,30 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Override
     public List<SysMenuVo> menus() {
         List<String> menuIds = Lists.newArrayList();
-        if (Objects.nonNull(StpUtil.getRoleList()) && StpUtil.getRoleList().size() > 0) {
-            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().eq(SysRoleMenu::getRoleId, StpUtil.getRoleList()));
+        SysUserSessionVo userSession = (SysUserSessionVo) StpUtil.getSession().get(StpUtil.getLoginId().toString());
+        if (Objects.nonNull(userSession) && Objects.equals(Enums.USER_TYPE_1.getKey(), userSession.getType())) {
+            menuIds.addAll(this.list().stream().map(SysMenu::getId).collect(Collectors.toList()));
+        } else {
+            List<SysRoleMenu> menus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().
+                    in(Objects.nonNull(StpUtil.getRoleList()) && StpUtil.getRoleList().size() > 0, SysRoleMenu::getRoleId, StpUtil.getRoleList())
+            );
             menuIds.addAll(menus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList()));
+        }
+        if (Objects.isNull(menuIds) || menuIds.size() == 0) {
+            return Lists.newArrayList();
         }
 
         List<SysMenu> list = this.baseMapper.selectList(
                 Wrappers.<SysMenu>lambdaQuery()
                         .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
                         .eq(SysMenu::getIsShow, 1)
-                        .eq(Objects.nonNull(menuIds) && menuIds.size() > 0, SysMenu::getId, menuIds)
+                        .in(Objects.nonNull(menuIds) && menuIds.size() > 0, SysMenu::getId, menuIds)
                         .orderByAsc(SysMenu::getSort)
         );
+
+        if (Objects.isNull(list) || list.size() == 0) {
+            return Lists.newArrayList();
+        }
 
         List<SysMenuVo> newList = new ArrayList<>();
         for (SysMenu menu : list) {

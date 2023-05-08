@@ -60,6 +60,7 @@
 						router.push({path: 'index'});
 					}
 				}).catch(()=>{
+					onCode()
 					state.loading = false;
 				})
 			}

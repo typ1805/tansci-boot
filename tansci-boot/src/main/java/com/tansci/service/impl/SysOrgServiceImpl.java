@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.tansci.common.constant.Constants;
+import com.tansci.common.constant.Enums;
 import com.tansci.domain.SysOrg;
 import com.tansci.domain.SysRoleOrg;
+import com.tansci.domain.vo.SysUserSessionVo;
 import com.tansci.mapper.SysOrgMapper;
 import com.tansci.service.SysOrgService;
 import com.tansci.service.SysRoleOrgService;
@@ -34,15 +36,23 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
     @Override
     public List<SysOrg> list(SysOrg org) {
         List<String> orgIds = Lists.newArrayList();
-        if (Objects.nonNull(StpUtil.getRoleList()) && StpUtil.getRoleList().size() > 0) {
-            List<SysRoleOrg> menus = sysRoleOrgService.list(Wrappers.<SysRoleOrg>lambdaQuery().eq(SysRoleOrg::getRoleId, StpUtil.getRoleList()));
+        SysUserSessionVo userSession = (SysUserSessionVo) StpUtil.getSession().get(StpUtil.getLoginId().toString());
+        if (Objects.nonNull(userSession) && Objects.equals(Enums.USER_TYPE_1.getKey(), userSession.getType())) {
+            orgIds.addAll(this.baseMapper.selectList(Wrappers.lambdaQuery()).stream().map(SysOrg::getId).collect(Collectors.toList()));
+        } else {
+            List<SysRoleOrg> menus = sysRoleOrgService.list(Wrappers.<SysRoleOrg>lambdaQuery().
+                    in(Objects.nonNull(StpUtil.getRoleList()) && StpUtil.getRoleList().size() > 0, SysRoleOrg::getRoleId, StpUtil.getRoleList())
+            );
             orgIds.addAll(menus.stream().map(SysRoleOrg::getOrgId).collect(Collectors.toList()));
+        }
+        if (Objects.isNull(orgIds) || orgIds.size() == 0) {
+            return Lists.newArrayList();
         }
 
         List<SysOrg> list = this.baseMapper.selectList(
                 Wrappers.<SysOrg>lambdaQuery()
                         .eq(SysOrg::getIsDel, Constants.NOT_DEL_FALG)
-                        .eq(Objects.nonNull(orgIds) && orgIds.size() > 0, SysOrg::getId, orgIds)
+                        .in(Objects.nonNull(orgIds) && orgIds.size() > 0, SysOrg::getId, orgIds)
                         .eq(Objects.nonNull(org.getParentId()), SysOrg::getParentId, org.getParentId())
                         .eq(Objects.nonNull(org.getCode()), SysOrg::getCode, org.getCode())
                         .like(Objects.nonNull(org.getName()), SysOrg::getName, org.getName())

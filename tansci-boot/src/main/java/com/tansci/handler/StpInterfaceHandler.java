@@ -4,9 +4,11 @@ import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.tansci.common.constant.Constants;
+import com.tansci.common.constant.Enums;
 import com.tansci.domain.SysMenu;
 import com.tansci.domain.SysRoleMenu;
 import com.tansci.domain.SysUserRole;
+import com.tansci.domain.vo.SysUserSessionVo;
 import com.tansci.service.SysMenuService;
 import com.tansci.service.SysRoleMenuService;
 import com.tansci.service.SysUserRoleService;
@@ -43,25 +45,40 @@ public class StpInterfaceHandler implements StpInterface {
      * @return： java.util.List<java.lang.String>
      **/
     @Override
-    public List<String> getPermissionList(Object o, String s) {
-        if (Objects.nonNull(StpUtil.getSession().get(Constants.PERMISSION_KEY))) {
-            return (List<String>) StpUtil.getSession().get(Constants.PERMISSION_KEY);
-        } else {
-            List<SysUserRole> roles = sysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, StpUtil.getLoginId()));
-            if (Objects.nonNull(roles) && roles.size() > 0) {
-                List<String> roleIds = roles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
-                List<SysRoleMenu> roleMenus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().in(SysRoleMenu::getRoleId, roleIds));
-                if (Objects.nonNull(roleMenus) && roleMenus.size() > 0) {
-                    List<SysMenu> menus = sysMenuService.list(
-                            Wrappers.<SysMenu>lambdaQuery()
-                                    .in(SysMenu::getId, roleMenus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList()))
-                                    .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
-                                    .ne(SysMenu::getPermission, "")
-                                    .isNotNull(SysMenu::getPermission)
-                    );
-                    List<String> permissions = menus.stream().map(SysMenu::getPermission).collect(Collectors.toList());
-                    StpUtil.getSession().set(Constants.ROLE_KEY, permissions);
-                    return permissions;
+    public List<String> getPermissionList(Object loginId, String loginType) {
+        SysUserSessionVo userSession = (SysUserSessionVo) StpUtil.getSession().get(StpUtil.getLoginId().toString());
+        if (Objects.nonNull(userSession)) {
+            if (Objects.nonNull(StpUtil.getSession().get(Constants.PERMISSION_KEY))) {
+                return (List<String>) StpUtil.getSession().get(Constants.PERMISSION_KEY);
+            }
+
+            if (Objects.equals(Enums.USER_TYPE_1.getKey(), userSession.getType())) {
+                List<SysMenu> menus = sysMenuService.list(
+                        Wrappers.<SysMenu>lambdaQuery()
+                                .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
+                                .ne(SysMenu::getPermission, "")
+                                .isNotNull(SysMenu::getPermission)
+                );
+                List<String> permissions = menus.stream().map(SysMenu::getPermission).collect(Collectors.toList());
+                StpUtil.getSession().set(Constants.PERMISSION_KEY, permissions);
+                return permissions;
+            } else {
+                List<SysUserRole> roles = sysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, StpUtil.getLoginId()));
+                if (Objects.nonNull(roles) && roles.size() > 0) {
+                    List<String> roleIds = roles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+                    List<SysRoleMenu> roleMenus = sysRoleMenuService.list(Wrappers.<SysRoleMenu>lambdaQuery().in(SysRoleMenu::getRoleId, roleIds));
+                    if (Objects.nonNull(roleMenus) && roleMenus.size() > 0) {
+                        List<SysMenu> menus = sysMenuService.list(
+                                Wrappers.<SysMenu>lambdaQuery()
+                                        .in(SysMenu::getId, roleMenus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList()))
+                                        .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
+                                        .ne(SysMenu::getPermission, "")
+                                        .isNotNull(SysMenu::getPermission)
+                        );
+                        List<String> permissions = menus.stream().map(SysMenu::getPermission).collect(Collectors.toList());
+                        StpUtil.getSession().set(Constants.PERMISSION_KEY, permissions);
+                        return permissions;
+                    }
                 }
             }
         }
@@ -77,15 +94,24 @@ public class StpInterfaceHandler implements StpInterface {
      * @return： java.util.List<java.lang.String>
      **/
     @Override
-    public List<String> getRoleList(Object o, String s) {
-        if (Objects.nonNull(StpUtil.getSession().get(Constants.ROLE_KEY))) {
-            return (List<String>) StpUtil.getSession().get(Constants.ROLE_KEY);
-        } else {
-            List<SysUserRole> roles = sysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, StpUtil.getLoginId()));
-            if (Objects.nonNull(roles) && roles.size() > 0) {
-                List<String> roleIds = roles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+    public List<String> getRoleList(Object loginId, String loginType) {
+        SysUserSessionVo userSession = (SysUserSessionVo) StpUtil.getSession().get(StpUtil.getLoginId().toString());
+        if (Objects.nonNull(userSession)) {
+            if (Objects.nonNull(StpUtil.getSession().get(Constants.ROLE_KEY))) {
+                return (List<String>) StpUtil.getSession().get(Constants.ROLE_KEY);
+            }
+
+            if (Objects.equals(Enums.USER_TYPE_1.getKey(), userSession.getType())) {
+                List<String> roleIds = sysUserRoleService.list().stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
                 StpUtil.getSession().set(Constants.ROLE_KEY, roleIds);
                 return roleIds;
+            } else {
+                List<SysUserRole> roles = sysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, StpUtil.getLoginId()));
+                if (Objects.nonNull(roles) && roles.size() > 0) {
+                    List<String> roleIds = roles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+                    StpUtil.getSession().set(Constants.ROLE_KEY, roleIds);
+                    return roleIds;
+                }
             }
         }
         return null;

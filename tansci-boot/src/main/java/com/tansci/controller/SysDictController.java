@@ -35,7 +35,6 @@ public class SysDictController {
     @ApiOperation(value = "列表树", notes = "列表树")
     @Log(modul = "字典管理", type = Constants.SELECT, desc = "列表树")
     @GetMapping("/tree")
-    @SaCheckPermission("dict:list")
     public Wrapper<List<SysDict>> tree(SysDict dict) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysDictService.tree(dict));
     }
@@ -43,7 +42,6 @@ public class SysDictController {
     @ApiOperation(value = "列表", notes = "列表")
     @Log(modul = "字典管理", type = Constants.SELECT, desc = "列表")
     @GetMapping("/list")
-    @SaCheckPermission("dict:list")
     public Wrapper<List<SysDict>> list(SysDict dict) {
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, sysDictService.list(dict));
     }
