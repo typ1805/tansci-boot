@@ -45,6 +45,9 @@ public class SysMenuVo {
     @ApiModelProperty(value = "组件名称")
     private String component;
 
+    @ApiModelProperty(value = "组件类型：0、默认，1、amis")
+    private Integer componentType;
+
     @ApiModelProperty(value = "是否显示：0、不显示，1、显示")
     private Boolean isShow;
 

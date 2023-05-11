@@ -119,6 +119,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                             .icon(menu.getIcon())
                             .sort(menu.getSort())
                             .component(Objects.nonNull(menu.getComponent()) && menu.getComponent().length() > 0 ? menu.getComponent() : "Layout")
+                            .componentType(menu.getComponentType())
                             .isShow(Objects.equals(1, menu.getIsShow()) ? true : false)
                             .meta(meta)
                             .build()

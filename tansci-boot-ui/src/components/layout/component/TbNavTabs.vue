@@ -43,7 +43,6 @@
     }
 
     function onTabMenuClick(tabItem: TabsPaneContext){
-        console.log(tabItem)
         let path = tabItem.props.name as string;
         router.push(path);
     }

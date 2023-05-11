@@ -1,14 +1,17 @@
 <template> 
-    <div ref="box"></div>
+    <div ref="boxRef"></div>
 </template>
 <script setup lang="ts">
-    import {defineProps,watch,toRaw} from "vue"
+    import {defineProps,onMounted,watch,toRaw,ref} from "vue"
+    import {ElMessage} from 'element-plus'
+    import 'amis/sdk/sdk.js';
+    import 'amis/lib/themes/default.css';
     import axios from 'axios'
     import copy from 'copy-to-clipboard'
-    import {toast} from 'amis-ui'
     import {getPagesInfo} from '@/api/lowcode/lcPages'
     import {getToken} from '@/api/auth'
 
+    const boxRef = ref()
     const props = defineProps({
         formid: {
             type: String,
@@ -28,12 +31,17 @@
         onRendering(newValue)
     })
 
+    onMounted(()=>{
+        onRendering(props.formjson)
+    })
+
+
     function onRendering(data:any){
-        console.log(data)
+        // @ts-ignore
         let amis = amisRequire('amis/embed')
         let theme = 'cxd'
-        let amisScoped = amis.embed(
-            this.$refs.box, 
+        let amisScoped = amis.embed( 
+            boxRef.value,
             toRaw(data),
             {
                 updateLocation: (to, replace) => {},
@@ -91,7 +99,7 @@
                 isCancel: (value) => (axios ).isCancel(value),
                 copy: content => {
                     copy(content);
-                    toast.success('内容已复制到粘贴板');
+                    ElMessage.success('内容已复制到粘贴板');
                 },
                 theme
             }
