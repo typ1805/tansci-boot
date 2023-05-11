@@ -25,10 +25,14 @@ export const filterRouter = (routers:any, level:any) => {
                 }
             } else if(router.component){
                 const component = router.component
-                if(component === 'Layout'){
-                    router.component = level > 0 ? loadView(router.path) : Layout
+                if(router.componentType == 1){
+                    router.component = layoutModules[`../components/layout/LowcodeEngine.vue`]
                 } else {
-                    router.component = loadView(component) || layoutModules[`../components/layout/Empty.vue`]
+                    if(component === 'Layout'){
+                        router.component = level > 0 ? loadView(router.path) : Layout
+                    } else {
+                        router.component = loadView(component) || layoutModules[`../components/layout/Empty.vue`]
+                    }
                 }
             }
 

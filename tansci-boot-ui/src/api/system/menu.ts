@@ -1,11 +1,12 @@
 import request from '@/utils/request'
 
 // 菜单树
-export function list(){
+export function list(params:any){
     return new Promise((resolve, reject) => {
         request({
             url: '/tansci/sysmenu/tree',
-            method: 'get'
+            method: 'get',
+            params: params
         }).then((res:any) => {
             resolve(res.data)
         }).catch((e:any) => {

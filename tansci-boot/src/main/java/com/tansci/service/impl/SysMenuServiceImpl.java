@@ -55,6 +55,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                         .eq(SysMenu::getIsDel, Constants.NOT_DEL_FALG)
                         .in(Objects.nonNull(menuIds) && menuIds.size() > 0, SysMenu::getId, menuIds)
                         .eq(Objects.nonNull(menu.getParentId()), SysMenu::getParentId, menu.getParentId())
+                        .eq(Objects.nonNull(menu.getIsShow()), SysMenu::getIsShow, menu.getIsShow())
                         .like(Objects.nonNull(menu.getName()), SysMenu::getName, menu.getName())
                         .like(Objects.nonNull(menu.getChineseName()), SysMenu::getChineseName, menu.getChineseName())
                         .orderByDesc(SysMenu::getUpdateTime)
@@ -108,6 +109,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             meta.put("isShow", Objects.equals(1, menu.getIsShow()) ? true : false);
             meta.put("id", menu.getId());
             meta.put("openMode", menu.getOpenMode());
+            meta.put("type", menu.getComponentType());
             newList.add(
                     SysMenuVo.builder()
                             .id(menu.getId())

@@ -61,6 +61,9 @@ public class SysMenu {
     @ApiModelProperty(value = "组件名称")
     private String component;
 
+    @ApiModelProperty(value = "组件类型：0、默认，1、amis")
+    private Integer componentType;
+
     @ApiModelProperty(value = "打开方式：0、默认，1、iframe，2、新标签页")
     private Integer openMode;
 
