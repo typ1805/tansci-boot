@@ -1,17 +1,15 @@
 <template> 
-    <div ref="boxRef"></div>
+    <div id="amisid" ref="boxRef"></div>
 </template>
 <script setup lang="ts">
     import {defineProps,onMounted,watch,toRaw,ref} from "vue"
     import {ElMessage} from 'element-plus'
-    import 'amis/sdk/sdk.js';
-    import 'amis/lib/themes/default.css';
+    import 'amis/sdk/sdk.js'
+    import 'amis/lib/themes/default.css'
     import axios from 'axios'
     import copy from 'copy-to-clipboard'
-    import {getPagesInfo} from '@/api/lowcode/lcPages'
     import {getToken} from '@/api/auth'
 
-    const boxRef = ref()
     const props = defineProps({
         formid: {
             type: String,
@@ -27,22 +25,22 @@
         }
     })
 
-    watch(props.formjson, (newValue, oldValue) =>{
-        onRendering(newValue)
-    })
+    // @ts-ignore
+    const amis = amisRequire('amis/embed');
+    const boxRef = ref(null)
 
-    onMounted(()=>{
-        onRendering(props.formjson)
-    })
-
+    watch(()=> props.formjson, (data)=>{
+            onRendering(data)
+        },
+        {immediate: true,deep: true}
+    )
 
     function onRendering(data:any){
-        // @ts-ignore
-        let amis = amisRequire('amis/embed')
+        // let amisScoped = amis.embed('#amisid', data);
         let theme = 'cxd'
         let amisScoped = amis.embed( 
-            boxRef.value,
-            toRaw(data),
+            '#amisid',
+            data,
             {
                 updateLocation: (to, replace) => {},
             },

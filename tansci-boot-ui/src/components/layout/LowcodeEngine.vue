@@ -1,26 +1,26 @@
 <template> 
-    <amisComponent :formid="state.formid" :formjson="state.formjson"></amisComponent>
+    <amisComponent :formid="formid" :formjson="formjson"></amisComponent>
 </template>
 <script setup lang="ts">
-    import {reactive,onMounted} from "vue"
+    import {reactive, ref} from "vue"
     import amisComponent from "../amis/AmisComponent.vue"
     import {getPagesInfo} from '@/api/lowcode/lcPages'
     import {useRoute} from 'vue-router'
 
     const route = useRoute()
-    const state = reactive({
-        formid: '',
-        formjson: {}
-    })
+    const formid = ref('')
+    const formjson = ref({})
 
-    onMounted(()=>{
+    const init = () =>{
         getPagesInfo(route.meta.id).then((res:any) => {
             if(res){
-                state.formid = res.result.id
-                state.formjson = JSON.parse(res.result.pageschema)
+                formid.value = res.result.id
+                formjson.value = JSON.parse(res.result.pageschema)
             }
         })
-    })
+    }
+
+    init()
 </script>
 <style scoped>
 </style>

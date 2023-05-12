@@ -19,6 +19,7 @@
             chineseName: '',
             englishName: '',
             sort: 0,
+            componentType: 0,
             component: null,
             openMode: 0,
             isDel: 0,
@@ -60,6 +61,7 @@
             chineseName: data.chineseName,
             englishName: data.englishName,
             sort: data.sort,
+            componentType: data.componentType,
             component: data.component,
             openMode: data.openMode,
             isDel: data.isDel,
@@ -88,6 +90,7 @@
                 chineseName: '',
                 englishName: '',
                 sort: 0,
+                componentType: 0,
                 component: null,
                 openMode: 0,
                 isDel: 0,
@@ -122,6 +125,7 @@
                             chineseName: '',
                             englishName: '',
                             sort: 0,
+                            componentType: 0,
                             component: '',
                             openMode: 0,
                             isDel: 0,
@@ -173,6 +177,7 @@
                     chineseName: '',
                     englishName: '',
                     sort: 0,
+                    componentType: 0,
                     component: null,
                     openMode: 0,
                     isDel: 0,
@@ -239,6 +244,12 @@
                 </el-form-item>
                 <el-form-item label="菜单顺序" prop="sort" :rules="[{required: true, message: '菜单顺序不能为空', trigger: 'blur'}]">
                     <el-input-number v-model="state.menuForm.sort" :min="0" :max="999" style="width:50%"></el-input-number>
+                </el-form-item>
+                <el-form-item v-if="state.type == 1" label="组件类型" prop="componentType" :rules="[{required: true, message: '请选择组件类型', trigger: 'change'}]">
+                    <el-radio-group v-model="state.menuForm.componentType">
+                        <el-radio :label="0">默认</el-radio>
+                        <el-radio :label="1">amis</el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item v-if="state.type == 1" label="组件名称" prop="component">
                     <el-input v-model="state.menuForm.component" placeholder="请输入组件名称" style="width:50%"></el-input>
