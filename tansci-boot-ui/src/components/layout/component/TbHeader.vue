@@ -83,7 +83,7 @@
                     <template #reference>
                         <el-button link>
                             <template #icon>
-                                <el-icon :size="24"><ChromeFilled /></el-icon>
+                                <el-icon :size="20"><Setting /></el-icon>
                             </template>
                         </el-button>
                     </template>
@@ -94,12 +94,12 @@
                 </el-popover>
                 <el-button link>
                     <template #icon>
-                        <el-icon :size="24"><Monitor /></el-icon>
+                        <el-icon :size="20"><Monitor /></el-icon>
                     </template>
                 </el-button>
                 <el-button link>
                     <template #icon>
-                        <el-icon :size="24"><FullScreen /></el-icon>
+                        <el-icon :size="20"><FullScreen /></el-icon>
                     </template>
                 </el-button>
                 <el-button @click="toggleDark()" link>
@@ -190,7 +190,7 @@
         align-items: center;
         .el-card{
             .el-button{
-                margin: 1rem 0.6rem;
+                margin: 0.8rem 0.6rem;
             }
         }
    }

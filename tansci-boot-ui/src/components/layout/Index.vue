@@ -9,7 +9,7 @@
     const { proxy } = getCurrentInstance()
     const logo = new URL('../../assets/image/logo.png', import.meta.url).href
     const state = reactive({
-        headerHeight: '52px',
+        headerHeight: '50px',
         asideWidth: '220px',
         defaultHeight: null,
         isCollapse: false,
