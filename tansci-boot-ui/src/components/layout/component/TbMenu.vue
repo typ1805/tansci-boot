@@ -28,8 +28,8 @@
         </div>
         <el-scrollbar :height="height" :min-size="10">
             <el-menu router :default-active="$route.path" :collapse="isCollapse">
-                <template v-for="item in routers" :key="item">
-                    <el-menu-item v-if="!item.children || item.children.length <= 1" :index="item.path">
+                <template v-for="item in routers" :key="item.name">
+                    <el-menu-item v-if="!item.children || item.name == item.children[0].name" :index="item.path">
                         <el-icon v-if="item.icon" style="vertical-align: middle;">
                             <component :is="item.icon"></component>
                         </el-icon>
