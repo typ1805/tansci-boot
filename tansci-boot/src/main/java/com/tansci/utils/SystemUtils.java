@@ -103,8 +103,7 @@ public class SystemUtils {
      * @Param： [ip]
      * @return： java.lang.String
      **/
-    public static String getAddress(HttpServletRequest request) {
-        String ip = getIp(request);
+    public static String getAddress(String ip) {
         try {
             if (Ipv4Util.isInnerIP(ip)) {
                 return "内网IP";

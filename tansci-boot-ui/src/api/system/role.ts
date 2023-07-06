@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function page(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/page',
+            url: '/system/role/page',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -19,7 +19,7 @@ export function page(params:any){
 export function list(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/list',
+            url: '/system/role/list',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -34,7 +34,7 @@ export function list(params:any){
 export function save(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/save',
+            url: '/system/role/save',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -49,7 +49,7 @@ export function save(data:any){
 export function del(id:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/delete/' + id,
+            url: '/system/role/delete/' + id,
             method: 'get'
         }).then((res:any) => {
             resolve(res.data)
@@ -63,7 +63,7 @@ export function del(id:String){
 export function update(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/update',
+            url: '/system/role/update',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -78,7 +78,7 @@ export function update(data:any){
 export function dataPermissions(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/dataPermissions',
+            url: '/system/role/dataPermissions',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -92,7 +92,7 @@ export function dataPermissions(data:any){
 export function orgList(roleId:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/orgList/' + roleId,
+            url: '/system/role/orgList/' + roleId,
             method: 'get'
         }).then((res:any) => {
             resolve(res.data)
@@ -106,7 +106,7 @@ export function orgList(roleId:String){
 export function menuPermissions(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/menuPermissions',
+            url: '/system/role/menuPermissions',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -120,7 +120,7 @@ export function menuPermissions(data:any){
 export function menuList(roleId:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/sysrole/menuList/' + roleId,
+            url: '/system/role/menuList/' + roleId,
             method: 'get'
         }).then((res:any) => {
             resolve(res.data)

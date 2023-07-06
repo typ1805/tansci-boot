@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function tables(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/source/tables',
+            url: '/system/source/tables',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -17,7 +17,7 @@ export function tables(params:any){
 export function columns(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/source/columns',
+            url: '/system/source/columns',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -31,7 +31,7 @@ export function columns(params:any){
 export function primary(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/source/primary',
+            url: '/system/source/primary',
             method: 'get',
             params: params
         }).then((res:any) => {

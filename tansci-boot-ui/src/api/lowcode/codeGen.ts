@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function page(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/lowcode/code/page',
+            url: '/system/lowcode/code/page',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -17,7 +17,7 @@ export function page(params:any){
 export function del(id:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/lowcode/code/delete/' + id,
+            url: '/system/lowcode/code/delete/' + id,
             method: 'delete',
         }).then((res:any) => {
             resolve(res.data)
@@ -30,7 +30,7 @@ export function del(id:String){
 export function save(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/lowcode/code/save',
+            url: '/system/lowcode/code/save',
             method: 'post',
             data
         }).then((res:any) => {
@@ -44,7 +44,7 @@ export function save(data:any){
 export function execute(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/lowcode/code/execute',
+            url: '/system/lowcode/code/execute',
             method: 'post',
             data
         }).then((res:any) => {

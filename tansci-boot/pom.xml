@@ -20,7 +20,6 @@
         <mybatis-plus-boot.varsion>3.4.3.1</mybatis-plus-boot.varsion>
         <druid-spring-boot.varsion>1.2.6</druid-spring-boot.varsion>
         <sa-token-spring-boot.varsion>1.34.0</sa-token-spring-boot.varsion>
-        <knife4j-spring-boot.version>3.0.3</knife4j-spring-boot.version>
         <hutool-all.version>5.7.22</hutool-all.version>
         <fastjson2.version>2.0.26</fastjson2.version>
         <magic-api.version>2.1.0</magic-api.version>
@@ -65,12 +64,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>${knife4j-spring-boot.version}</version>
         </dependency>
 
         <dependency>

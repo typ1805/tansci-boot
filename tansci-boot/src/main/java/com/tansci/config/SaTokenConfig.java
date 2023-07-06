@@ -23,7 +23,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
                 // 验证所有接口
                 .addPathPatterns("/**")
                 // 忽略校验
-                .excludePathPatterns("/auth/**", "//magic/web/**");
+                .excludePathPatterns("/system/auth/**", "/api/web/**");
     }
 
 }

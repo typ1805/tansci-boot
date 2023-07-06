@@ -6,7 +6,6 @@ import 'element-plus/dist/index.css'
 import './styles/index.scss'
 import * as ElIcons from '@element-plus/icons-vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-import 'uno.css'
 import globalProperties from './utils/globalProperties'
 import hasPermission from './utils/hasPermission'
 
