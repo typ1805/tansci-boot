@@ -14,23 +14,17 @@ import java.io.Serializable;
 public class Wrapper<T> implements Serializable {
 
     /**
-     * 成功码.
+     * 错误码：成功
      */
     public static final int SUCCESS_CODE = 200;
 
-    /**
-     * 成功信息.
-     */
     public static final String SUCCESS_MESSAGE = "操作成功";
 
     /**
-     * 错误码.
+     * 错误码：失败
      */
     public static final int ERROR_CODE = 500;
 
-    /**
-     * 错误信息.
-     */
     public static final String ERROR_MESSAGE = "系统异常，请稍后重试！";
 
     /**
@@ -38,20 +32,21 @@ public class Wrapper<T> implements Serializable {
      */
     public static final int ILLEGAL_ARGUMENT_CODE_ = 400;
 
-    /**
-     * 错误信息：参数非法
-     */
     public static final String ILLEGAL_ARGUMENT_MESSAGE = "请求参数非法，请核查！";
 
     /**
-     * 错误码：参数非法
+     * 错误码：凭证已过
      */
-    public static final int AUTHORIZATION_CODE = 403;
+    public static final int AUTHORIZATION_CODE = 402;
+
+    public static final String AUTHORIZATION_MESSAGE = "用户凭证已过期，请重新登录！";
 
     /**
-     * 错误信息：参数非法
+     * 错误码：禁止访问
      */
-    public static final String AUTHORIZATION_MESSAGE = "用户凭证已过期，请重新登录！";
+    public static final int FORBIDDEN_CODE = 403;
+
+    public static final String FORBIDDEN_MESSAGE = "禁止访问！";
 
     /**
      * 编号.

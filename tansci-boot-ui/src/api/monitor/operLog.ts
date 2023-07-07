@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function page(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/syslog/operLog',
+            url: '/tansci/monitor/operLog',
             method: 'get',
             params: params
         }).then((res:any) => {

@@ -43,7 +43,6 @@ public class MagicAPIJsonConfig implements ResultProvider {
      **/
     @Override
     public Object buildPageResult(RequestEntity requestEntity, Page page, long total, List<Map<String, Object>> data) {
-
         return new HashMap<String,Object>(){
             {
                 put("total", total);

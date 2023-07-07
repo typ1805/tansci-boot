@@ -1,6 +1,6 @@
 package com.tansci.common;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.Objects;
 
 /**
  * @ClassName： WrapMapper.java
@@ -43,11 +43,11 @@ public class WrapMapper {
     }
 
     public static <E> Wrapper<E> error(String message) {
-        return wrap(Wrapper.ERROR_CODE, StringUtils.isBlank(message) ? Wrapper.ERROR_MESSAGE : message);
+        return wrap(Wrapper.ERROR_CODE, Objects.isNull(message) ? Wrapper.ERROR_MESSAGE : message);
     }
 
     public static <E> Wrapper<E> error(int code, String message) {
-        return wrap(code, StringUtils.isBlank(message) ? Wrapper.ERROR_MESSAGE : message);
+        return wrap(code, Objects.isNull(message) ? Wrapper.ERROR_MESSAGE : message);
     }
 
     public static <E> Wrapper<E> ok() {

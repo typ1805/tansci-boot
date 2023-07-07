@@ -55,7 +55,7 @@ export const loadView = (view:any) => {
 export function generateRoutes(){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/menu/menus',
+            url: '/tansci/system/menu/menus',
             method: 'get'
         }).then( (res:any) => {
             const routers = filterRouter(res.data.result, 0)

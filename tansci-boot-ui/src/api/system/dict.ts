@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function tree(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/dict/tree',
+            url: '/tansci/system/dict/tree',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -19,7 +19,7 @@ export function tree(params:any){
 export function list(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/dict/list',
+            url: '/tansci/system/dict/list',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -34,7 +34,7 @@ export function list(params:any){
 export function save(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/dict/save',
+            url: '/tansci/system/dict/save',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -49,7 +49,7 @@ export function save(data:any){
 export function del(id:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/dict/delete/' + id,
+            url: '/tansci/system/dict/delete/' + id,
             method: 'get'
         }).then((res:any) => {
             resolve(res.data)
@@ -63,7 +63,7 @@ export function del(id:String){
 export function update(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/dict/update',
+            url: '/tansci/system/dict/update',
             method: 'post',
             data: data
         }).then((res:any) => {

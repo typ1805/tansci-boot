@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function list(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/org/list',
+            url: '/tansci/system/org/list',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -19,7 +19,7 @@ export function list(params:any){
 export function save(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/org/save',
+            url: '/tansci/system/org/save',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -34,7 +34,7 @@ export function save(data:any){
 export function del(id:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/org/delete/' + id,
+            url: '/tansci/system/org/delete/' + id,
             method: 'get'
         }).then((res:any) => {
             resolve(res.data)
@@ -48,7 +48,7 @@ export function del(id:String){
 export function update(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/org/update',
+            url: '/tansci/system/org/update',
             method: 'post',
             data: data
         }).then((res:any) => {

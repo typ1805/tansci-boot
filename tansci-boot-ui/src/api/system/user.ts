@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function page(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/user/page',
+            url: '/tansci/system/user/page',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -19,7 +19,7 @@ export function page(params:any){
 export function list(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/user/list',
+            url: '/tansci/system/user/list',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -34,7 +34,7 @@ export function list(params:any){
 export function save(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/user/save',
+            url: '/tansci/system/user/save',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -49,7 +49,7 @@ export function save(data:any){
 export function del(id:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/user/delete/' + id,
+            url: '/tansci/system/user/delete/' + id,
             method: 'get'
         }).then((res:any) => {
             resolve(res.data)
@@ -63,7 +63,7 @@ export function del(id:String){
 export function update(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/user/update',
+            url: '/tansci/system/user/update',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -78,7 +78,7 @@ export function update(data:any){
 export function modifyPass(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/user/modifyPass',
+            url: '/tansci/system/user/modifyPass',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -93,7 +93,7 @@ export function modifyPass(data:any){
 export function roleList(){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/role/list',
+            url: '/tansci/system/role/list',
             method: 'get'
         }).then((res:any) => {
             resolve(res.data)

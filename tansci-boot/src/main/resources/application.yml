@@ -1,41 +1,17 @@
 server:
   port: 8000
+  servlet:
+    context-path: /tansci
 
 spring:
+  profiles:
+    active: dev
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-  servlet:
-    multipart:
-      enabled: true
-      max-file-size: 100MB
-      max-request-size: 100MB
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/tansci_boot?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
-    username: root
-    password: root
-    initialSize: 10
-    minIdle: 10
-    maxActive: 100
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 300000
-    minEvictableIdleTimeMillis: 3600000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
-
-mybatis-plus:
-  mapper-locations: classpath:mapper/**/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # Sa-Token 配置 (文档: https://sa-token.cc)
 sa-token:

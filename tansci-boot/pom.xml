@@ -5,35 +5,40 @@
     <parent>
         <groupId>com.tansci</groupId>
         <artifactId>tansci-boot-parent</artifactId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
     </parent>
 
     <groupId>com.tansci</groupId>
     <artifactId>tansci-boot</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
 
     <name>tansci-boot</name>
     <description>Tansci Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
-        <mybatis-plus-boot.varsion>3.4.3.1</mybatis-plus-boot.varsion>
         <druid-spring-boot.varsion>1.2.6</druid-spring-boot.varsion>
         <sa-token-spring-boot.varsion>1.34.0</sa-token-spring-boot.varsion>
         <hutool-all.version>5.7.22</hutool-all.version>
         <fastjson2.version>2.0.26</fastjson2.version>
-        <magic-api.version>2.1.0</magic-api.version>
+        <magic-api.version>2.1.1</magic-api.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ssssssss</groupId>
+            <artifactId>magic-api-spring-boot-starter</artifactId>
+            <version>${magic-api.version}</version>
         </dependency>
 
         <dependency>
@@ -43,15 +48,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus-boot.varsion}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>${druid-spring-boot.varsion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool-all.version}</version>
         </dependency>
 
         <dependency>
@@ -61,26 +66,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${hutool-all.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${fastjson2.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.ssssssss</groupId>
-            <artifactId>magic-api-spring-boot-starter</artifactId>
-            <version>${magic-api.version}</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

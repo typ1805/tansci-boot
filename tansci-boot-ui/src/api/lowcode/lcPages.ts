@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function page(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/lcPages/page',
+            url: '/tansci/lowcode/lcPages/page',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -17,7 +17,7 @@ export function page(params:any){
 export function getPagesInfo(menuId:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/lcPages/getPagesInfo/' + menuId,
+            url: '/tansci/lowcode/lcPages/pagesInfo/' + menuId,
             method: 'get'
         }).then((res:any) => {
             resolve(res.data)
@@ -30,7 +30,7 @@ export function getPagesInfo(menuId:String){
 export function save(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/lcPages/save',
+            url: '/tansci/lowcode/lcPages/save',
             method: 'post',
             data
         }).then((res:any) => {
@@ -44,7 +44,7 @@ export function save(data:any){
 export function update(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/lcPages/update',
+            url: '/tansci/lowcode/lcPages/update',
             method: 'post',
             data
         }).then((res:any) => {
@@ -58,7 +58,7 @@ export function update(data:any){
 export function bindMenu(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/lcPages/bindMenu',
+            url: '/tansci/lowcode/lcPages/bindMenu',
             method: 'post',
             data
         }).then((res:any) => {
@@ -72,7 +72,7 @@ export function bindMenu(data:any){
 export function del(id:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/lcPages/delete/' + id,
+            url: '/tansci/lowcode/lcPages/delete/' + id,
             method: 'get',
         }).then((res:any) => {
             resolve(res.data)
@@ -85,7 +85,7 @@ export function del(id:String){
 export function batchDelete(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/lcPages/batchDelete',
+            url: '/tansci/lowcode/lcPages/batchDelete',
             method: 'post',
             data
         }).then((res:any) => {

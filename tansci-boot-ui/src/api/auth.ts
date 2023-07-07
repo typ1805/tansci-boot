@@ -34,7 +34,7 @@ export function setMenus(menus:any) {
 export function login(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/auth/login',
+            url: '/tansci/system/auth/login',
             method: 'post',
             data: {
                 username: data.username,
@@ -53,7 +53,7 @@ export function login(data:any){
 // 登出
 export function logout(){
     request({
-        url: '/system/auth/logout',
+        url: '/tansci/system/auth/logout',
         method: 'get'
     }).then(() => {
         removeToken()
@@ -65,7 +65,7 @@ export function logout(){
 export function getCode(){
     return new Promise((resolve, reject) => {
         request({
-            url: '/system/auth/code',
+            url: '/tansci/system/auth/code',
             method: 'get'
         }).then((res:any) => {
             resolve(res)
@@ -77,7 +77,7 @@ export function getCode(){
 
 export async function getUserInfo() {
     await request({
-        url: '/system/user/info',
+        url: '/tansci/system/user/info',
         method: 'get'
     }).then((res:any) => {
         if(res.data.result){

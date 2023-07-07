@@ -4,7 +4,7 @@
   const { proxy } = getCurrentInstance()
 
   const state = reactive({
-    url: proxy.$global.baseApi + '/tansci/magic/web/index.html'
+    url: proxy.$global.baseApi + '/api/web/index.html'
   })
 
 </script>

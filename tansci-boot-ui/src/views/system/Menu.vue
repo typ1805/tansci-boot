@@ -8,6 +8,7 @@
     const menuFormRef = ref<FormInstance>();
     const state = reactive({
         treeData: [],
+        treeList: [],
         operate: 0,
         type: 1,
         menuForm:{
@@ -37,9 +38,15 @@
     })
 
     function onMenuTree(){
-        list().then((res:any)=>{
+        list({}).then((res:any)=>{
             if(res){
                 state.treeData = res.result;
+                state.treeList = [];
+                state.treeList.push({
+                    id: '0',
+                    chineseName: "根节点",
+                    children: res.result
+                })
             }
         })
     }
@@ -118,7 +125,7 @@
                         ElMessage.success("删除成功!");
                         state.menuForm = {
                             id: '',
-                            parentId: '',
+                            parentId: '0',
                             name: '',
                             url: '',
                             icon: '',
@@ -170,7 +177,7 @@
                 }
                 state.menuForm = {
                     id: '',
-                    parentId: '',
+                    parentId: '0',
                     name: '',
                     url: '',
                     icon: '',
@@ -220,6 +227,10 @@
             </el-radio-group>
             <el-divider content-position="left">菜单详情</el-divider>
             <el-form :model="state.menuForm" :rules="rules" ref="menuFormRef" :disabled="state.operate==0 || state.operate==3?true:false" label-position="right" label-width="150px">
+                <el-form-item v-if="state.type == 1" label="父级菜单" prop="parentId" :rules="[{required: true, message: '父级不能为空', trigger: 'blur'}]">
+                    <el-tree-select v-model="state.menuForm.parentId" :data="state.treeList" :props="{children: 'children', label: 'chineseName'}" node-key="id" 
+                check-strictly :render-after-expand="false" :default-checked-keys="[state.menuForm.parentId]" :default-expanded-keys="[state.menuForm.parentId]" placeholder="请选父级菜单" style="width:50%"/>
+                </el-form-item>
                 <el-form-item v-if="state.type == 1" label="菜单名称" prop="name" :rules="[{required: true, message: '名称不能为空', trigger: 'blur'},{pattern: /^[A-Za-z0-9]+$/, message: '必须是字母', trigger: 'blur'}]">
                     <el-input v-model="state.menuForm.name" placeholder="请输入名称" style="width:50%"></el-input>
                 </el-form-item>

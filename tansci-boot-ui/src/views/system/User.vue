@@ -280,24 +280,24 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="电话" prop="phone" :rules="[{pattern: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/, message: '请输入正确的手机号', trigger: 'blur'}]">
+              <el-form-item label="电话" prop="phone" :rules="[{required: true,message:'请输入电话',trigger: 'blur'},{pattern: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/, message: '请输入正确的手机号', trigger: 'blur'}]">
                 <el-input v-model="form.userForm.phone" placeholder="请输入电话" style="width: 100%"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="生日" prop="birthday">
-                <el-date-picker v-model="form.userForm.birthday" type="date" placeholder="选择日期" style="width: 100%;"></el-date-picker>
+              <el-form-item label="生日" prop="birthday" :rules="[{required: true,message:'请选择日期',trigger: 'blur'}]">
+                <el-date-picker v-model="form.userForm.birthday" type="date" value-format="YYYY-MM-DD" placeholder="选择日期" style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="地址" prop="address">
+              <el-form-item label="地址" prop="address" :rules="[{required: true,message:'请输入地址',trigger: 'blur'}]">
                 <el-input v-model="form.userForm.address" placeholder="请输入地址" style="width: 100%"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="邮箱" prop="email" :rules="[{pattern: /^[a-zA-Z0-9]+([-_.][A-Za-zd]+)*@([a-zA-Z0-9]+[-.])+[A-Za-zd]{2,5}$/, message: '请输入正确邮箱', trigger: 'blur'}]">
+              <el-form-item label="邮箱" prop="email" :rules="[{required: true,message:'请输入邮箱',trigger: 'blur'},{pattern: /^[a-zA-Z0-9]+([-_.][A-Za-zd]+)*@([a-zA-Z0-9]+[-.])+[A-Za-zd]{2,5}$/, message: '请输入正确邮箱', trigger: 'blur'}]">
                 <el-input v-model="form.userForm.email" placeholder="请输入邮箱" style="width: 100%"/>
               </el-form-item>
             </el-col>

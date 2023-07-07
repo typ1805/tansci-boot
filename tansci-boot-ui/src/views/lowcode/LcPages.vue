@@ -127,10 +127,16 @@
 
     function onContextMenu(val){
         list({isShow: 1}).then((res) => {
-            state.menuList = res.result
+            state.menuList = res.result;
+            let menuIds = []
+            if(Object.prototype.toString.call(val.menuIds) === '[object Array]'){
+                menuIds = val.menuIds
+            } else {
+                menuIds = val.menuIds ? [val.menuIds] : []
+            }
             state.menuForm = {
                 id: val.id,
-                menuId: val.menuIds
+                menuId: menuIds
             }
             state.menuVisible = true
         })

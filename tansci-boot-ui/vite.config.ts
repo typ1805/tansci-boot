@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 
-const url = "http://127.0.0.1:8000"
 export default defineConfig({
   resolve: {
     alias: {
@@ -21,13 +20,11 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/system': {
-        target: url,
+      '/tansci': {
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
-        pathRewrite: {
-          '^/system':'/system'
-        }
+        pathRewrite: {'^/tansci':'/tansci'} 
       }
-    }
+    } as any
   }
 })

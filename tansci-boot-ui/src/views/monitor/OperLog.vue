@@ -15,21 +15,15 @@
       width: '80'
     },
     tableTitle: [
-      {prop:'module',label:'功能模块'},
-      {prop:'message',label:'操作描述'},
-      {prop:'type',label:'操作类型',type:'tag',option:{size:'small',effect:'plain',typeList:[
-        {value: 'INSERT', label: 'success'},
-        {value: 'UPDATE', label: 'warning'},
-        {value: 'DELETE', label: 'danger'},
-        {value: 'SELECT', label: 'info'},
-        ]}
-      },
+      // {prop:'module',label:'功能模块'},
+      // {prop:'message',label:'操作描述'},
+      {prop:'uri',label:'请求URI'},
+      {prop:'type',label:'操作类型'},
       {prop:'takeUpTime',label:'耗时(ms)'},
       {prop:'status',label:'状态', type:'dict',dictType: 'oper_log_status'},
       {prop:'method',label:'操作方法'},
-      {prop:'uri',label:'请求URI'},
       {prop:'ip',label:'请求IP'},
-      {prop:'userName',label:'用户名称'},
+      // {prop:'userName',label:'用户名称'},
       {prop:'createTime',label:'创建时间'}
     ],
     tableData:[],
