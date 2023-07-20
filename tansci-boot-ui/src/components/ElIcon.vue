@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import {defineProps, reactive, toRefs} from 'vue'
+    import {reactive, toRefs} from 'vue'
     import * as ElIcons from '@element-plus/icons-vue'
 
     const prop = defineProps({

@@ -2,7 +2,7 @@
     <div id="amisid" ref="boxRef"></div>
 </template>
 <script setup lang="ts">
-    import {defineProps,watch,ref} from "vue"
+    import {watch,ref} from "vue"
     import {ElMessage} from 'element-plus'
     import 'amis/sdk/sdk.js'
     import 'amis/lib/themes/default.css'

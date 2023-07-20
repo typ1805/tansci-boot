@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import {defineProps, reactive, toRefs, watch} from 'vue'
+    import {reactive, toRefs, watch} from 'vue'
     import common from '@/utils/common'
     
     const prop = defineProps({

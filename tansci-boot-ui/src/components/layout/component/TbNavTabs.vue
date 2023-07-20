@@ -86,7 +86,7 @@
 </script>
 <template>
     <div class="tabs-menu">
-        <el-tabs v-model="tabsMenuValue" @tab-click="onTabMenuClick" @tab-remove="onTabMenuRemove">
+        <el-tabs type="card" v-model="tabsMenuValue" @tab-click="onTabMenuClick" @tab-remove="onTabMenuRemove">
             <el-tab-pane v-for="item in tabsMenuList"
                 :key="item.path"
                 :path="item.path"
@@ -95,6 +95,9 @@
                 :closable="item.close"
                 @node-contextmenu="onTabMenuRemove">
                 <template #label>
+                    <el-icon v-if="item.icon" style="vertical-align: middle;">
+                        <component :is="item.icon"></component>
+                    </el-icon>
                     <el-dropdown :id="item.path" trigger="contextmenu">
                         <span style="vertical-align: middle">{{ item.title }}</span>
                          <template #dropdown>
@@ -112,6 +115,17 @@
 </template>
 <style lang="scss">
     .tabs-menu{
-        margin-top: 1.2rem;
+        width: 100%; 
+        .el-tabs > .el-tabs__header,.el-tabs__item {
+			box-sizing: border-box;
+			height: 32px;
+		}
+        .el-tabs--card > .el-tabs__header{
+            border: none;
+        }
+        .el-tabs--card > .el-tabs__header .el-tabs__nav{
+            border-bottom: none;
+            // background: #ffffff;
+        }
     }
 </style>

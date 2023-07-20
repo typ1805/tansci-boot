@@ -4,12 +4,13 @@
     import en from 'element-plus/dist/locale/en.mjs'
     import { getMenus } from "@/api/auth"
     import TbMenu from "./component/TbMenu.vue"
-    import TbHeader from "./component/TbHeader.vue"
+    import TbNavTabs from "./component/TbNavTabs.vue"
+    import TbSetting from "./component/TbSetting.vue"
 
     const { proxy } = getCurrentInstance()
     const logo = new URL('../../assets/image/logo.png', import.meta.url).href
     const state = reactive({
-        headerHeight: '50px',
+        headerHeight: '33px',
         asideWidth: '220px',
         defaultHeight: null,
         isCollapse: false,
@@ -75,14 +76,15 @@
                 </el-aside>
                 <el-container>
                     <el-header :height="state.headerHeight">
-                        <TbHeader :height="state.headerHeight" :isCollapse="state.isCollapse" @onLanguage="onLanguage"/>
+                        <TbNavTabs />
                     </el-header>
                     <el-main>
                         <el-card :shadow="proxy.$global.cardShadow">
-                            <el-scrollbar :height="state.defaultHeight-126">
+                            <el-scrollbar :height="state.defaultHeight-100">
                                 <router-view />
                             </el-scrollbar>
                         </el-card>
+                        <TbSetting :isCollapse="state.isCollapse" @onLanguage="onLanguage"/>
                     </el-main>
                 </el-container>
             </el-container>
@@ -101,10 +103,11 @@
             transition: all .5s;
         }
         .el-header{
+            margin-top: 0.4rem;
             padding: 0 0.6rem 0 0;
         }
         .el-main{
-            padding: 1.2rem 0.6rem 0 0;
+            padding: 0rem 0.6rem 0 0;
             overflow-x: hidden;
             overflow-y: hidden;
         }
