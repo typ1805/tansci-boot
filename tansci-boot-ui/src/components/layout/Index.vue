@@ -6,11 +6,12 @@
     import TbMenu from "./component/TbMenu.vue"
     import TbNavTabs from "./component/TbNavTabs.vue"
     import TbSetting from "./component/TbSetting.vue"
+    import TbHeader from "./component/TbHeader.vue"
 
     const { proxy } = getCurrentInstance()
     const logo = new URL('../../assets/image/logo.png', import.meta.url).href
     const state = reactive({
-        headerHeight: '33px',
+        headerHeight: '40px',
         asideWidth: '220px',
         defaultHeight: null,
         isCollapse: false,
@@ -76,7 +77,8 @@
                 </el-aside>
                 <el-container>
                     <el-header :height="state.headerHeight">
-                        <TbNavTabs />
+                        <TbHeader/>
+                        <!-- <TbNavTabs /> -->
                     </el-header>
                     <el-main>
                         <el-card :shadow="proxy.$global.cardShadow">
@@ -84,7 +86,7 @@
                                 <router-view />
                             </el-scrollbar>
                         </el-card>
-                        <TbSetting :isCollapse="state.isCollapse" @onLanguage="onLanguage"/>
+                        <!-- <TbSetting :isCollapse="state.isCollapse" @onLanguage="onLanguage"/> -->
                     </el-main>
                 </el-container>
             </el-container>
