@@ -26,15 +26,16 @@ export default[
     name: 'index',
     icon: 'HomeFilled',
     meta: { title: "首页" },
-    isShow: true,
+    isShow: false,
+    redirect: '/index/index',
     component: () => import("@/components/layout/Index.vue"),
     children: [
       {
-        path: '/index',
+        path: 'index',
         name: 'index',
         icon: 'HomeFilled',
         meta: { title: "首页" },
-        isShow: true,
+        isShow: false,
         component: () => import('@/views/Index.vue')
       }
     ]
