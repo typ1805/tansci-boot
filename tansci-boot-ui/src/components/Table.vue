@@ -174,7 +174,7 @@
                     <el-table-column v-else-if="item.type == 'image' && !item.isShow" 
                         :label="item.label" :align="item.align != null ? item.align : 'center'" :width="item.width">
                         <template #default="scope">
-                            <el-image :src="scope.row[item.prop]" :preview-src-list="[scope.row[item.prop]]" :z-index="9999" fit="cover" style="width: 50px; height: 50px"/>
+                            <el-image :src="scope.row[item.prop]" :preview-src-list="[scope.row[item.prop]]" preview-teleported fit="cover" style="width: 50px; height: 50px"/>
                         </template>
                     </el-table-column>
                     <!-- el-rate -->
