@@ -8,7 +8,7 @@
 	const loginFormRef = ref<FormInstance>() 
 	
 	const logo = new URL('../../assets/image/logo.png', import.meta.url).href
-	const loginLogo = new URL('../../assets/image/login-left.png', import.meta.url).href
+	const loginLogo = new URL('../../assets/image/login-left.gif', import.meta.url).href
 	const codeImg = ref()
 
 	const state = reactive({
@@ -82,7 +82,7 @@
 			<div class="main-title">帐号登录</div>
 			<div class="main-container">
 				<div class="logo">
-					<el-image :src="loginLogo"  style="width: 100%; height: 80%;"></el-image>
+					<el-image :src="loginLogo" fit="fit"></el-image>
 				</div>
 				<div class="form">
 					<el-form :model="state.loginForm" :rules="rules" size="large" ref="loginFormRef">
@@ -125,7 +125,7 @@
 </template>
 <style lang="scss" scoped="scoped">
 	.login-container {
-		background-image: radial-gradient( white 0%, #FAFDFE 10%, #ddf8e7 50%, #FAFDFE 90%, white 100%);
+		// background-image: radial-gradient( white 0%, #FAFDFE 10%, #ddf8e7 50%, #FAFDFE 90%, white 100%);
 		// background-image: radial-gradient(#ddf8e7 00%, #FAFDFE 80%, white 100%);
 		.login-header{
 			width: 100%;
