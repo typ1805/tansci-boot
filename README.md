@@ -68,4 +68,6 @@ GitHub: [https://gitee.com/typ1805/tansci](https://gitee.com/typ1805/tansci)
 - QQ：742354529 （742354529@qq.com）
 - QQ 群： 747200630
 - 个人主站：[https://typ1805.gitee.io](https://typ1805.gitee.io)
-- 公众号：![个人公众号](doc/gzh.jpg)
+- 公众号：
+  
+![个人公众号](doc/gzh.jpg)
