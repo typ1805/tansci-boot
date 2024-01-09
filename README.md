@@ -5,7 +5,7 @@
 <a href="https://www.ssssssss.org/magic-api"><img src="https://www.ssssssss.org/magic-api/images/logo-magic-api.png" width="20" height="20" alt="magic-api"></a>
 <a href="https://vuejs.org"><img src="https://img.shields.io/badge/-Vue-34495e?logo=vue.js" alt="Vue3"></a>
 <a href="https://element-plus.gitee.io/#/zh-CN/component/changelog"><img src="https://img.shields.io/badge/element--plus-latest-blue" alt="Element Plus"></a>
-<a href="https://aisuda.bce.baidu.com/amis/zh-CN/docs/index"><img src="https://aisuda.bce.baidu.com/amis/static/logo_408c434.png" width="60" height="20" alt="amis"></a>
+<a href="https://aisuda.bce.baidu.com/amis/zh-CN/docs/index"><img src="./doc/logo_408c434.png" width="60" height="20" alt="amis"></a>
 <a href="https://gitee.com/link?target=http%3A%2F%2Fwww.opensource.org%2Flicenses%2FMIT"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT"></a>
 </p>
 
