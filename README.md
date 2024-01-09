@@ -59,9 +59,9 @@ Tansci-Boot 是一个前后端分离后台管理系统， 前端集成 `amis` �
 
 **项目地址：**
 
-Gitee: [https://gitee.com/typ1805/tansci](https://gitee.com/typ1805/tansci)
+Gitee: [https://gitee.com/typ1805/tansci-boot](https://gitee.com/typ1805/tansci-boot)
 
-GitHub: [https://gitee.com/typ1805/tansci](https://gitee.com/typ1805/tansci)
+GitHub: [https://github.com/typ1805/tansci-boot](https://github.com/typ1805/tansci-boot)
 
 ## 开发者联系
 
