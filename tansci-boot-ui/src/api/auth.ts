@@ -58,6 +58,9 @@ export function logout(){
     }).then(() => {
         removeToken()
         location.reload()
+    }).catch((e:any) => {
+        removeToken()
+        location.reload()
     })
 }
 

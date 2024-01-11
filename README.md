@@ -57,6 +57,16 @@ Tansci-Boot 是一个前后端分离后台管理系统， 前端集成 `amis` �
 - tansci-boot-ui-editor：amis 低代码编辑器
 - sql：数据库 SQL 脚本
 
+**amis 配置说明：**
+
+在 ``tansci-boot-ui/public/gh-pages/config.js`` 可配置编辑器获取页面JSON和保存接口的配置。
+
+> 注意：在页面编辑器中业务接口回报404可忽略。
+
+**接口开发配置：**
+
+接口开发菜单页面加载不了，检查环境变量配置的服务地址是否和后端服务一致：``tansci-boot-ui/.env.development`` 参数 `VITE_BASE_API`
+
 **项目地址：**
 
 Gitee: [https://gitee.com/typ1805/tansci-boot](https://gitee.com/typ1805/tansci-boot)

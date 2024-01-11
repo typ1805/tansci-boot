@@ -3,8 +3,14 @@
 
   const state = reactive({
     versionList: [
-      {content:'项目初始化',timestamp:'2023-04-01'},
-      {content:'项目初始化',timestamp:'2023-04-01'},
+      {timestamp:'2024-01-11', icon:'CircleCloseFilled', color:'#F56C6C', content: [
+        '1、token 过期页面重复提示 “用户凭证已过期，请重新登录！” 问题处理；',
+        '2、页面管理表格列表不会自适应 问题处理；'
+      ]},
+      {timestamp:'2024-01-09', icon:'CircleCheckFilled', color:'#409EFF', content: ['项目开源']},
+      {timestamp:'2023-07-07', icon:'CircleCheckFilled', color:'#409EFF', content: ['v2.0.0 集成 magic-api']},
+      {timestamp:'2023-07-06', icon:'CircleCheckFilled', color:'#409EFF', content: ['v1.0.0 前端amis，后端未使用 magic-api']},
+      {timestamp:'2023-03-20', icon:'CircleCheckFilled', color:'#409EFF', content: ['项目初始化']},
     ]
   })
 
@@ -29,10 +35,10 @@
         </div>
         <div class="text">
           <el-space alignment="normal" direction="vertical">
-            <el-text tag="p">一款基于 SpringBoot + Vue3.2 + Element Plus 的后台管理系统。带你快速掌握SpringBoot核心知识 + Vue全家桶全栈技能。在此过程中，从0到1经历开发全流程，掌握前后端分离开发模式，搭建一个专属自己的、内容可灵活配置的知识库系统。</el-text>
-            <el-text tag="p">此项目是为了减少业务代码的重复轮子,它具有一个系统该有的通用性核心业务代码,无论是微服务还是单体,都是通用的业务 但更多的,是为了学习微服务的理念以及开发 您可以使用它进行网站管理后台，网站会员中心，CMS，CRM，OA等待系统的开发, 当然,不仅仅是一些小系统,我们可以生产更多的服务模块,不断完善项目。</el-text>
-            <el-text tag="p">系统初心是为了能够更快地完成业务的需求，带来更好的体验、更多的时间。它将会用于孵化一些实用的功能点。 我们希望它们是轻量级，可移植性高的功能插件。</el-text>
-            <el-text tag="p">同时，我们更希望广大开发者能在其中更快地获得更好的解决方案、尽量降低我们的学习成本。 由此，我们应当把更多的时间投入到其它更有意义的事情当中，我们深知知识的重要性，但，并不希望仅拥有单一”知识“。 去感受/关爱更多光彩，无论人、事、物，它们也将成为你最好的灵感。</el-text>
+            <el-text tag="p">基于 SpringBoot2 + magic-api + Vue3 + Element Plus + amis3.0 快速开发管理系统</el-text>
+            <el-text tag="p">Tansci-Boot 是一个前后端分离后台管理系统， 前端集成 amis 低代码前端框架，后端集成 magic-api 的接口快速开发框架。包含基础权限、安全认证、以及常用的一些组件功能。项目易上手，技术更综合，能力更全面。</el-text>
+            <el-text tag="p">amis 是一个低代码前端框架，它使用 JSON 配置来生成页面，可以减少页面开发工作量，极大提升效率。</el-text>
+            <el-text tag="p">magic-api 一个基于 Java 的接口快速开发框架，通过 magic-api 提供的 UI 界面完成编写接口，无需定义 Controller、Service、Dao、Mapper、XML、VO 等 Java 对象即可完成常见的 HTTP API 接口开发。</el-text>
           </el-space>
         </div>
       </div>
@@ -59,8 +65,11 @@
         </template>
         <div>
           <el-timeline>
-            <el-timeline-item v-for="item in state.versionList" :key="item" :timestamp="item.timestamp">
-              {{ item.content }}
+            <el-timeline-item v-for="item in state.versionList" :key="item" :color="item.color" :icon="item.icon" :timestamp="item.timestamp" placement="top">
+              <el-card v-if="item.content.length > 1">
+                <p v-for="c in item.content" :key="c">{{ c }}</p>
+              </el-card>
+              <p v-else>{{ item.content[0] }}</p>
             </el-timeline-item>
           </el-timeline>
         </div>

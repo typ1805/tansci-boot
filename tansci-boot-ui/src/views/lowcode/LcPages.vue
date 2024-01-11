@@ -343,7 +343,7 @@
                 flex-wrap: wrap;  
                 justify-content: flex-start;
                 .el-card{
-                    flex: 0 0 24%;
+                    // flex: 0 0 24%;
                     :deep(.el-card__header){
                         padding: 1rem;
                         border: none;
