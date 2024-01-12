@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { reactive, onMounted } from "vue"
 
+  const gzh = new URL('../assets/image/gzh.jpg', import.meta.url).href
   const state = reactive({
     versionList: [
       {timestamp:'2024-01-11', icon:'CircleCloseFilled', color:'#F56C6C', content: [
@@ -50,28 +51,38 @@
         </template>
         <div>
           <div>
-            <el-text>官网：</el-text>
+            <el-text>博客：</el-text>
             <el-link type="success" href="https://typ1805.gitee.io" target="_blank">https://typ1805.gitee.io</el-link>
           </div>
           <div style="padding-top: 1rem;">
-            <el-text>交流群：</el-text>
+            <el-text>QQ：</el-text>
+            <el-link type="success">742354529</el-link>
+          </div>
+          <div style="padding-top: 1rem;">
+            <el-text>QQ群：</el-text>
             <el-link type="success">747200630</el-link>
+          </div>
+          <div style="padding-top: 1rem;">
+            <el-text>公众号：</el-text><br>
+            <el-image style="width: 100px; height: 100px" :src="gzh" fit="fit" />
           </div>
         </div>
       </el-card>
       <el-card shadow="never" style="flex: 1;">
         <template #header>
-          <span>Tansci发展史</span>
+          <span>更新日志</span>
         </template>
         <div>
-          <el-timeline>
-            <el-timeline-item v-for="item in state.versionList" :key="item" :color="item.color" :icon="item.icon" :timestamp="item.timestamp" placement="top">
-              <el-card v-if="item.content.length > 1">
-                <p v-for="c in item.content" :key="c">{{ c }}</p>
-              </el-card>
-              <p v-else>{{ item.content[0] }}</p>
-            </el-timeline-item>
-          </el-timeline>
+          <el-scrollbar max-height="22rem">
+            <el-timeline>
+              <el-timeline-item v-for="item in state.versionList" :key="item" :color="item.color" :icon="item.icon" :timestamp="item.timestamp" placement="top">
+                <el-card v-if="item.content.length > 1">
+                  <p v-for="c in item.content" :key="c">{{ c }}</p>
+                </el-card>
+                <p v-else>{{ item.content[0] }}</p>
+              </el-timeline-item>
+            </el-timeline>
+          </el-scrollbar>
         </div>
       </el-card>
     </div>

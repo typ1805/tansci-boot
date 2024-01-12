@@ -8,7 +8,7 @@
 	const loginFormRef = ref<FormInstance>() 
 	
 	const logo = new URL('../../assets/image/logo.png', import.meta.url).href
-	const loginLogo = new URL('../../assets/image/login-left.gif', import.meta.url).href
+	const loginLogo = new URL('../../assets/image/login-left.png', import.meta.url).href
 	const codeImg = ref()
 
 	const state = reactive({
@@ -113,7 +113,9 @@
 			<div>
 				<el-link href="https://typ1805.gitee.io" target="_blank">关于作者</el-link>
 				<el-divider direction="vertical" />
-				<el-link href="https://gitee.com/typ1805/tansci-boot" target="_blank">源码地址 Gitee & GitHub</el-link>
+				<el-text size="small">源码地址</el-text>
+				<el-link href="https://gitee.com/typ1805/tansci-boot" target="_blank" style="padding:0 0.6rem">Gitee</el-link>
+				<el-link href="https://github.com/typ1805/tansci-boot" target="_blank">GitHub</el-link>
 				<el-divider direction="vertical" />
 				<el-link href="https://typ1805.gitee.io" target="_blank">联系作者</el-link>
 			</div>
@@ -154,7 +156,7 @@
 				justify-content: center;
 				align-items: center;
 				.logo{
-					width: 36rem;
+					width: 26rem;
 					padding-right: 2rem;
 					// transition: all .2s;
 				}
