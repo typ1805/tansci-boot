@@ -6,9 +6,14 @@
     import {ElMessage} from 'element-plus'
     import 'amis/sdk/sdk.js'
     import 'amis/lib/themes/default.css'
+    import 'amis/sdk/color-picker.js'
+    import 'amis/sdk/rest.js'
+    import {InputCity} from 'amis/esm/renderers/Form/InputCity.js'
+    import {InputColor} from 'amis/esm/renderers/Form/InputColor.js'
     import axios from 'axios'
     import copy from 'copy-to-clipboard'
     import {getToken} from '@/api/auth'
+    
 
     const props = defineProps({
         formid: {

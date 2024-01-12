@@ -4,6 +4,7 @@
   const gzh = new URL('../assets/image/gzh.jpg', import.meta.url).href
   const state = reactive({
     versionList: [
+      {timestamp:'2024-01-12', icon:'CircleCheckFilled', color:'#409EFF', content: ['解决 amis 城市选择无法使用问题']},
       {timestamp:'2024-01-11', icon:'CircleCloseFilled', color:'#F56C6C', content: [
         '1、token 过期页面重复提示 “用户凭证已过期，请重新登录！” 问题处理；',
         '2、页面管理表格列表不会自适应 问题处理；'
