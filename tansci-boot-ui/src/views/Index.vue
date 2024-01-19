@@ -1,72 +1,86 @@
 <script setup lang="ts">
-  import { reactive, onMounted } from "vue"
+    import { reactive, onMounted } from "vue"
 
-  const state = reactive({
-    versionList: [
-      {content:'项目初始化',timestamp:'2023-04-01'},
-      {content:'项目初始化',timestamp:'2023-04-01'},
-    ]
-  })
+    const gzh = new URL('../assets/image/gzh.jpg', import.meta.url).href
+    const state = reactive({
+        versionList: [
+            {timestamp:'2024-01-09', icon:'CircleCheckFilled', color:'#409EFF', content: ['项目开源']},
+            {timestamp:'2023-07-06', icon:'CircleCheckFilled', color:'#409EFF', content: ['集成 amis 低代码框架']},
+            {timestamp:'2023-03-20', icon:'CircleCheckFilled', color:'#409EFF', content: ['项目初始化']},
+        ]
+    })
 
-  onMounted(()=>{
-      
-  })
+    onMounted(()=>{
+
+    })
 
 </script>
 <template>
-  <div class="home-container">
-    <el-card shadow="never">
-      <template #header>
-        <span>公告</span>
-      </template>
-      <div>
-        <div>
-          <span class="title">Tansci Boot</span>
-          <el-divider direction="vertical" />
-          <el-link type="primary" href="https://gitee.com/typ1805" target="_blank">Gitee</el-link>
-          <el-divider direction="vertical" />
-          <el-link type="primary" href="https://github.com/typ1805" target="_blank">GitHub</el-link>
+    <div class="home-container">
+        <el-card shadow="never">
+            <template #header>
+                <span>公告</span>
+            </template>
+            <div>
+                <div>
+                    <span class="title">Tansci Boot</span>
+                    <el-divider direction="vertical" />
+                    <el-link type="primary" href="https://gitee.com/typ1805" target="_blank">Gitee</el-link>
+                    <el-divider direction="vertical" />
+                    <el-link type="primary" href="https://github.com/typ1805" target="_blank">GitHub</el-link>
+                </div>
+                <div class="text">
+                    <el-space alignment="normal" direction="vertical">
+                        <el-text tag="p">基于 SpringBoot2 + Vue3 + Element Plus + amis3.0 快速开发管理系统</el-text>
+                        <el-text tag="p">Tansci-Boot 是一个前后端分离后台管理系统， 前端集成 amis 低代码前端框架。包含基础权限、安全认证、以及常用的一些组件功能。项目易上手，技术更综合，能力更全面。</el-text>
+                        <el-text tag="p">amis 是一个低代码前端框架，它使用 JSON 配置来生成页面，可以减少页面开发工作量，极大提升效率。</el-text>
+                    </el-space>
+                </div>
+            </div>
+        </el-card>
+        <div class="cards">
+            <el-card shadow="never">
+                <template #header>
+                    <span>官方信息</span>
+                </template>
+                <div>
+                    <div>
+                        <el-text>博客：</el-text>
+                        <el-link type="success" href="https://typ1805.gitee.io" target="_blank">https://typ1805.gitee.io</el-link>
+                    </div>
+                    <div style="padding-top: 1rem;">
+                        <el-text>QQ：</el-text>
+                        <el-link type="success">742354529</el-link>
+                    </div>
+                    <div style="padding-top: 1rem;">
+                        <el-text>QQ群：</el-text>
+                        <el-link type="success">747200630</el-link>
+                    </div>
+                    <div style="padding-top: 1rem;">
+                        <el-text>公众号：</el-text><br>
+                        <el-image style="width: 100px; height: 100px" :src="gzh" fit="fit" />
+                    </div>
+                </div>
+            </el-card>
+            <el-card shadow="never" style="flex: 1;">
+                <template #header>
+                    <span>更新日志</span>
+                </template>
+                <div>
+                    <el-scrollbar max-height="22rem">
+                        <el-timeline>
+                            <el-timeline-item v-for="item in state.versionList" :key="item" :color="item.color" :icon="item.icon" :timestamp="item.timestamp" placement="top">
+                                <el-card v-if="item.content.length > 1">
+                                    <p v-for="c in item.content" :key="c">{{ c }}</p>
+                                </el-card>
+                                <p v-else>{{ item.content[0] }}</p>
+                            </el-timeline-item>
+                        </el-timeline>
+                    </el-scrollbar>
+                </div>
+            </el-card>
         </div>
-        <div class="text">
-          <el-space alignment="normal" direction="vertical">
-            <el-text tag="p">一款基于 SpringBoot + Vue3.2 + Element Plus 的后台管理系统。带你快速掌握SpringBoot核心知识 + Vue全家桶全栈技能。在此过程中，从0到1经历开发全流程，掌握前后端分离开发模式，搭建一个专属自己的、内容可灵活配置的知识库系统。</el-text>
-            <el-text tag="p">此项目是为了减少业务代码的重复轮子,它具有一个系统该有的通用性核心业务代码,无论是微服务还是单体,都是通用的业务 但更多的,是为了学习微服务的理念以及开发 您可以使用它进行网站管理后台，网站会员中心，CMS，CRM，OA等待系统的开发, 当然,不仅仅是一些小系统,我们可以生产更多的服务模块,不断完善项目。</el-text>
-            <el-text tag="p">系统初心是为了能够更快地完成业务的需求，带来更好的体验、更多的时间。它将会用于孵化一些实用的功能点。 我们希望它们是轻量级，可移植性高的功能插件。</el-text>
-            <el-text tag="p">同时，我们更希望广大开发者能在其中更快地获得更好的解决方案、尽量降低我们的学习成本。 由此，我们应当把更多的时间投入到其它更有意义的事情当中，我们深知知识的重要性，但，并不希望仅拥有单一”知识“。 去感受/关爱更多光彩，无论人、事、物，它们也将成为你最好的灵感。</el-text>
-          </el-space>
-        </div>
-      </div>
-    </el-card>
-    <div class="cards">
-      <el-card shadow="never">
-        <template #header>
-          <span>官方信息</span>
-        </template>
-        <div>
-          <div>
-            <el-text>官网：</el-text>
-            <el-link type="success" href="https://typ1805.gitee.io" target="_blank">https://typ1805.gitee.io</el-link>
-          </div>
-          <div style="padding-top: 1rem;">
-            <el-text>交流群：</el-text>
-            <el-link type="success">747200630</el-link>
-          </div>
-        </div>
-      </el-card>
-      <el-card shadow="never" style="flex: 1;">
-        <template #header>
-          <span>Tansci发展史</span>
-        </template>
-        <div>
-          <el-timeline>
-            <el-timeline-item v-for="item in state.versionList" :key="item" :timestamp="item.timestamp">
-              {{ item.content }}
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-card>
     </div>
-  </div>
 </template>
 <style lang="scss" scoped>
   .home-container{
