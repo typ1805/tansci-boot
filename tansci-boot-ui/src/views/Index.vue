@@ -10,7 +10,7 @@
         '2、页面管理表格列表不会自适应 问题处理；'
       ]},
       {timestamp:'2024-01-09', icon:'CircleCheckFilled', color:'#409EFF', content: ['项目开源']},
-      {timestamp:'2023-07-07', icon:'CircleCheckFilled', color:'#409EFF', content: ['v2.0.0 集成 magic-api']},
+      {timestamp:'2023-07-07', icon:'CircleCheckFilled', color:'#409EFF', content: ['v1.1.0 集成 magic-api']},
       {timestamp:'2023-07-06', icon:'CircleCheckFilled', color:'#409EFF', content: ['v1.0.0 前端amis，后端未使用 magic-api']},
       {timestamp:'2023-03-20', icon:'CircleCheckFilled', color:'#409EFF', content: ['项目初始化']},
     ]

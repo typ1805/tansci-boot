@@ -45,11 +45,6 @@ Tansci-Boot 是一个前后端分离后台管理系统， 前端集成 `amis` �
 
 执行 SQL 初始化数据（MySQL8+ 版本），测试用户：`admin/123456`，API 管理界面登录用户：`admin/admin@123` (可在配置文件修改)。
 
-**分支说明：**
-
-- 1.0.0：前端集成 amis，后端未集成 magic-api
-- master：前端集成 amis，后端集成 magic-api
-
 **项目目录：**
 
 - tansci-boot：后端项目
