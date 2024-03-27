@@ -4,6 +4,7 @@
   const gzh = new URL('../assets/image/gzh.jpg', import.meta.url).href
   const state = reactive({
     versionList: [
+      {timestamp:'2024-03-27', icon:'CircleCheckFilled', color:'#409EFF', content: ['接口生成：生成父子表会报错问题处理']},
       {timestamp:'2024-02-26', icon:'CircleCheckFilled', color:'#409EFF', content: ['登录验证码改为纯数字型，修改其他BUG']},
       {timestamp:'2024-02-02', icon:'CircleCheckFilled', color:'#409EFF', content: ['新增后端接口代码生成器【应用开发-接口生成】']},
       {timestamp:'2024-01-12', icon:'CircleCheckFilled', color:'#409EFF', content: ['解决 amis 城市选择无法使用问题']},
