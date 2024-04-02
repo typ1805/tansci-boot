@@ -4,10 +4,11 @@
   const gzh = new URL('../assets/image/gzh.jpg', import.meta.url).href
   const state = reactive({
     versionList: [
-      {timestamp:'2024-03-27', icon:'CircleCheckFilled', color:'#409EFF', content: ['接口生成：生成父子表会报错问题处理']},
-      {timestamp:'2024-02-26', icon:'CircleCheckFilled', color:'#409EFF', content: ['登录验证码改为纯数字型，修改其他BUG']},
+      {timestamp:'2024-04-02', icon:'CircleCheckFilled', color:'#409EFF', content: ['页面管理：页面新增目录分组功能']},
+      {timestamp:'2024-03-27', icon:'CircleCheckFilled', color:'#F56C6C', content: ['接口生成：生成父子表会报错问题处理']},
+      {timestamp:'2024-02-26', icon:'CircleCheckFilled', color:'#F56C6C', content: ['登录验证码改为纯数字型，修改其他BUG']},
       {timestamp:'2024-02-02', icon:'CircleCheckFilled', color:'#409EFF', content: ['新增后端接口代码生成器【应用开发-接口生成】']},
-      {timestamp:'2024-01-12', icon:'CircleCheckFilled', color:'#409EFF', content: ['解决 amis 城市选择无法使用问题']},
+      {timestamp:'2024-01-12', icon:'CircleCheckFilled', color:'#F56C6C', content: ['解决 amis 城市选择无法使用问题']},
       {timestamp:'2024-01-11', icon:'CircleCloseFilled', color:'#F56C6C', content: [
         '1、token 过期页面重复提示 “用户凭证已过期，请重新登录！” 问题处理；',
         '2、页面管理表格列表不会自适应 问题处理；'
