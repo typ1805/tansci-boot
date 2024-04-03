@@ -60,5 +60,4 @@ typings/
 # next.js build output
 .next
 
-gh-pages
 .DS_Store

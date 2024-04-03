@@ -333,7 +333,7 @@
             <el-scrollbar height="45rem">
                 <el-tree :data="state.classifyData" :props="{children: 'children', label: 'name'}" highlight-current @node-click="onNodeClick" empty-text="暂无数据">
                     <template #default="{ node, data }">
-                        <el-tooltip placement="right-start" effect="light">
+                        <el-tooltip placement="right-start" effect="light" popper-class="classify-tooltip">
                             <span class="custom-tree-node">
                                 <el-icon v-if="data.icon" style="vertical-align: middle;padding-right:10px;">
                                     <component :is="data.icon"></component>
@@ -468,7 +468,12 @@
         </div>
   </div>
 </template>
-<style scoped lang="scss">
+<style lang="scss" >
+    .classify-tooltip.is-light {
+        background: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
     .lc-pages{
         display: flex;
         .pages-classify{
@@ -484,6 +489,8 @@
                 background-color: #fff !important;
                 color: var(--theme) !important;
             }
+
+            
         }
         .pages-list{
             width: 100%;

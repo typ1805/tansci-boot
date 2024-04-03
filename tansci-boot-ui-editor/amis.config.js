@@ -1,7 +1,6 @@
 'use strict';
 const path = require('path');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 // 统一路径解析
 function resolve(dir) {
@@ -35,7 +34,7 @@ module.exports = {
   dev: {
     entry: { // 本地调试模式的入口
       index: './src/index.tsx',
-      editor:  './src/mobile.tsx',
+      // editor:  './src/mobile.tsx',
     },
     // 用于开启本地调试模式的相关配置信息
     NODE_ENV: 'development',
@@ -52,7 +51,7 @@ module.exports = {
   build: {
     entry: { // webpack构建入口
       index: './src/index.tsx',
-      editor:  './src/mobile.tsx',
+      // editor:  './src/mobile.tsx',
     },
     // 用于构建生产环境代码的相关配置信息
     NODE_ENV: 'production',
@@ -64,16 +63,16 @@ module.exports = {
     productionGzipExtensions: ['js', 'css', 'json'],
     plugins: [
       new MonacoWebpackPlugin(),
-      new FileManagerPlugin({
-        events:{
-          onEnd:{
-            copy:[
-              {source: './gh-pages/fonts', destination: './gh-pages/css/fonts'}
-            ],
-            delete:['./gh-pages/fonts']
-          }
-        }
-      })
+      // new FileManagerPlugin({
+      //   events:{
+      //     onEnd:{
+      //       copy:[
+      //         {source: './gh-pages/fonts', destination: './gh-pages/css/fonts'}
+      //       ],
+      //       delete:['./gh-pages/fonts']
+      //     }
+      //   }
+      // })
     ],
     bundleAnalyzerReport: false,
   }

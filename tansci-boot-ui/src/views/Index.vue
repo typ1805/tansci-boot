@@ -4,6 +4,11 @@
   const gzh = new URL('../assets/image/gzh.jpg', import.meta.url).href
   const state = reactive({
     versionList: [
+      {timestamp:'2024-04-03', icon:'CircleCheckFilled', color:'#409EFF', content: [
+        '1、amis 编辑器版本升级至 6.0.0；',
+        '2、element-plus 版本升级至 2.6.3；',
+        '3、vue 版本升级至 3.4.21；',
+      ]},
       {timestamp:'2024-04-02', icon:'CircleCheckFilled', color:'#409EFF', content: ['页面管理：页面新增目录分组功能']},
       {timestamp:'2024-03-27', icon:'CircleCheckFilled', color:'#F56C6C', content: ['接口生成：生成父子表会报错问题处理']},
       {timestamp:'2024-02-26', icon:'CircleCheckFilled', color:'#F56C6C', content: ['登录验证码改为纯数字型，修改其他BUG']},
