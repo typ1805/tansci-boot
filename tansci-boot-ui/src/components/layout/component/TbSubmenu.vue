@@ -12,7 +12,7 @@
 			<span style="vertical-align: middle;">{{data.meta.title}}</span>
 		</template>
 		<template v-for="item in data.children" :key="item.name">
-            <el-menu-item v-if="!item.children  || item.children.length <= 1" :index="item.path">
+            <el-menu-item v-if="!item.children" :index="item.path">
 				<el-icon v-if="item.icon" style="vertical-align: middle;">
 					<component :is="item.icon"></component>
 				</el-icon>
