@@ -3,6 +3,7 @@
 	import type {FormInstance} from 'element-plus'
 	import {useRouter} from 'vue-router'
 	import {login,getCode} from '@/api/auth'
+    import {HOME_URL} from '@/config/config'
 
 	const router = useRouter()
 	const loginFormRef = ref<FormInstance>() 
@@ -57,7 +58,7 @@
 				login(param).then((res:any) =>{
 					if(res){
 						state.loading = false;
-						router.push({path: 'index'});
+						router.push({path: HOME_URL});
 					}
 				}).catch(()=>{
 					onCode()
