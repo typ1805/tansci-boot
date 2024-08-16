@@ -68,11 +68,38 @@ Gitee: [https://gitee.com/typ1805/tansci-boot](https://gitee.com/typ1805/tansci-
 
 GitHub: [https://github.com/typ1805/tansci-boot](https://github.com/typ1805/tansci-boot)
 
+## 打包部署
+
+**editor 打包**
+
+配置编辑器获取页面和保存JSON数据的接口，以及TOKEN前缀在 `tansci-boot-ui-editor/public/config.js` 目录下，也可以在打包后的 `tansci-boot-ui-editor/gh-pages/config.js` 目录文件中修改。
+
+```shell
+npm run build
+```
+
+打包后的文件在 `tansci-boot-ui-editor/gh-pages` 目录下。
+
+**前端打包**
+```shell
+npm run build
+```
+
+打包前将 `tansci-boot-ui-editor/gh-pages` 目录下编译后的编辑器包复制到 `tansci-boot-ui/public` 目录下，再打前端包。
+
+**后端打包**
+
+```shell
+mvn clean package
+```
+
+jar 包启动前先初始化数据库，接口都存储在 `magic_api_file` 表中。
+
 ## 开发者联系
 
-- QQ：742354529 （742354529@qq.com）
+- QQ：742354529 （微信群）
 - QQ 群： 747200630
-- 个人主站：[https://typ1805.gitee.io](https://typ1805.gitee.io)
+- 个人主站：[http://tansci.top](http://tansci.top)
 - 公众号：
   
 ![个人公众号](doc/gzh.jpg)
