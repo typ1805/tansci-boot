@@ -32,7 +32,6 @@ export default[
     children: [
       {
         path: 'index',
-        name: 'index',
         icon: 'HomeFilled',
         meta: { title: "首页" },
         isShow: false,
