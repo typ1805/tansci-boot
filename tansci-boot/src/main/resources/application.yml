@@ -57,3 +57,8 @@ magic-api:
     - yyyy-MM-dd HH:mm:ss
     - yyyyMMddHHmmss
     - yyyyMMdd
+
+# flowable
+flowable:
+  async-executor-activate: true # 关闭定时任务job
+  database-schema-update: true # flowable自动更新表结构

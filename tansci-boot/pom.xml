@@ -22,6 +22,7 @@
         <hutool-all.version>5.7.22</hutool-all.version>
         <fastjson2.version>2.0.26</fastjson2.version>
         <magic-api.version>2.1.1</magic-api.version>
+        <flowable.version>6.8.1</flowable.version>
     </properties>
 
     <dependencies>
@@ -69,6 +70,12 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${fastjson2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter</artifactId>
+            <version>${flowable.version}</version>
         </dependency>
 
         <dependency>
