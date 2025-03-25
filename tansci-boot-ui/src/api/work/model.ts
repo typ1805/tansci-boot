@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-// 查询分配给指定用户的任务
-export function getTaskByAssignee(params:any){
+// 分页
+export function page(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/system/work/workflow/getTaskByAssignee',
+            url: '/tansci/system/work/model/page',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -15,11 +15,26 @@ export function getTaskByAssignee(params:any){
     })
 }
 
-// 部署流程模型
-export function deployProcess(data:any){
+// 详情
+export function details(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/system/work/workflow/deployProcess',
+            url: '/tansci/system/work/model/details',
+            method: 'get',
+            params: params
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+// 添加
+export function save(data:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/system/work/model/save',
             method: 'post',
             data: data
         }).then((res:any) => {
@@ -30,13 +45,12 @@ export function deployProcess(data:any){
     })
 }
 
-// 启动流程
-export function startProcessInstance(data:any){
+// 删除
+export function del(id:String){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/system/work/workflow/startProcessInstance',
-            method: 'post',
-            data: data
+            url: '/tansci/system/work/model/delete/' + id,
+            method: 'get'
         }).then((res:any) => {
             resolve(res.data)
         }).catch((e:any) => {
@@ -45,28 +59,11 @@ export function startProcessInstance(data:any){
     })
 }
 
-
-// 任务审批通过
-export function approveTask(data:any){
+// 修改
+export function update(data:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/system/work/workflow/approveTask',
-            method: 'post',
-            data: data
-        }).then((res:any) => {
-            resolve(res.data)
-        }).catch((e:any) => {
-            reject(e)
-        })
-    })
-}
-
-
-// 任务被拒绝
-export function rejectTask(data:any){
-    return new Promise((resolve, reject) => {
-        request({
-            url: '/tansci/system/work/workflow/rejectTask',
+            url: '/tansci/system/work/model/update',
             method: 'post',
             data: data
         }).then((res:any) => {

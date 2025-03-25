@@ -44,7 +44,7 @@ public class FlowableService {
     public String deployProcess(String name, String xml) {
         try {
             Deployment deployment = repositoryService.createDeployment()
-                    .addClasspathResource(xml)
+                    .addString(name, xml)
                     .name(name)
                     .deploy();
             log.info("流程【{}】部署成功", deployment.getId());

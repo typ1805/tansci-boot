@@ -16,7 +16,6 @@
     })
 
     function onViewerInit() {
-        console.log(1111111)
         // 初始时清除图层
         if(bpmnViewer && bpmnViewer.value){
             bpmnViewer && bpmnViewer.value.destroy();

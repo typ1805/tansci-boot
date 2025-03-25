@@ -11,11 +11,2230 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 22/03/2025 22:59:28
+ Date: 25/03/2025 22:30:02
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for act_app_appdef
+-- ----------------------------
+DROP TABLE IF EXISTS `act_app_appdef`;
+CREATE TABLE `act_app_appdef`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REV_` int NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `VERSION_` int NOT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_IDX_APP_DEF_UNIQ`(`KEY_` ASC, `VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_APP_DEF_DPLY`(`DEPLOYMENT_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_APP_DEF_DPLY` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_app_deployment` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_app_appdef
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_app_databasechangelog
+-- ----------------------------
+DROP TABLE IF EXISTS `act_app_databasechangelog`;
+CREATE TABLE `act_app_databasechangelog`  (
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int NOT NULL,
+  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_app_databasechangelog
+-- ----------------------------
+INSERT INTO `act_app_databasechangelog` VALUES ('1', 'flowable', 'org/flowable/app/db/liquibase/flowable-app-db-changelog.xml', '2025-03-25 21:15:35', 1, 'EXECUTED', '8:496fc778bdf2ab13f2e1926d0e63e0a2', 'createTable tableName=ACT_APP_DEPLOYMENT; createTable tableName=ACT_APP_DEPLOYMENT_RESOURCE; addForeignKeyConstraint baseTableName=ACT_APP_DEPLOYMENT_RESOURCE, constraintName=ACT_FK_APP_RSRC_DPL, referencedTableName=ACT_APP_DEPLOYMENT; createIndex...', '', NULL, '4.9.1', NULL, NULL, '2908534544');
+INSERT INTO `act_app_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/app/db/liquibase/flowable-app-db-changelog.xml', '2025-03-25 21:15:35', 2, 'EXECUTED', '8:ccea9ebfb6c1f8367ca4dd473fcbb7db', 'modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_APP_DEPLOYMENT', '', NULL, '4.9.1', NULL, NULL, '2908534544');
+INSERT INTO `act_app_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/app/db/liquibase/flowable-app-db-changelog.xml', '2025-03-25 21:15:35', 3, 'EXECUTED', '8:f1f8aff320aade831944ebad24355f3d', 'createIndex indexName=ACT_IDX_APP_DEF_UNIQ, tableName=ACT_APP_APPDEF', '', NULL, '4.9.1', NULL, NULL, '2908534544');
+
+-- ----------------------------
+-- Table structure for act_app_databasechangeloglock
+-- ----------------------------
+DROP TABLE IF EXISTS `act_app_databasechangeloglock`;
+CREATE TABLE `act_app_databasechangeloglock`  (
+  `ID` int NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime NULL DEFAULT NULL,
+  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_app_databasechangeloglock
+-- ----------------------------
+INSERT INTO `act_app_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for act_app_deployment
+-- ----------------------------
+DROP TABLE IF EXISTS `act_app_deployment`;
+CREATE TABLE `act_app_deployment`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_app_deployment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_app_deployment_resource
+-- ----------------------------
+DROP TABLE IF EXISTS `act_app_deployment_resource`;
+CREATE TABLE `act_app_deployment_resource`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_APP_RSRC_DPL`(`DEPLOYMENT_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_APP_RSRC_DPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_app_deployment` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_app_deployment_resource
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_casedef
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_casedef`;
+CREATE TABLE `act_cmmn_casedef`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REV_` int NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `VERSION_` int NOT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `HAS_GRAPHICAL_NOTATION_` bit(1) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  `DGRM_RESOURCE_NAME_` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `HAS_START_FORM_KEY_` bit(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_IDX_CASE_DEF_UNIQ`(`KEY_` ASC, `VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_CASE_DEF_DPLY`(`DEPLOYMENT_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_CASE_DEF_DPLY` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_cmmn_deployment` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_casedef
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_databasechangelog
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_databasechangelog`;
+CREATE TABLE `act_cmmn_databasechangelog`  (
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int NOT NULL,
+  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_databasechangelog
+-- ----------------------------
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('1', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:26', 1, 'EXECUTED', '8:8b4b922d90b05ff27483abefc9597aa6', 'createTable tableName=ACT_CMMN_DEPLOYMENT; createTable tableName=ACT_CMMN_DEPLOYMENT_RESOURCE; addForeignKeyConstraint baseTableName=ACT_CMMN_DEPLOYMENT_RESOURCE, constraintName=ACT_FK_CMMN_RSRC_DPL, referencedTableName=ACT_CMMN_DEPLOYMENT; create...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:26', 2, 'EXECUTED', '8:65e39b3d385706bb261cbeffe7533cbe', 'addColumn tableName=ACT_CMMN_CASEDEF; addColumn tableName=ACT_CMMN_DEPLOYMENT_RESOURCE; addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:27', 3, 'EXECUTED', '8:c01f6e802b49436b4489040da3012359', 'addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_CASE_INST; createIndex indexName=ACT_IDX_PLAN_ITEM_STAGE_INST, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableNam...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('4', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:27', 4, 'EXECUTED', '8:e40d29cb79345b7fb5afd38a7f0ba8fc', 'createTable tableName=ACT_CMMN_HI_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_MIL_INST; addColumn tableName=ACT_CMMN_HI_MIL_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('5', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:31', 5, 'EXECUTED', '8:70349de472f87368dcdec971a10311a0', 'modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_CMMN_DEPLOYMENT; modifyDataType columnName=START_TIME_, tableName=ACT_CMMN_RU_CASE_INST; modifyDataType columnName=START_TIME_, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; modifyDataType columnName=T...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('6', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:31', 6, 'EXECUTED', '8:10e82e26a7fee94c32a92099c059c18c', 'createIndex indexName=ACT_IDX_CASE_DEF_UNIQ, tableName=ACT_CMMN_CASEDEF', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('7', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:31', 7, 'EXECUTED', '8:530bc81a1e30618ccf4a2da1f7c6c043', 'renameColumn newColumnName=CREATE_TIME_, oldColumnName=START_TIME_, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; renameColumn newColumnName=CREATE_TIME_, oldColumnName=CREATED_TIME_, tableName=ACT_CMMN_HI_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_P...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('8', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:31', 8, 'EXECUTED', '8:e8c2eb1ce28bc301efe07e0e29757781', 'addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('9', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:32', 9, 'EXECUTED', '8:4cb4782b9bdec5ced2a64c525aa7b3a0', 'addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('10', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:32', 10, 'EXECUTED', '8:341c16be247f5d17badc9809da8691f9', 'addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_RU_CASE_INST; createIndex indexName=ACT_IDX_CASE_INST_REF_ID_, tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('11', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:32', 11, 'EXECUTED', '8:d7c4da9276bcfffbfb0ebfb25e3f7b05', 'addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('12', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:33', 12, 'EXECUTED', '8:adf4ecc45f2aa9a44a5626b02e1d6f98', 'addColumn tableName=ACT_CMMN_RU_CASE_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('13', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:33', 13, 'EXECUTED', '8:7550626f964ab5518464709408333ec1', 'addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('14', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:33', 14, 'EXECUTED', '8:086b40b3a05596dcc8a8d7479922d494', 'addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('16', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:33', 15, 'EXECUTED', '8:a697a222ddd99dd15b36516a252f1c63', 'addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+INSERT INTO `act_cmmn_databasechangelog` VALUES ('17', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:34', 16, 'EXECUTED', '8:d3706c5813a9b97fd2a59d12a9523946', 'createIndex indexName=ACT_IDX_HI_CASE_INST_END, tableName=ACT_CMMN_HI_CASE_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
+
+-- ----------------------------
+-- Table structure for act_cmmn_databasechangeloglock
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_databasechangeloglock`;
+CREATE TABLE `act_cmmn_databasechangeloglock`  (
+  `ID` int NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime NULL DEFAULT NULL,
+  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_databasechangeloglock
+-- ----------------------------
+INSERT INTO `act_cmmn_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for act_cmmn_deployment
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_deployment`;
+CREATE TABLE `act_cmmn_deployment`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) NULL DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_deployment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_deployment_resource
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_deployment_resource`;
+CREATE TABLE `act_cmmn_deployment_resource`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob NULL,
+  `GENERATED_` bit(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_CMMN_RSRC_DPL`(`DEPLOYMENT_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_CMMN_RSRC_DPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_cmmn_deployment` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_deployment_resource
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_hi_case_inst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_hi_case_inst`;
+CREATE TABLE `act_cmmn_hi_case_inst`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REV_` int NOT NULL,
+  `BUSINESS_KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PARENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `STATE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `START_TIME_` datetime(3) NULL DEFAULT NULL,
+  `END_TIME_` datetime(3) NULL DEFAULT NULL,
+  `START_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CALLBACK_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CALLBACK_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LAST_REACTIVATION_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_REACTIVATION_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `BUSINESS_STATUS_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_HI_CASE_INST_END`(`END_TIME_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_hi_case_inst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_hi_mil_inst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_hi_mil_inst`;
+CREATE TABLE `act_cmmn_hi_mil_inst`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REV_` int NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `TIME_STAMP_` datetime(3) NULL DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_hi_mil_inst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_hi_plan_item_inst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_hi_plan_item_inst`;
+CREATE TABLE `act_cmmn_hi_plan_item_inst`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REV_` int NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `STATE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `IS_STAGE_` bit(1) NULL DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ITEM_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ITEM_DEFINITION_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_AVAILABLE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_ENABLED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_DISABLED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_STARTED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_SUSPENDED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `COMPLETED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `OCCURRED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TERMINATED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `EXIT_TIME_` datetime(3) NULL DEFAULT NULL,
+  `ENDED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_UPDATED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `START_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  `ENTRY_CRITERION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EXIT_CRITERION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SHOW_IN_OVERVIEW_` bit(1) NULL DEFAULT NULL,
+  `EXTRA_VALUE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DERIVED_CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LAST_UNAVAILABLE_TIME_` datetime(3) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_hi_plan_item_inst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_ru_case_inst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_ru_case_inst`;
+CREATE TABLE `act_cmmn_ru_case_inst`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REV_` int NOT NULL,
+  `BUSINESS_KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PARENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `STATE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `START_TIME_` datetime(3) NULL DEFAULT NULL,
+  `START_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CALLBACK_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CALLBACK_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  `LOCK_TIME_` datetime(3) NULL DEFAULT NULL,
+  `IS_COMPLETEABLE_` bit(1) NULL DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LAST_REACTIVATION_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_REACTIVATION_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `BUSINESS_STATUS_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_CASE_INST_CASE_DEF`(`CASE_DEF_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_CASE_INST_PARENT`(`PARENT_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_CASE_INST_REF_ID_`(`REFERENCE_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_CASE_INST_CASE_DEF` FOREIGN KEY (`CASE_DEF_ID_`) REFERENCES `act_cmmn_casedef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_ru_case_inst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_ru_mil_inst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_ru_mil_inst`;
+CREATE TABLE `act_cmmn_ru_mil_inst`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `TIME_STAMP_` datetime(3) NULL DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_MIL_CASE_DEF`(`CASE_DEF_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_MIL_CASE_INST`(`CASE_INST_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_MIL_CASE_DEF` FOREIGN KEY (`CASE_DEF_ID_`) REFERENCES `act_cmmn_casedef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_MIL_CASE_INST` FOREIGN KEY (`CASE_INST_ID_`) REFERENCES `act_cmmn_ru_case_inst` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_ru_mil_inst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_ru_plan_item_inst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_ru_plan_item_inst`;
+CREATE TABLE `act_cmmn_ru_plan_item_inst`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REV_` int NOT NULL,
+  `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `IS_STAGE_` bit(1) NULL DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `STATE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `START_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  `ITEM_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ITEM_DEFINITION_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `IS_COMPLETEABLE_` bit(1) NULL DEFAULT NULL,
+  `IS_COUNT_ENABLED_` bit(1) NULL DEFAULT NULL,
+  `VAR_COUNT_` int NULL DEFAULT NULL,
+  `SENTRY_PART_INST_COUNT_` int NULL DEFAULT NULL,
+  `LAST_AVAILABLE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_ENABLED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_DISABLED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_STARTED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_SUSPENDED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `COMPLETED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `OCCURRED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TERMINATED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `EXIT_TIME_` datetime(3) NULL DEFAULT NULL,
+  `ENDED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `ENTRY_CRITERION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EXIT_CRITERION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EXTRA_VALUE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DERIVED_CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LAST_UNAVAILABLE_TIME_` datetime(3) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_PLAN_ITEM_CASE_DEF`(`CASE_DEF_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_PLAN_ITEM_CASE_INST`(`CASE_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_PLAN_ITEM_STAGE_INST`(`STAGE_INST_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_PLAN_ITEM_CASE_DEF` FOREIGN KEY (`CASE_DEF_ID_`) REFERENCES `act_cmmn_casedef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_PLAN_ITEM_CASE_INST` FOREIGN KEY (`CASE_INST_ID_`) REFERENCES `act_cmmn_ru_case_inst` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_ru_plan_item_inst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_cmmn_ru_sentry_part_inst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_cmmn_ru_sentry_part_inst`;
+CREATE TABLE `act_cmmn_ru_sentry_part_inst`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `REV_` int NOT NULL,
+  `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PLAN_ITEM_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ON_PART_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `IF_PART_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TIME_STAMP_` datetime(3) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_SENTRY_CASE_DEF`(`CASE_DEF_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_SENTRY_CASE_INST`(`CASE_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_SENTRY_PLAN_ITEM`(`PLAN_ITEM_INST_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_SENTRY_CASE_DEF` FOREIGN KEY (`CASE_DEF_ID_`) REFERENCES `act_cmmn_casedef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_SENTRY_CASE_INST` FOREIGN KEY (`CASE_INST_ID_`) REFERENCES `act_cmmn_ru_case_inst` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_SENTRY_PLAN_ITEM` FOREIGN KEY (`PLAN_ITEM_INST_ID_`) REFERENCES `act_cmmn_ru_plan_item_inst` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_cmmn_ru_sentry_part_inst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_co_content_item
+-- ----------------------------
+DROP TABLE IF EXISTS `act_co_content_item`;
+CREATE TABLE `act_co_content_item`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `MIME_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TASK_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTENT_STORE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTENT_STORE_NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `FIELD_` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTENT_AVAILABLE_` bit(1) NULL DEFAULT b'0',
+  `CREATED_` timestamp(6) NULL DEFAULT NULL,
+  `CREATED_BY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LAST_MODIFIED_` timestamp(6) NULL DEFAULT NULL,
+  `LAST_MODIFIED_BY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTENT_SIZE_` bigint NULL DEFAULT 0,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `idx_contitem_taskid`(`TASK_ID_` ASC) USING BTREE,
+  INDEX `idx_contitem_procid`(`PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `idx_contitem_scope`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_co_content_item
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_co_databasechangelog
+-- ----------------------------
+DROP TABLE IF EXISTS `act_co_databasechangelog`;
+CREATE TABLE `act_co_databasechangelog`  (
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int NOT NULL,
+  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_co_databasechangelog
+-- ----------------------------
+INSERT INTO `act_co_databasechangelog` VALUES ('1', 'activiti', 'org/flowable/content/db/liquibase/flowable-content-db-changelog.xml', '2025-03-25 21:15:22', 1, 'EXECUTED', '8:7644d7165cfe799200a2abdd3419e8b6', 'createTable tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_taskid, tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_procid, tableName=ACT_CO_CONTENT_ITEM', '', NULL, '4.9.1', NULL, NULL, '2908522090');
+INSERT INTO `act_co_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/content/db/liquibase/flowable-content-db-changelog.xml', '2025-03-25 21:15:22', 2, 'EXECUTED', '8:fe7b11ac7dbbf9c43006b23bbab60bab', 'addColumn tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_scope, tableName=ACT_CO_CONTENT_ITEM', '', NULL, '4.9.1', NULL, NULL, '2908522090');
+
+-- ----------------------------
+-- Table structure for act_co_databasechangeloglock
+-- ----------------------------
+DROP TABLE IF EXISTS `act_co_databasechangeloglock`;
+CREATE TABLE `act_co_databasechangeloglock`  (
+  `ID` int NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime NULL DEFAULT NULL,
+  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_co_databasechangeloglock
+-- ----------------------------
+INSERT INTO `act_co_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for act_dmn_databasechangelog
+-- ----------------------------
+DROP TABLE IF EXISTS `act_dmn_databasechangelog`;
+CREATE TABLE `act_dmn_databasechangelog`  (
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int NOT NULL,
+  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_dmn_databasechangelog
+-- ----------------------------
+INSERT INTO `act_dmn_databasechangelog` VALUES ('1', 'activiti', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:18', 1, 'EXECUTED', '8:c8701f1c71018b55029f450b2e9a10a1', 'createTable tableName=ACT_DMN_DEPLOYMENT; createTable tableName=ACT_DMN_DEPLOYMENT_RESOURCE; createTable tableName=ACT_DMN_DECISION_TABLE', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+INSERT INTO `act_dmn_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:18', 2, 'EXECUTED', '8:47f94b27feb7df8a30d4e338c7bd5fb8', 'createTable tableName=ACT_DMN_HI_DECISION_EXECUTION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+INSERT INTO `act_dmn_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 3, 'EXECUTED', '8:ac17eae89fbdccb6e08daf3c7797b579', 'addColumn tableName=ACT_DMN_HI_DECISION_EXECUTION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+INSERT INTO `act_dmn_databasechangelog` VALUES ('4', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 4, 'EXECUTED', '8:f73aabc4529e7292c2942073d1cff6f9', 'dropColumn columnName=PARENT_DEPLOYMENT_ID_, tableName=ACT_DMN_DECISION_TABLE', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+INSERT INTO `act_dmn_databasechangelog` VALUES ('5', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 5, 'EXECUTED', '8:3e03528582dd4eeb4eb41f9b9539140d', 'modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_DMN_DEPLOYMENT; modifyDataType columnName=START_TIME_, tableName=ACT_DMN_HI_DECISION_EXECUTION; modifyDataType columnName=END_TIME_, tableName=ACT_DMN_HI_DECISION_EXECUTION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+INSERT INTO `act_dmn_databasechangelog` VALUES ('6', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 6, 'EXECUTED', '8:646c6a061e0b6e8a62e69844ff96abb0', 'createIndex indexName=ACT_IDX_DEC_TBL_UNIQ, tableName=ACT_DMN_DECISION_TABLE', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+INSERT INTO `act_dmn_databasechangelog` VALUES ('7', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 7, 'EXECUTED', '8:215a499ff7ae77685b55355245b8b708', 'dropIndex indexName=ACT_IDX_DEC_TBL_UNIQ, tableName=ACT_DMN_DECISION_TABLE; renameTable newTableName=ACT_DMN_DECISION, oldTableName=ACT_DMN_DECISION_TABLE; createIndex indexName=ACT_IDX_DMN_DEC_UNIQ, tableName=ACT_DMN_DECISION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+INSERT INTO `act_dmn_databasechangelog` VALUES ('8', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 8, 'EXECUTED', '8:5355bee389318afed91a11702f2df032', 'addColumn tableName=ACT_DMN_DECISION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+INSERT INTO `act_dmn_databasechangelog` VALUES ('9', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 9, 'EXECUTED', '8:0fe82086431b1953d293f0199f805876', 'createIndex indexName=ACT_IDX_DMN_INSTANCE_ID, tableName=ACT_DMN_HI_DECISION_EXECUTION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
+
+-- ----------------------------
+-- Table structure for act_dmn_databasechangeloglock
+-- ----------------------------
+DROP TABLE IF EXISTS `act_dmn_databasechangeloglock`;
+CREATE TABLE `act_dmn_databasechangeloglock`  (
+  `ID` int NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime NULL DEFAULT NULL,
+  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_dmn_databasechangeloglock
+-- ----------------------------
+INSERT INTO `act_dmn_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for act_dmn_decision
+-- ----------------------------
+DROP TABLE IF EXISTS `act_dmn_decision`;
+CREATE TABLE `act_dmn_decision`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `VERSION_` int NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DECISION_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_IDX_DMN_DEC_UNIQ`(`KEY_` ASC, `VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_dmn_decision
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_dmn_deployment
+-- ----------------------------
+DROP TABLE IF EXISTS `act_dmn_deployment`;
+CREATE TABLE `act_dmn_deployment`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_dmn_deployment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_dmn_deployment_resource
+-- ----------------------------
+DROP TABLE IF EXISTS `act_dmn_deployment_resource`;
+CREATE TABLE `act_dmn_deployment_resource`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_dmn_deployment_resource
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_dmn_hi_decision_execution
+-- ----------------------------
+DROP TABLE IF EXISTS `act_dmn_hi_decision_execution`;
+CREATE TABLE `act_dmn_hi_decision_execution`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `DECISION_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `START_TIME_` datetime(3) NULL DEFAULT NULL,
+  `END_TIME_` datetime(3) NULL DEFAULT NULL,
+  `INSTANCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ACTIVITY_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `FAILED_` bit(1) NULL DEFAULT b'0',
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `EXECUTION_JSON_` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_DMN_INSTANCE_ID`(`INSTANCE_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_dmn_hi_decision_execution
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_evt_log
+-- ----------------------------
+DROP TABLE IF EXISTS `act_evt_log`;
+CREATE TABLE `act_evt_log`  (
+  `LOG_NR_` bigint NOT NULL AUTO_INCREMENT,
+  `TYPE_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TIME_STAMP_` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DATA_` longblob NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `LOCK_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `IS_PROCESSED_` tinyint NULL DEFAULT 0,
+  PRIMARY KEY (`LOG_NR_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_evt_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_fo_databasechangelog
+-- ----------------------------
+DROP TABLE IF EXISTS `act_fo_databasechangelog`;
+CREATE TABLE `act_fo_databasechangelog`  (
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int NOT NULL,
+  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_fo_databasechangelog
+-- ----------------------------
+INSERT INTO `act_fo_databasechangelog` VALUES ('1', 'activiti', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:20', 1, 'EXECUTED', '8:033ebf9380889aed7c453927ecc3250d', 'createTable tableName=ACT_FO_FORM_DEPLOYMENT; createTable tableName=ACT_FO_FORM_RESOURCE; createTable tableName=ACT_FO_FORM_DEFINITION; createTable tableName=ACT_FO_FORM_INSTANCE', '', NULL, '4.9.1', NULL, NULL, '2908520554');
+INSERT INTO `act_fo_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:20', 2, 'EXECUTED', '8:986365ceb40445ce3b27a8e6b40f159b', 'addColumn tableName=ACT_FO_FORM_INSTANCE', '', NULL, '4.9.1', NULL, NULL, '2908520554');
+INSERT INTO `act_fo_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:21', 3, 'EXECUTED', '8:abf482518ceb09830ef674e52c06bf15', 'dropColumn columnName=PARENT_DEPLOYMENT_ID_, tableName=ACT_FO_FORM_DEFINITION', '', NULL, '4.9.1', NULL, NULL, '2908520554');
+INSERT INTO `act_fo_databasechangelog` VALUES ('4', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:21', 4, 'EXECUTED', '8:2087829f22a4b2298dbf530681c74854', 'modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_FO_FORM_DEPLOYMENT; modifyDataType columnName=SUBMITTED_DATE_, tableName=ACT_FO_FORM_INSTANCE', '', NULL, '4.9.1', NULL, NULL, '2908520554');
+INSERT INTO `act_fo_databasechangelog` VALUES ('5', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:21', 5, 'EXECUTED', '8:b4be732b89e5ca028bdd520c6ad4d446', 'createIndex indexName=ACT_IDX_FORM_DEF_UNIQ, tableName=ACT_FO_FORM_DEFINITION', '', NULL, '4.9.1', NULL, NULL, '2908520554');
+INSERT INTO `act_fo_databasechangelog` VALUES ('6', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:21', 6, 'EXECUTED', '8:384bbd364a649b67c3ca1bcb72fe537f', 'createIndex indexName=ACT_IDX_FORM_TASK, tableName=ACT_FO_FORM_INSTANCE; createIndex indexName=ACT_IDX_FORM_PROC, tableName=ACT_FO_FORM_INSTANCE; createIndex indexName=ACT_IDX_FORM_SCOPE, tableName=ACT_FO_FORM_INSTANCE', '', NULL, '4.9.1', NULL, NULL, '2908520554');
+
+-- ----------------------------
+-- Table structure for act_fo_databasechangeloglock
+-- ----------------------------
+DROP TABLE IF EXISTS `act_fo_databasechangeloglock`;
+CREATE TABLE `act_fo_databasechangeloglock`  (
+  `ID` int NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime NULL DEFAULT NULL,
+  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_fo_databasechangeloglock
+-- ----------------------------
+INSERT INTO `act_fo_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for act_fo_form_definition
+-- ----------------------------
+DROP TABLE IF EXISTS `act_fo_form_definition`;
+CREATE TABLE `act_fo_form_definition`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `VERSION_` int NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_IDX_FORM_DEF_UNIQ`(`KEY_` ASC, `VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_fo_form_definition
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_fo_form_deployment
+-- ----------------------------
+DROP TABLE IF EXISTS `act_fo_form_deployment`;
+CREATE TABLE `act_fo_form_deployment`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_fo_form_deployment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_fo_form_instance
+-- ----------------------------
+DROP TABLE IF EXISTS `act_fo_form_instance`;
+CREATE TABLE `act_fo_form_instance`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FORM_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `TASK_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SUBMITTED_DATE_` datetime(3) NULL DEFAULT NULL,
+  `SUBMITTED_BY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `FORM_VALUES_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_FORM_TASK`(`TASK_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_FORM_PROC`(`PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_FORM_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_fo_form_instance
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_fo_form_resource
+-- ----------------------------
+DROP TABLE IF EXISTS `act_fo_form_resource`;
+CREATE TABLE `act_fo_form_resource`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_fo_form_resource
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ge_bytearray
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ge_bytearray`;
+CREATE TABLE `act_ge_bytearray`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `BYTES_` longblob NULL,
+  `GENERATED_` tinyint NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_FK_BYTEARR_DEPL`(`DEPLOYMENT_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_BYTEARR_DEPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_re_deployment` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ge_bytearray
+-- ----------------------------
+INSERT INTO `act_ge_bytearray` VALUES ('6cfc6a43-0984-11f0-82ff-4ccc6a2e3718', 1, '默认模型', '6cfc6a42-0984-11f0-82ff-4ccc6a2e3718', 0x3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D38223F3E0A3C646566696E6974696F6E7320786D6C6E733D22687474703A2F2F7777772E6F6D672E6F72672F737065632F42504D4E2F32303130303532342F4D4F44454C2220786D6C6E733A62706D6E64693D22687474703A2F2F7777772E6F6D672E6F72672F737065632F42504D4E2F32303130303532342F44492220786D6C6E733A6F6D6764633D22687474703A2F2F7777772E6F6D672E6F72672F737065632F44442F32303130303532342F44432220786D6C6E733A7873693D22687474703A2F2F7777772E77332E6F72672F323030312F584D4C536368656D612D696E7374616E63652220786D6C6E733A63616D756E64613D22687474703A2F2F63616D756E64612E6F72672F736368656D612F312E302F62706D6E2220786D6C6E733A64693D22687474703A2F2F7777772E6F6D672E6F72672F737065632F44442F32303130303532342F4449222069643D227369642D33383432326661652D653033652D343361332D626566342D62643333623332303431623222207461726765744E616D6573706163653D22687474703A2F2F62706D6E2E696F2F62706D6E22206578706F727465723D2262706D6E2D6A73202868747470733A2F2F64656D6F2E62706D6E2E696F2922206578706F7274657256657273696F6E3D22352E312E32223E0A20203C70726F636573732069643D22636F64652D306163653439373132616462616636666665336638626438326233393164653222206E616D653D22E9BB98E8AEA4E6A8A1E59E8B2220697345786563757461626C653D2274727565222063616D756E64613A76657273696F6E5461673D22302E302E31223E0A202020203C73746172744576656E742069643D224576656E745F3135796E6D6F3922206E616D653D22E5BC80E5A78B223E0A2020202020203C6F7574676F696E673E466C6F775F3175356E79387A3C2F6F7574676F696E673E0A202020203C2F73746172744576656E743E0A202020203C7461736B2069643D2241637469766974795F3033647670723622206E616D653D22E5AEA1E6A0B8223E0A2020202020203C657874656E73696F6E456C656D656E74733E0A20202020202020203C63616D756E64613A696E7075744F75747075743E0A202020202020202020203C63616D756E64613A696E707574506172616D65746572206E616D653D22496E7075745F3030633470353822202F3E0A202020202020202020203C63616D756E64613A6F7574707574506172616D65746572206E616D653D224F75747075745F30727468366F3222202F3E0A20202020202020203C2F63616D756E64613A696E7075744F75747075743E0A2020202020203C2F657874656E73696F6E456C656D656E74733E0A2020202020203C696E636F6D696E673E466C6F775F3175356E79387A3C2F696E636F6D696E673E0A2020202020203C6F7574676F696E673E466C6F775F3032716F7A686D3C2F6F7574676F696E673E0A202020203C2F7461736B3E0A202020203C73657175656E6365466C6F772069643D22466C6F775F3175356E79387A2220736F757263655265663D224576656E745F3135796E6D6F3922207461726765745265663D2241637469766974795F3033647670723622202F3E0A202020203C696E7465726D6564696174655468726F774576656E742069643D224576656E745F3075307830647622206E616D653D22E7BB93E69D9F223E0A2020202020203C696E636F6D696E673E466C6F775F3032716F7A686D3C2F696E636F6D696E673E0A202020203C2F696E7465726D6564696174655468726F774576656E743E0A202020203C73657175656E6365466C6F772069643D22466C6F775F3032716F7A686D2220736F757263655265663D2241637469766974795F3033647670723622207461726765745265663D224576656E745F3075307830647622202F3E0A20203C2F70726F636573733E0A20203C62706D6E64693A42504D4E4469616772616D2069643D2242706D6E4469616772616D5F31223E0A202020203C62706D6E64693A42504D4E506C616E652069643D2242706D6E506C616E655F31222062706D6E456C656D656E743D22636F64652D3061636534393731326164626166366666653366386264383262333931646532223E0A2020202020203C62706D6E64693A42504D4E53686170652069643D224576656E745F3135796E6D6F395F6469222062706D6E456C656D656E743D224576656E745F3135796E6D6F39223E0A20202020202020203C6F6D6764633A426F756E647320783D223238322220793D22323532222077696474683D22333622206865696768743D22333622202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C3E0A202020202020202020203C6F6D6764633A426F756E647320783D223238392220793D22323935222077696474683D22323222206865696768743D22313422202F3E0A20202020202020203C2F62706D6E64693A42504D4E4C6162656C3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652069643D2241637469766974795F303364767072365F6469222062706D6E456C656D656E743D2241637469766974795F30336476707236223E0A20202020202020203C6F6D6764633A426F756E647320783D223337302220793D22323330222077696474683D2231303022206865696768743D22383022202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C202F3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652069643D224576656E745F307530783064765F6469222062706D6E456C656D656E743D224576656E745F30753078306476223E0A20202020202020203C6F6D6764633A426F756E647320783D223532322220793D22323532222077696474683D22333622206865696768743D22333622202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C3E0A202020202020202020203C6F6D6764633A426F756E647320783D223532392220793D22323935222077696474683D22323222206865696768743D22313422202F3E0A20202020202020203C2F62706D6E64693A42504D4E4C6162656C3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E456467652069643D22466C6F775F3175356E79387A5F6469222062706D6E456C656D656E743D22466C6F775F3175356E79387A223E0A20202020202020203C64693A776179706F696E7420783D223331382220793D2232373022202F3E0A20202020202020203C64693A776179706F696E7420783D223337302220793D2232373022202F3E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A2020202020203C62706D6E64693A42504D4E456467652069643D22466C6F775F3032716F7A686D5F6469222062706D6E456C656D656E743D22466C6F775F3032716F7A686D223E0A20202020202020203C64693A776179706F696E7420783D223437302220793D2232373022202F3E0A20202020202020203C64693A776179706F696E7420783D223532322220793D2232373022202F3E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A202020203C2F62706D6E64693A42504D4E506C616E653E0A20203C2F62706D6E64693A42504D4E4469616772616D3E0A3C2F646566696E6974696F6E733E0A, 0);
+
+-- ----------------------------
+-- Table structure for act_ge_property
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ge_property`;
+CREATE TABLE `act_ge_property`  (
+  `NAME_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `VALUE_` varchar(300) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  PRIMARY KEY (`NAME_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ge_property
+-- ----------------------------
+INSERT INTO `act_ge_property` VALUES ('batch.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('cfg.execution-related-entities-count', 'true', 1);
+INSERT INTO `act_ge_property` VALUES ('cfg.task-related-entities-count', 'true', 1);
+INSERT INTO `act_ge_property` VALUES ('common.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('entitylink.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('eventsubscription.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('identitylink.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('job.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('next.dbid', '1', 1);
+INSERT INTO `act_ge_property` VALUES ('schema.history', 'create(6.8.1.0)', 1);
+INSERT INTO `act_ge_property` VALUES ('schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('task.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('variable.schema.version', '6.8.1.0', 1);
+
+-- ----------------------------
+-- Table structure for act_hi_actinst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_actinst`;
+CREATE TABLE `act_hi_actinst`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT 1,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `ACT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CALL_PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ACT_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ACT_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `ASSIGNEE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `START_TIME_` datetime(3) NOT NULL,
+  `END_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TRANSACTION_ORDER_` int NULL DEFAULT NULL,
+  `DURATION_` bigint NULL DEFAULT NULL,
+  `DELETE_REASON_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_HI_ACT_INST_START`(`START_TIME_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_ACT_INST_END`(`END_TIME_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_ACT_INST_PROCINST`(`PROC_INST_ID_` ASC, `ACT_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_ACT_INST_EXEC`(`EXECUTION_ID_` ASC, `ACT_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_actinst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_attachment
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_attachment`;
+CREATE TABLE `act_hi_attachment`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `URL_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CONTENT_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TIME_` datetime(3) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_attachment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_comment`;
+CREATE TABLE `act_hi_comment`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TIME_` datetime(3) NOT NULL,
+  `USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ACTION_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `MESSAGE_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `FULL_MSG_` longblob NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_comment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_detail`;
+CREATE TABLE `act_hi_detail`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ACT_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `VAR_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `TIME_` datetime(3) NOT NULL,
+  `BYTEARRAY_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DOUBLE_` double NULL DEFAULT NULL,
+  `LONG_` bigint NULL DEFAULT NULL,
+  `TEXT_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TEXT2_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_HI_DETAIL_PROC_INST`(`PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_DETAIL_ACT_INST`(`ACT_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_DETAIL_TIME`(`TIME_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_DETAIL_NAME`(`NAME_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_DETAIL_TASK_ID`(`TASK_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_entitylink
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_entitylink`;
+CREATE TABLE `act_hi_entitylink`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `LINK_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PARENT_ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REF_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REF_SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REF_SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ROOT_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ROOT_SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HIERARCHY_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_HI_ENT_LNK_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC, `LINK_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_ENT_LNK_REF_SCOPE`(`REF_SCOPE_ID_` ASC, `REF_SCOPE_TYPE_` ASC, `LINK_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_ENT_LNK_ROOT_SCOPE`(`ROOT_SCOPE_ID_` ASC, `ROOT_SCOPE_TYPE_` ASC, `LINK_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_ENT_LNK_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC, `LINK_TYPE_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_entitylink
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_identitylink
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_identitylink`;
+CREATE TABLE `act_hi_identitylink`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `GROUP_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_HI_IDENT_LNK_USER`(`USER_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_IDENT_LNK_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_IDENT_LNK_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_IDENT_LNK_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_IDENT_LNK_TASK`(`TASK_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_IDENT_LNK_PROCINST`(`PROC_INST_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_identitylink
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_procinst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_procinst`;
+CREATE TABLE `act_hi_procinst`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT 1,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `BUSINESS_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `START_TIME_` datetime(3) NOT NULL,
+  `END_TIME_` datetime(3) NULL DEFAULT NULL,
+  `DURATION_` bigint NULL DEFAULT NULL,
+  `START_USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `START_ACT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `END_ACT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUPER_PROCESS_INSTANCE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DELETE_REASON_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CALLBACK_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CALLBACK_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROPAGATED_STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `BUSINESS_STATUS_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `PROC_INST_ID_`(`PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_PRO_INST_END`(`END_TIME_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_PRO_I_BUSKEY`(`BUSINESS_KEY_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_PRO_SUPER_PROCINST`(`SUPER_PROCESS_INSTANCE_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_procinst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_taskinst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_taskinst`;
+CREATE TABLE `act_hi_taskinst`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT 1,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_DEF_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROPAGATED_STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PARENT_TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ASSIGNEE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `START_TIME_` datetime(3) NOT NULL,
+  `CLAIM_TIME_` datetime(3) NULL DEFAULT NULL,
+  `END_TIME_` datetime(3) NULL DEFAULT NULL,
+  `DURATION_` bigint NULL DEFAULT NULL,
+  `DELETE_REASON_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PRIORITY_` int NULL DEFAULT NULL,
+  `DUE_DATE_` datetime(3) NULL DEFAULT NULL,
+  `FORM_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  `LAST_UPDATED_TIME_` datetime(3) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_HI_TASK_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_TASK_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_TASK_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_TASK_INST_PROCINST`(`PROC_INST_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_taskinst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_tsk_log
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_tsk_log`;
+CREATE TABLE `act_hi_tsk_log`  (
+  `ID_` bigint NOT NULL AUTO_INCREMENT,
+  `TYPE_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `TIME_STAMP_` timestamp(3) NOT NULL,
+  `USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DATA_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_tsk_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_hi_varinst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_hi_varinst`;
+CREATE TABLE `act_hi_varinst`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT 1,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `VAR_TYPE_` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `BYTEARRAY_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DOUBLE_` double NULL DEFAULT NULL,
+  `LONG_` bigint NULL DEFAULT NULL,
+  `TEXT_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TEXT2_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `META_INFO_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LAST_UPDATED_TIME_` datetime(3) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_HI_PROCVAR_NAME_TYPE`(`NAME_` ASC, `VAR_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_VAR_SCOPE_ID_TYPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_VAR_SUB_ID_TYPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_PROCVAR_PROC_INST`(`PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_PROCVAR_TASK_ID`(`TASK_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_HI_PROCVAR_EXE`(`EXECUTION_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_hi_varinst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_id_bytearray
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_bytearray`;
+CREATE TABLE `act_id_bytearray`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `BYTES_` longblob NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_bytearray
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_id_group
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_group`;
+CREATE TABLE `act_id_group`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_group
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_id_info
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_info`;
+CREATE TABLE `act_id_info`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `USER_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `VALUE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PASSWORD_` longblob NULL,
+  `PARENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_id_membership
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_membership`;
+CREATE TABLE `act_id_membership`  (
+  `USER_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `GROUP_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  PRIMARY KEY (`USER_ID_`, `GROUP_ID_`) USING BTREE,
+  INDEX `ACT_FK_MEMB_GROUP`(`GROUP_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_MEMB_GROUP` FOREIGN KEY (`GROUP_ID_`) REFERENCES `act_id_group` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_MEMB_USER` FOREIGN KEY (`USER_ID_`) REFERENCES `act_id_user` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_membership
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_id_priv
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_priv`;
+CREATE TABLE `act_id_priv`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_UNIQ_PRIV_NAME`(`NAME_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_priv
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_id_priv_mapping
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_priv_mapping`;
+CREATE TABLE `act_id_priv_mapping`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `PRIV_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `GROUP_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_FK_PRIV_MAPPING`(`PRIV_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_PRIV_USER`(`USER_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_PRIV_GROUP`(`GROUP_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_PRIV_MAPPING` FOREIGN KEY (`PRIV_ID_`) REFERENCES `act_id_priv` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_priv_mapping
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_id_property
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_property`;
+CREATE TABLE `act_id_property`  (
+  `NAME_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `VALUE_` varchar(300) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  PRIMARY KEY (`NAME_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_property
+-- ----------------------------
+INSERT INTO `act_id_property` VALUES ('schema.version', '6.8.1.0', 1);
+
+-- ----------------------------
+-- Table structure for act_id_token
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_token`;
+CREATE TABLE `act_id_token`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `TOKEN_VALUE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TOKEN_DATE_` timestamp(3) NULL DEFAULT NULL,
+  `IP_ADDRESS_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `USER_AGENT_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TOKEN_DATA_` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_token
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_id_user
+-- ----------------------------
+DROP TABLE IF EXISTS `act_id_user`;
+CREATE TABLE `act_id_user`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `FIRST_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `LAST_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DISPLAY_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EMAIL_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PWD_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PICTURE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_id_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_procdef_info
+-- ----------------------------
+DROP TABLE IF EXISTS `act_procdef_info`;
+CREATE TABLE `act_procdef_info`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `INFO_JSON_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_UNIQ_INFO_PROCDEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_INFO_PROCDEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_INFO_JSON_BA`(`INFO_JSON_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_INFO_JSON_BA` FOREIGN KEY (`INFO_JSON_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_INFO_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_procdef_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_re_deployment
+-- ----------------------------
+DROP TABLE IF EXISTS `act_re_deployment`;
+CREATE TABLE `act_re_deployment`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  `DEPLOY_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `DERIVED_FROM_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DERIVED_FROM_ROOT_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ENGINE_VERSION_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_re_deployment
+-- ----------------------------
+INSERT INTO `act_re_deployment` VALUES ('6cfc6a42-0984-11f0-82ff-4ccc6a2e3718', '默认模型', NULL, NULL, '', '2025-03-25 22:21:21.730', NULL, NULL, '6cfc6a42-0984-11f0-82ff-4ccc6a2e3718', NULL);
+
+-- ----------------------------
+-- Table structure for act_re_model
+-- ----------------------------
+DROP TABLE IF EXISTS `act_re_model`;
+CREATE TABLE `act_re_model`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LAST_UPDATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `VERSION_` int NULL DEFAULT NULL,
+  `META_INFO_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EDITOR_SOURCE_VALUE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EDITOR_SOURCE_EXTRA_VALUE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_FK_MODEL_SOURCE`(`EDITOR_SOURCE_VALUE_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_MODEL_SOURCE_EXTRA`(`EDITOR_SOURCE_EXTRA_VALUE_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_MODEL_DEPLOYMENT`(`DEPLOYMENT_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_MODEL_DEPLOYMENT` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_re_deployment` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_MODEL_SOURCE` FOREIGN KEY (`EDITOR_SOURCE_VALUE_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_MODEL_SOURCE_EXTRA` FOREIGN KEY (`EDITOR_SOURCE_EXTRA_VALUE_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_re_model
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_re_procdef
+-- ----------------------------
+DROP TABLE IF EXISTS `act_re_procdef`;
+CREATE TABLE `act_re_procdef`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `VERSION_` int NOT NULL,
+  `DEPLOYMENT_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DGRM_RESOURCE_NAME_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HAS_START_FORM_KEY_` tinyint NULL DEFAULT NULL,
+  `HAS_GRAPHICAL_NOTATION_` tinyint NULL DEFAULT NULL,
+  `SUSPENSION_STATE_` int NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  `ENGINE_VERSION_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DERIVED_FROM_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DERIVED_FROM_ROOT_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DERIVED_VERSION_` int NOT NULL DEFAULT 0,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_UNIQ_PROCDEF`(`KEY_` ASC, `VERSION_` ASC, `DERIVED_VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_re_procdef
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_actinst
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_actinst`;
+CREATE TABLE `act_ru_actinst`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT 1,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `ACT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CALL_PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ACT_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ACT_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `ASSIGNEE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `START_TIME_` datetime(3) NOT NULL,
+  `END_TIME_` datetime(3) NULL DEFAULT NULL,
+  `DURATION_` bigint NULL DEFAULT NULL,
+  `TRANSACTION_ORDER_` int NULL DEFAULT NULL,
+  `DELETE_REASON_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_RU_ACTI_START`(`START_TIME_` ASC) USING BTREE,
+  INDEX `ACT_IDX_RU_ACTI_END`(`END_TIME_` ASC) USING BTREE,
+  INDEX `ACT_IDX_RU_ACTI_PROC`(`PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_RU_ACTI_PROC_ACT`(`PROC_INST_ID_` ASC, `ACT_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_RU_ACTI_EXEC`(`EXECUTION_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_RU_ACTI_EXEC_ACT`(`EXECUTION_ID_` ASC, `ACT_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_RU_ACTI_TASK`(`TASK_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_actinst
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_deadletter_job
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_deadletter_job`;
+CREATE TABLE `act_ru_deadletter_job`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `EXCLUSIVE_` tinyint(1) NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_DEADLETTER_JOB_EXCEPTION_STACK_ID`(`EXCEPTION_STACK_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_DEADLETTER_JOB_CUSTOM_VALUES_ID`(`CUSTOM_VALUES_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_DEADLETTER_JOB_CORRELATION_ID`(`CORRELATION_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_DJOB_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_DJOB_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_DJOB_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_FK_DEADLETTER_JOB_EXECUTION`(`EXECUTION_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_DEADLETTER_JOB_PROCESS_INSTANCE`(`PROCESS_INSTANCE_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_DEADLETTER_JOB_PROC_DEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_deadletter_job
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_entitylink
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_entitylink`;
+CREATE TABLE `act_ru_entitylink`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `LINK_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PARENT_ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REF_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REF_SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REF_SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ROOT_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ROOT_SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HIERARCHY_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_ENT_LNK_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC, `LINK_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_ENT_LNK_REF_SCOPE`(`REF_SCOPE_ID_` ASC, `REF_SCOPE_TYPE_` ASC, `LINK_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_ENT_LNK_ROOT_SCOPE`(`ROOT_SCOPE_ID_` ASC, `ROOT_SCOPE_TYPE_` ASC, `LINK_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_ENT_LNK_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC, `LINK_TYPE_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_entitylink
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_event_subscr
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_event_subscr`;
+CREATE TABLE `act_ru_event_subscr`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `EVENT_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `EVENT_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ACTIVITY_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CONFIGURATION_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATED_` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `LOCK_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_EVENT_SUBSCR_CONFIG_`(`CONFIGURATION_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EVENT_SUBSCR_SCOPEREF_`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_FK_EVENT_EXEC`(`EXECUTION_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_EVENT_EXEC` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_event_subscr
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_execution
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_execution`;
+CREATE TABLE `act_ru_execution`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `BUSINESS_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PARENT_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUPER_EXEC_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ROOT_PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ACT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `IS_ACTIVE_` tinyint NULL DEFAULT NULL,
+  `IS_CONCURRENT_` tinyint NULL DEFAULT NULL,
+  `IS_SCOPE_` tinyint NULL DEFAULT NULL,
+  `IS_EVENT_SCOPE_` tinyint NULL DEFAULT NULL,
+  `IS_MI_ROOT_` tinyint NULL DEFAULT NULL,
+  `SUSPENSION_STATE_` int NULL DEFAULT NULL,
+  `CACHED_ENT_STATE_` int NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `START_ACT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `START_TIME_` datetime(3) NULL DEFAULT NULL,
+  `START_USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `LOCK_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `IS_COUNT_ENABLED_` tinyint NULL DEFAULT NULL,
+  `EVT_SUBSCR_COUNT_` int NULL DEFAULT NULL,
+  `TASK_COUNT_` int NULL DEFAULT NULL,
+  `JOB_COUNT_` int NULL DEFAULT NULL,
+  `TIMER_JOB_COUNT_` int NULL DEFAULT NULL,
+  `SUSP_JOB_COUNT_` int NULL DEFAULT NULL,
+  `DEADLETTER_JOB_COUNT_` int NULL DEFAULT NULL,
+  `EXTERNAL_WORKER_JOB_COUNT_` int NULL DEFAULT NULL,
+  `VAR_COUNT_` int NULL DEFAULT NULL,
+  `ID_LINK_COUNT_` int NULL DEFAULT NULL,
+  `CALLBACK_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CALLBACK_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROPAGATED_STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `BUSINESS_STATUS_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_EXEC_BUSKEY`(`BUSINESS_KEY_` ASC) USING BTREE,
+  INDEX `ACT_IDC_EXEC_ROOT`(`ROOT_PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EXEC_REF_ID_`(`REFERENCE_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_EXE_PROCINST`(`PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_EXE_PARENT`(`PARENT_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_EXE_SUPER`(`SUPER_EXEC_` ASC) USING BTREE,
+  INDEX `ACT_FK_EXE_PROCDEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_EXE_PARENT` FOREIGN KEY (`PARENT_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_EXE_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_EXE_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ACT_FK_EXE_SUPER` FOREIGN KEY (`SUPER_EXEC_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_execution
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_external_job
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_external_job`;
+CREATE TABLE `act_ru_external_job`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCLUSIVE_` tinyint(1) NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `RETRIES_` int NULL DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_EXTERNAL_JOB_EXCEPTION_STACK_ID`(`EXCEPTION_STACK_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EXTERNAL_JOB_CUSTOM_VALUES_ID`(`CUSTOM_VALUES_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EXTERNAL_JOB_CORRELATION_ID`(`CORRELATION_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EJOB_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EJOB_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EJOB_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_EXTERNAL_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_EXTERNAL_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_external_job
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_history_job
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_history_job`;
+CREATE TABLE `act_ru_history_job`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `RETRIES_` int NULL DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ADV_HANDLER_CFG_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_history_job
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_identitylink
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_identitylink`;
+CREATE TABLE `act_ru_identitylink`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `GROUP_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `USER_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_IDENT_LNK_USER`(`USER_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_IDENT_LNK_GROUP`(`GROUP_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_IDENT_LNK_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_IDENT_LNK_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_IDENT_LNK_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_ATHRZ_PROCEDEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_TSKASS_TASK`(`TASK_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_IDL_PROCINST`(`PROC_INST_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_ATHRZ_PROCEDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_IDL_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_TSKASS_TASK` FOREIGN KEY (`TASK_ID_`) REFERENCES `act_ru_task` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_identitylink
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_job
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_job`;
+CREATE TABLE `act_ru_job`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCLUSIVE_` tinyint(1) NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `RETRIES_` int NULL DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_JOB_EXCEPTION_STACK_ID`(`EXCEPTION_STACK_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_JOB_CUSTOM_VALUES_ID`(`CUSTOM_VALUES_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_JOB_CORRELATION_ID`(`CORRELATION_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_JOB_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_JOB_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_JOB_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_FK_JOB_EXECUTION`(`EXECUTION_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_JOB_PROCESS_INSTANCE`(`PROCESS_INSTANCE_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_JOB_PROC_DEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_job
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_suspended_job
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_suspended_job`;
+CREATE TABLE `act_ru_suspended_job`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `EXCLUSIVE_` tinyint(1) NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `RETRIES_` int NULL DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_SUSPENDED_JOB_EXCEPTION_STACK_ID`(`EXCEPTION_STACK_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_SUSPENDED_JOB_CUSTOM_VALUES_ID`(`CUSTOM_VALUES_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_SUSPENDED_JOB_CORRELATION_ID`(`CORRELATION_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_SJOB_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_SJOB_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_SJOB_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_FK_SUSPENDED_JOB_EXECUTION`(`EXECUTION_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_SUSPENDED_JOB_PROCESS_INSTANCE`(`PROCESS_INSTANCE_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_SUSPENDED_JOB_PROC_DEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_suspended_job
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_task
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_task`;
+CREATE TABLE `act_ru_task`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROPAGATED_STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PARENT_TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_DEF_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ASSIGNEE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DELEGATION_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PRIORITY_` int NULL DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `DUE_DATE_` datetime(3) NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUSPENSION_STATE_` int NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  `FORM_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CLAIM_TIME_` datetime(3) NULL DEFAULT NULL,
+  `IS_COUNT_ENABLED_` tinyint NULL DEFAULT NULL,
+  `VAR_COUNT_` int NULL DEFAULT NULL,
+  `ID_LINK_COUNT_` int NULL DEFAULT NULL,
+  `SUB_TASK_COUNT_` int NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_TASK_CREATE`(`CREATE_TIME_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TASK_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TASK_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TASK_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_FK_TASK_EXE`(`EXECUTION_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_TASK_PROCINST`(`PROC_INST_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_TASK_PROCDEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_TASK_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_TASK_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_TASK_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_task
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_timer_job
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_timer_job`;
+CREATE TABLE `act_ru_timer_job`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCLUSIVE_` tinyint(1) NULL DEFAULT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROCESS_INSTANCE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_DEF_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `ELEMENT_NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CORRELATION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `RETRIES_` int NULL DEFAULT NULL,
+  `EXCEPTION_STACK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `EXCEPTION_MSG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DUEDATE_` timestamp(3) NULL DEFAULT NULL,
+  `REPEAT_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `HANDLER_CFG_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CUSTOM_VALUES_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_TIMER_JOB_EXCEPTION_STACK_ID`(`EXCEPTION_STACK_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TIMER_JOB_CUSTOM_VALUES_ID`(`CUSTOM_VALUES_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TIMER_JOB_CORRELATION_ID`(`CORRELATION_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TIMER_JOB_DUEDATE`(`DUEDATE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TJOB_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TJOB_SUB_SCOPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_TJOB_SCOPE_DEF`(`SCOPE_DEFINITION_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_FK_TIMER_JOB_EXECUTION`(`EXECUTION_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_TIMER_JOB_PROCESS_INSTANCE`(`PROCESS_INSTANCE_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_TIMER_JOB_PROC_DEF`(`PROC_DEF_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_TIMER_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_TIMER_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_TIMER_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_TIMER_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_TIMER_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_timer_job
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for act_ru_variable
+-- ----------------------------
+DROP TABLE IF EXISTS `act_ru_variable`;
+CREATE TABLE `act_ru_variable`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `EXECUTION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `PROC_INST_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `BYTEARRAY_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `DOUBLE_` double NULL DEFAULT NULL,
+  `LONG_` bigint NULL DEFAULT NULL,
+  `TEXT_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TEXT2_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `META_INFO_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_RU_VAR_SCOPE_ID_TYPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_IDX_RU_VAR_SUB_ID_TYPE`(`SUB_SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
+  INDEX `ACT_FK_VAR_BYTEARRAY`(`BYTEARRAY_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_VARIABLE_TASK_ID`(`TASK_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_VAR_EXE`(`EXECUTION_ID_` ASC) USING BTREE,
+  INDEX `ACT_FK_VAR_PROCINST`(`PROC_INST_ID_` ASC) USING BTREE,
+  CONSTRAINT `ACT_FK_VAR_BYTEARRAY` FOREIGN KEY (`BYTEARRAY_ID_`) REFERENCES `act_ge_bytearray` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_VAR_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `ACT_FK_VAR_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of act_ru_variable
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for flow_model
+-- ----------------------------
+DROP TABLE IF EXISTS `flow_model`;
+CREATE TABLE `flow_model`  (
+  `id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键ID',
+  `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '编码',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '名称',
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '内容',
+  `status` int NULL DEFAULT NULL COMMENT '状态：0、未部署，1、已部署',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '工作流模型' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flow_model
+-- ----------------------------
+INSERT INTO `flow_model` VALUES ('e9606169-0982-11f0-b559-4ccc6a2e3718', 'code-0ace49712adbaf6ffe3f8bd82b391de2', '默认模型', '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<definitions xmlns=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:omgdc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:camunda=\"http://camunda.org/schema/1.0/bpmn\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" id=\"sid-38422fae-e03e-43a3-bef4-bd33b32041b2\" targetNamespace=\"http://bpmn.io/bpmn\" exporter=\"bpmn-js (https://demo.bpmn.io)\" exporterVersion=\"5.1.2\">\n  <process id=\"code-0ace49712adbaf6ffe3f8bd82b391de2\" name=\"默认模型\" isExecutable=\"true\" camunda:versionTag=\"0.0.1\">\n    <startEvent id=\"Event_15ynmo9\" name=\"开始\">\n      <outgoing>Flow_1u5ny8z</outgoing>\n    </startEvent>\n    <task id=\"Activity_03dvpr6\" name=\"审核\">\n      <extensionElements>\n        <camunda:inputOutput>\n          <camunda:inputParameter name=\"Input_00c4p58\" />\n          <camunda:outputParameter name=\"Output_0rth6o2\" />\n        </camunda:inputOutput>\n      </extensionElements>\n      <incoming>Flow_1u5ny8z</incoming>\n      <outgoing>Flow_02qozhm</outgoing>\n    </task>\n    <sequenceFlow id=\"Flow_1u5ny8z\" sourceRef=\"Event_15ynmo9\" targetRef=\"Activity_03dvpr6\" />\n    <intermediateThrowEvent id=\"Event_0u0x0dv\" name=\"结束\">\n      <incoming>Flow_02qozhm</incoming>\n    </intermediateThrowEvent>\n    <sequenceFlow id=\"Flow_02qozhm\" sourceRef=\"Activity_03dvpr6\" targetRef=\"Event_0u0x0dv\" />\n  </process>\n  <bpmndi:BPMNDiagram id=\"BpmnDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BpmnPlane_1\" bpmnElement=\"code-0ace49712adbaf6ffe3f8bd82b391de2\">\n      <bpmndi:BPMNShape id=\"Event_15ynmo9_di\" bpmnElement=\"Event_15ynmo9\">\n        <omgdc:Bounds x=\"282\" y=\"252\" width=\"36\" height=\"36\" />\n        <bpmndi:BPMNLabel>\n          <omgdc:Bounds x=\"289\" y=\"295\" width=\"22\" height=\"14\" />\n        </bpmndi:BPMNLabel>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Activity_03dvpr6_di\" bpmnElement=\"Activity_03dvpr6\">\n        <omgdc:Bounds x=\"370\" y=\"230\" width=\"100\" height=\"80\" />\n        <bpmndi:BPMNLabel />\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Event_0u0x0dv_di\" bpmnElement=\"Event_0u0x0dv\">\n        <omgdc:Bounds x=\"522\" y=\"252\" width=\"36\" height=\"36\" />\n        <bpmndi:BPMNLabel>\n          <omgdc:Bounds x=\"529\" y=\"295\" width=\"22\" height=\"14\" />\n        </bpmndi:BPMNLabel>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNEdge id=\"Flow_1u5ny8z_di\" bpmnElement=\"Flow_1u5ny8z\">\n        <di:waypoint x=\"318\" y=\"270\" />\n        <di:waypoint x=\"370\" y=\"270\" />\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_02qozhm_di\" bpmnElement=\"Flow_02qozhm\">\n        <di:waypoint x=\"470\" y=\"270\" />\n        <di:waypoint x=\"522\" y=\"270\" />\n      </bpmndi:BPMNEdge>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</definitions>\n', 0, '1', '2025-03-25 22:10:31', '2025-03-25 22:10:31', '');
+
+-- ----------------------------
+-- Table structure for flw_channel_definition
+-- ----------------------------
+DROP TABLE IF EXISTS `flw_channel_definition`;
+CREATE TABLE `flw_channel_definition`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `VERSION_` int NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `IMPLEMENTATION_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_IDX_CHANNEL_DEF_UNIQ`(`KEY_` ASC, `VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flw_channel_definition
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for flw_ev_databasechangelog
+-- ----------------------------
+DROP TABLE IF EXISTS `flw_ev_databasechangelog`;
+CREATE TABLE `flw_ev_databasechangelog`  (
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int NOT NULL,
+  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flw_ev_databasechangelog
+-- ----------------------------
+INSERT INTO `flw_ev_databasechangelog` VALUES ('1', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2025-03-25 21:15:16', 1, 'EXECUTED', '8:1b0c48c9cf7945be799d868a2626d687', 'createTable tableName=FLW_EVENT_DEPLOYMENT; createTable tableName=FLW_EVENT_RESOURCE; createTable tableName=FLW_EVENT_DEFINITION; createIndex indexName=ACT_IDX_EVENT_DEF_UNIQ, tableName=FLW_EVENT_DEFINITION; createTable tableName=FLW_CHANNEL_DEFIN...', '', NULL, '4.9.1', NULL, NULL, '2908515820');
+INSERT INTO `flw_ev_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2025-03-25 21:15:16', 2, 'EXECUTED', '8:0ea825feb8e470558f0b5754352b9cda', 'addColumn tableName=FLW_CHANNEL_DEFINITION; addColumn tableName=FLW_CHANNEL_DEFINITION', '', NULL, '4.9.1', NULL, NULL, '2908515820');
+INSERT INTO `flw_ev_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2025-03-25 21:15:16', 3, 'EXECUTED', '8:3c2bb293350b5cbe6504331980c9dcee', 'customChange', '', NULL, '4.9.1', NULL, NULL, '2908515820');
+
+-- ----------------------------
+-- Table structure for flw_ev_databasechangeloglock
+-- ----------------------------
+DROP TABLE IF EXISTS `flw_ev_databasechangeloglock`;
+CREATE TABLE `flw_ev_databasechangeloglock`  (
+  `ID` int NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime NULL DEFAULT NULL,
+  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flw_ev_databasechangeloglock
+-- ----------------------------
+INSERT INTO `flw_ev_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for flw_event_definition
+-- ----------------------------
+DROP TABLE IF EXISTS `flw_event_definition`;
+CREATE TABLE `flw_event_definition`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `VERSION_` int NULL DEFAULT NULL,
+  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DESCRIPTION_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE,
+  UNIQUE INDEX `ACT_IDX_EVENT_DEF_UNIQ`(`KEY_` ASC, `VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flw_event_definition
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for flw_event_deployment
+-- ----------------------------
+DROP TABLE IF EXISTS `flw_event_deployment`;
+CREATE TABLE `flw_event_deployment`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOY_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `PARENT_DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flw_event_deployment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for flw_event_resource
+-- ----------------------------
+DROP TABLE IF EXISTS `flw_event_resource`;
+CREATE TABLE `flw_event_resource`  (
+  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `RESOURCE_BYTES_` longblob NULL,
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flw_event_resource
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for flw_ru_batch
+-- ----------------------------
+DROP TABLE IF EXISTS `flw_ru_batch`;
+CREATE TABLE `flw_ru_batch`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `TYPE_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `SEARCH_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SEARCH_KEY2_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NOT NULL,
+  `COMPLETE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `STATUS_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `BATCH_DOC_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flw_ru_batch
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for flw_ru_batch_part
+-- ----------------------------
+DROP TABLE IF EXISTS `flw_ru_batch_part`;
+CREATE TABLE `flw_ru_batch_part`  (
+  `ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `REV_` int NULL DEFAULT NULL,
+  `BATCH_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TYPE_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `SCOPE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUB_SCOPE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_TYPE_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SEARCH_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SEARCH_KEY2_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CREATE_TIME_` datetime(3) NOT NULL,
+  `COMPLETE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `STATUS_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `RESULT_DOC_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `FLW_IDX_BATCH_PART`(`BATCH_ID_` ASC) USING BTREE,
+  CONSTRAINT `FLW_FK_BATCH_PART_PARENT` FOREIGN KEY (`BATCH_ID_`) REFERENCES `flw_ru_batch` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of flw_ru_batch_part
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for lc_pages
@@ -162,12 +2381,21 @@ INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/安全/登录
 INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/安全/获取当前用户权限.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"7a1ae4380b62499b83b68312f821e8ef\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"1e5946084f1b47b5aea7fb8b2829c2cd\",\r\n  \"name\" : \"获取当前用户权限\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1688712188050,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"permissions\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : null,\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport \'cn.dev33.satoken.stp.StpUtil\';\r\n\r\nvar userId = StpUtil.getLoginId()\r\nreturn db.select(\"\"\"\r\n    select DISTINCT m.permission \r\n    from sys_menu m\r\n    left join sys_role_menu rm on rm.menu_id = m.id\r\n    left join sys_user_role ur on ur.role_id = rm.role_id \r\n    where m.is_del = 0\r\n    and m.permission != \'\'\r\n    and m.permission IS NOT NULL\r\n    ?{userId && userId != \'1\', and ur.user_id = #{userId}}\r\n\"\"\").map((it) => {return it.permission})');
 INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/安全/获取验证码.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"f1a4ad9f555c43d487773c175fbe5b9f\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"1e5946084f1b47b5aea7fb8b2829c2cd\",\r\n  \"name\" : \"获取验证码\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1708928493064,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"code\",\r\n  \"method\" : \"GET\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ {\r\n    \"name\" : \"require_login\",\r\n    \"value\" : \"false\",\r\n    \"description\" : \"该接口需要登录才允许访问\",\r\n    \"required\" : false,\r\n    \"dataType\" : \"String\",\r\n    \"type\" : null,\r\n    \"defaultValue\" : null,\r\n    \"validateType\" : null,\r\n    \"error\" : null,\r\n    \"expression\" : null,\r\n    \"children\" : null\r\n  } ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : \"{\\n    \\\"code\\\": 500,\\n    \\\"message\\\": \\\"系统内部出现错误\\\",\\n    \\\"result\\\": null\\n}\",\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\n// 纯数字\r\nimport cn.hutool.captcha.CaptchaUtil;\r\nimport cn.hutool.captcha.LineCaptcha;\r\nimport cn.hutool.captcha.generator.RandomGenerator;\r\nimport java.io.ByteArrayOutputStream;\r\nimport java.io.OutputStream;\r\nimport com.tansci.model.CodeCacheMap;\r\n\r\nvar lineCaptcha = CaptchaUtil.createLineCaptcha(100, 60);\r\nlineCaptcha.setGenerator(new RandomGenerator(\"0123456789\", 4));\r\nCodeCacheMap.put(lineCaptcha.getCode(),lineCaptcha.getCode())\r\n\r\nOutputStream bOut = new ByteArrayOutputStream();\r\nlineCaptcha.write(bOut)\r\nreturn bOut.toByteArray()\r\n\r\n// 数字字母组合\r\n// import cn.hutool.captcha.CaptchaUtil;\r\n// import cn.hutool.captcha.LineCaptcha;\r\n// import java.io.ByteArrayOutputStream;\r\n// import java.io.OutputStream;\r\n// import com.tansci.model.CodeCacheMap;\r\n\r\n// var lineCaptcha = CaptchaUtil.createLineCaptcha(100, 60);\r\n// CodeCacheMap.put(lineCaptcha.getCode(),lineCaptcha.getCode())\r\n\r\n// OutputStream bOut = new ByteArrayOutputStream();\r\n// lineCaptcha.write(bOut)\r\n// return bOut.toByteArray()');
 INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/', 'this is directory');
-INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/group.json', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"name\" : \"工作流\",\r\n  \"type\" : \"api\",\r\n  \"parentId\" : \"acff5ad7aae64de2acb03e1d16a58ce2\",\r\n  \"path\" : \"workflow\",\r\n  \"createTime\" : 1742626894636,\r\n  \"updateTime\" : null,\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"paths\" : [ ],\r\n  \"options\" : [ ]\r\n}');
-INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/修改.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"626ccce183a14523b50b363df2c8816b\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"name\" : \"修改\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742627190985,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"update\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nreturn db.update(\"\"\"\r\n    update workflow set \r\n    update_time = now()\r\n    ?{body.name, ,`name` = #{body.name}}\r\n    ?{body.content, ,`content` = #{body.content}}\r\n    ?{body.status, ,`status` = #{body.status}}\r\n    ?{body.remarks, ,`remarks` = #{body.remarks}}\r\n    where id = #{body.id}\r\n\"\"\")');
-INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/分页.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"2b5be8ee089a4f9f83c0faa1879232cf\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"name\" : \"分页\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742627063223,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"page\",\r\n  \"method\" : \"GET\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nreturn db.page(\"\"\"\r\n    select * from workflow\r\n    where 1 = 1\r\n    ?{status != null , and status = #{status}}\r\n    ?{name , and name like concat(\'%\',#{name},\'%\')}\r\n    order by update_time desc \r\n\"\"\")');
-INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/删除.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"53fb519a3be9489989975af84b8878d5\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"name\" : \"删除\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742627378737,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"delete/{id}\",\r\n  \"method\" : \"GET\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nreturn db.table(\"workflow\").where().eq(\"id\", id).delete()');
-INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/新增.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"04e32ed909d44e0dadd93e51c6c22cfb\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"name\" : \"新增\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742627340541,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"save\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport \'cn.dev33.satoken.stp.StpUtil\';\r\n\r\nvar userId = StpUtil.getLoginId()\r\nreturn db.insert(\"\"\"\r\n    INSERT INTO workflow(`id`, `name`, `content`, `status`, `create_by`, `update_time`, `create_time`, `remarks`) \r\n    VALUES (uuid(), #{body.name},#{body.content},0,#{userId},now(),now(),#{body.remarks})\r\n\"\"\")');
-INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/详情.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"ff40df477ac44402a079de10e9b8ef3d\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"name\" : \"详情\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742627949358,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"details\",\r\n  \"method\" : \"GET\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nreturn db.selectOne(\"\"\"\r\n    select * from workflow where id = #{id}\r\n\"\"\")');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/group.json', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"name\" : \"工作流\",\r\n  \"type\" : \"api\",\r\n  \"parentId\" : \"acff5ad7aae64de2acb03e1d16a58ce2\",\r\n  \"path\" : \"work\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742909385448,\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"paths\" : [ ],\r\n  \"options\" : [ ]\r\n}');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/模型管理/', 'this is directory');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/模型管理/group.json', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"5ec3f09f11014fb3b108c89b6885218a\",\r\n  \"name\" : \"模型管理\",\r\n  \"type\" : \"api\",\r\n  \"parentId\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"path\" : \"model\",\r\n  \"createTime\" : 1742909403621,\r\n  \"updateTime\" : null,\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"paths\" : [ ],\r\n  \"options\" : [ ]\r\n}');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/模型管理/修改.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"626ccce183a14523b50b363df2c8816b\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5ec3f09f11014fb3b108c89b6885218a\",\r\n  \"name\" : \"修改\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742910211665,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"update\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nreturn db.update(\"\"\"\r\n    update flow_model set \r\n    update_time = now()\r\n    ?{body.code, ,`code` = #{body.code}}\r\n    ?{body.name, ,`name` = #{body.name}}\r\n    ?{body.content, ,`content` = #{body.content}}\r\n    ?{body.status, ,`status` = #{body.status}}\r\n    ?{body.remarks, ,`remarks` = #{body.remarks}}\r\n    where id = #{body.id}\r\n\"\"\")');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/模型管理/分页.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"2b5be8ee089a4f9f83c0faa1879232cf\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5ec3f09f11014fb3b108c89b6885218a\",\r\n  \"name\" : \"分页\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742909452825,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"page\",\r\n  \"method\" : \"GET\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nreturn db.page(\"\"\"\r\n    select * from flow_model\r\n    where 1 = 1\r\n    ?{status != null , and status = #{status}}\r\n    ?{name , and name like concat(\'%\',#{name},\'%\')}\r\n    order by update_time desc \r\n\"\"\")');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/模型管理/删除.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"53fb519a3be9489989975af84b8878d5\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5ec3f09f11014fb3b108c89b6885218a\",\r\n  \"name\" : \"删除\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742909454687,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"delete/{id}\",\r\n  \"method\" : \"GET\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nreturn db.table(\"flow_model\").where().eq(\"id\", id).delete()');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/模型管理/新增.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"04e32ed909d44e0dadd93e51c6c22cfb\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5ec3f09f11014fb3b108c89b6885218a\",\r\n  \"name\" : \"新增\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742910195992,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"save\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport \'cn.dev33.satoken.stp.StpUtil\';\r\n\r\nvar userId = StpUtil.getLoginId()\r\nreturn db.insert(\"\"\"\r\n    INSERT INTO flow_model(`id`, `code`, `name`, `content`, `status`, `create_by`, `update_time`, `create_time`, `remarks`) \r\n    VALUES (uuid(),#{body.code},#{body.name},#{body.content},0,#{userId},now(),now(),#{body.remarks})\r\n\"\"\")');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/模型管理/详情.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"ff40df477ac44402a079de10e9b8ef3d\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5ec3f09f11014fb3b108c89b6885218a\",\r\n  \"name\" : \"详情\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742909456419,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"details\",\r\n  \"method\" : \"GET\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nreturn db.selectOne(\"\"\"\r\n    select * from flow_model where id = #{id}\r\n\"\"\")');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/流程管理/', 'this is directory');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/流程管理/group.json', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"5d2432706bca4d168ddd547cd5681807\",\r\n  \"name\" : \"流程管理\",\r\n  \"type\" : \"api\",\r\n  \"parentId\" : \"b8fda8d83a3449cbacc8a1ee5e040ab8\",\r\n  \"path\" : \"workflow\",\r\n  \"createTime\" : 1742910704023,\r\n  \"updateTime\" : null,\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"paths\" : [ ],\r\n  \"options\" : [ ]\r\n}');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/流程管理/任务审批通过.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"copy1742910941772d263\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5d2432706bca4d168ddd547cd5681807\",\r\n  \"name\" : \"任务审批通过\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742910991392,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"approveTask\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport com.tansci.service.FlowableService as flowableService;\r\n\r\nif(!body.taskId){\r\n    exit 500, \'请求参数有误！\';\r\n}\r\n\r\nreturn flowableService.approveTask(\r\n    body.taskId::string\r\n);');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/流程管理/任务被拒绝.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"copy1742910967305d92063\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5d2432706bca4d168ddd547cd5681807\",\r\n  \"name\" : \"任务被拒绝\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742910989741,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"rejectTask\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport com.tansci.service.FlowableService as flowableService;\r\n\r\nif(!body.taskId){\r\n    exit 500, \'请求参数有误！\';\r\n}\r\n\r\nreturn flowableService.rejectTask(\r\n    body.taskId::string\r\n);');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/流程管理/启动流程.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"copy1742910840666d8340\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5d2432706bca4d168ddd547cd5681807\",\r\n  \"name\" : \"启动流程\",\r\n  \"createTime\" : 1742910876719,\r\n  \"updateTime\" : 1742910994718,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"startProcessInstance\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport com.tansci.service.FlowableService as flowableService;\r\n\r\nif(!body.processId){\r\n    exit 500, \'请求参数有误！\';\r\n}\r\n\r\nreturn flowableService.startProcessInstance(\r\n    body.processId::string\r\n);');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/流程管理/查询分配给指定用户的任务.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"copy1742910883850d24391\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5d2432706bca4d168ddd547cd5681807\",\r\n  \"name\" : \"查询分配给指定用户的任务\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742910992981,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"getTaskByAssignee\",\r\n  \"method\" : \"GET\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport com.tansci.service.FlowableService as flowableService;\r\n\r\nif(!assignee){\r\n    exit 500, \'请求参数有误！\';\r\n}\r\n\r\nreturn flowableService.getTaskByAssignee(\r\n    assignee::string\r\n);');
+INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/工作流/流程管理/部署流程模型.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"576744c3f8994ca9a761fa7b608be940\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"5d2432706bca4d168ddd547cd5681807\",\r\n  \"name\" : \"部署流程模型\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1742910996273,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"deployProcess\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport com.tansci.service.FlowableService as flowableService;\r\n\r\nif(!body.name || !body.xml){\r\n    exit 500, \'请求参数有误！\';\r\n}\r\n\r\nreturn flowableService.deployProcess(\r\n    body.name::string,\r\n    body.xml::string\r\n);');
 INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/用户管理/', 'this is directory');
 INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/用户管理/group.json', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"fc83134da85f4beaa18511d00d4ff661\",\r\n  \"name\" : \"用户管理\",\r\n  \"type\" : \"api\",\r\n  \"parentId\" : \"acff5ad7aae64de2acb03e1d16a58ce2\",\r\n  \"path\" : \"user\",\r\n  \"createTime\" : 1688627065423,\r\n  \"updateTime\" : null,\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"paths\" : [ ],\r\n  \"options\" : [ ]\r\n}');
 INSERT INTO `magic_api_file` VALUES ('/tansci-api/api/系统管理/用户管理/保存.ms', '{\r\n  \"properties\" : { },\r\n  \"id\" : \"6bdc64e2ac314291a4c6ee857edeb458\",\r\n  \"script\" : null,\r\n  \"groupId\" : \"fc83134da85f4beaa18511d00d4ff661\",\r\n  \"name\" : \"保存\",\r\n  \"createTime\" : null,\r\n  \"updateTime\" : 1708659604274,\r\n  \"lock\" : \"1\",\r\n  \"createBy\" : null,\r\n  \"updateBy\" : null,\r\n  \"path\" : \"save\",\r\n  \"method\" : \"POST\",\r\n  \"parameters\" : [ ],\r\n  \"options\" : [ ],\r\n  \"requestBody\" : \"\",\r\n  \"headers\" : [ ],\r\n  \"paths\" : [ ],\r\n  \"responseBody\" : null,\r\n  \"description\" : null,\r\n  \"requestBodyDefinition\" : null,\r\n  \"responseBodyDefinition\" : null\r\n}\r\n================================\r\nimport com.tansci.utils.Sha256Util;\r\n\r\nvar count = db.selectInt(\"\"\"select count(*) from sys_user where username = #{body.username}\"\"\")\r\nif(count > 0){\r\n    exit 500, \'用户名称已存在！\'\r\n}\r\n\r\nvar id = uuid();\r\nvar password = Sha256Util.getSHA256(body.password);\r\nvar row = db.insert(\"\"\"\r\n    INSERT INTO sys_user(`id`, `username`, `password`, `nickname`, `type`, `phone`,`avatar`,`gender`,`birthday`,`address`,`email`, `is_del`, `update_time`, `create_time`, `remarks`) \r\n    VALUES \r\n    (#{id}, #{body.username},#{password},#{body.nickname},#{body.type},#{body.phone},#{body.avatar},#{body.gender},#{body.birthday},#{body.address},#{body.email},0,now(),now(),#{body.remarks})\r\n\"\"\")\r\n\r\ndb.insert(\"\"\"insert into sys_user_role(user_id,role_id)values(#{id},#{body.roleId})\"\"\")\r\n\r\nreturn row');
@@ -297,10 +2525,12 @@ INSERT INTO `sys_login_log` VALUES ('288018c0-06c4-11f0-b559-4ccc6a2e3718', 'adm
 INSERT INTO `sys_login_log` VALUES ('3e4bca15-f08e-11ee-a7f7-e0be038740d4', 'admin', 'a123456', '失败', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', NULL, '用户名或密码错误', '2024-04-02 09:13:41');
 INSERT INTO `sys_login_log` VALUES ('3f31c528-06c3-11f0-b559-4ccc6a2e3718', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', '7ee29948-a08b-46c9-9c9a-2aea20333058', '成功', '2025-03-22 10:13:29');
 INSERT INTO `sys_login_log` VALUES ('45851036-f08e-11ee-a7f7-e0be038740d4', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', 'e01c8514-4b84-4266-8e41-a58fb81607a9', '成功', '2024-04-02 09:13:53');
+INSERT INTO `sys_login_log` VALUES ('46db54ae-097b-11f0-b559-4ccc6a2e3718', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', '2f92e61e-034b-4142-a58f-2484e44aaf36', '成功', '2025-03-25 21:15:52');
 INSERT INTO `sys_login_log` VALUES ('5610976d-d46f-11ee-b5ef-e0be038740d4', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', '7e5530c9-dd73-4e92-9478-b9521a59b429', '成功', '2024-02-26 14:21:54');
 INSERT INTO `sys_login_log` VALUES ('5770bd1e-d473-11ee-b5ef-e0be038740d4', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', '0ef66cb9-11b6-4a82-a20d-9105719a7afe', '成功', '2024-02-26 14:50:34');
 INSERT INTO `sys_login_log` VALUES ('59297ca7-b0f5-11ee-8efe-e0be038740d4', 'admin', 'a123456', '失败', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', NULL, '用户名或密码错误', '2024-01-12 10:50:30');
 INSERT INTO `sys_login_log` VALUES ('613e5529-b0f5-11ee-8efe-e0be038740d4', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', '42cba51f-f0f5-424d-a026-8a0730ab3570', '成功', '2024-01-12 10:50:44');
+INSERT INTO `sys_login_log` VALUES ('6851595f-0984-11f0-b559-4ccc6a2e3718', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', '509087be-b4a7-4936-85c8-ca72d49a0bfa', '成功', '2025-03-25 22:21:13');
 INSERT INTO `sys_login_log` VALUES ('7c699c79-b0f7-11ee-8efe-e0be038740d4', 'admin', 'a123456', '失败', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', NULL, '用户名或密码错误', '2024-01-12 11:05:48');
 INSERT INTO `sys_login_log` VALUES ('823be61c-d46f-11ee-b5ef-e0be038740d4', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', '0ef66cb9-11b6-4a82-a20d-9105719a7afe', '成功', '2024-02-26 14:23:08');
 INSERT INTO `sys_login_log` VALUES ('83facdd3-b0f3-11ee-8efe-e0be038740d4', 'admin', 'a123456', '失败', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', NULL, '用户名或密码错误', '2024-01-12 10:37:23');
@@ -364,9 +2594,9 @@ INSERT INTO `sys_menu` VALUES ('5de088a93f0828a57e4c70959831458b', 'b1851d1b1359
 INSERT INTO `sys_menu` VALUES ('5df7c65d51129baefee123ef3bc2d7de', 'ea83fb03d2117cb287973d6889984686', 'magicapi', 'https://www.ssssssss.org/magic-api/pages/quick/single/', 'Clock', '框架', 'magicapi', NULL, 2, '', 0, 1, 0, 0, 1, '2023-04-11 11:25:08', '2023-04-11 11:25:08', NULL);
 INSERT INTO `sys_menu` VALUES ('5e67672047d0a00bf861ba2255535238', '1ec1c1cb127d83f6346904220b3ed20b', '', '', '', '修改', '', 'dict:update', 2, '', 0, 0, 0, 0, 0, '2023-04-13 16:27:29', '2023-04-13 16:27:29', '');
 INSERT INTO `sys_menu` VALUES ('628431d108e3530ac37dfa2180dff376', '1ec1c1cb127d83f6346904220b3ed20b', '', '', '', '保存', '', 'dict:save', 1, '', 0, 0, 0, 0, 0, '2023-04-13 16:27:07', '2023-04-13 16:27:07', '');
-INSERT INTO `sys_menu` VALUES ('68de23e6-06c2-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e370', 'workflowAdd', '/work/WorkflowAdd', 'DocumentAdd', '新增流程', 'WorkflowAdd', NULL, 1, NULL, 0, 2, 0, 1, 1, '2025-03-22 10:26:26', '2025-03-22 10:07:30', '');
+INSERT INTO `sys_menu` VALUES ('68de23e6-06c2-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e370', 'modelAdd', '/work/ModelAdd', 'DocumentAdd', '新增流程', 'ModelAdd', NULL, 1, NULL, 0, 2, 0, 1, 1, '2025-03-25 21:37:20', '2025-03-22 10:07:30', '');
 INSERT INTO `sys_menu` VALUES ('7840fc2e-0401-11f0-b559-4ccc6a2e370', '0', 'work', '/work', 'Operation', '工作流', 'Work', NULL, 3, NULL, 0, 0, 0, 1, 1, '2025-03-22 10:21:10', '2025-03-18 22:01:20', '');
-INSERT INTO `sys_menu` VALUES ('7840fc2e-0401-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e370', 'workflow', '/work/Workflow', 'Operation', '流程管理', 'Workflow', NULL, 0, NULL, 0, 0, 0, 1, 1, '2025-03-22 10:13:17', '2025-03-18 22:01:20', '');
+INSERT INTO `sys_menu` VALUES ('7840fc2e-0401-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e370', 'model', '/work/Model', 'Operation', '模型管理', 'Model', NULL, 0, NULL, 0, 0, 0, 1, 1, '2025-03-25 21:18:13', '2025-03-18 22:01:20', '');
 INSERT INTO `sys_menu` VALUES ('7b02ec134bcd2a74b7930ce03da4b8bb', '120d967459a9e7323692b3fa49c1ba59', 'loginLog', '/monitor/LoginLog', 'User', '登录日志', 'LoginLog', NULL, 1, NULL, 0, 0, 0, 1, 1, '2023-04-14 08:48:07', '2023-04-14 08:48:07', '');
 INSERT INTO `sys_menu` VALUES ('850a1c29af28318e6e470a14aaeb50e5', 'b1851d1b13594e71840103c11a37a006', '', '', '', '保存', '', 'user:save', 0, '', 0, 0, 0, 0, 0, '2023-04-13 11:33:37', '2023-04-13 11:33:37', '');
 INSERT INTO `sys_menu` VALUES ('9658b61b187ae33b7c8c39fc8c1265dc', '120d967459a9e7323692b3fa49c1ba59', 'onlineUser', '/monitor/OnlineUser', 'Avatar', '在线用户', 'OnlineUser', NULL, 3, NULL, 0, 0, 0, 1, 1, '2023-04-14 08:50:35', '2023-04-14 08:50:35', '');
@@ -386,12 +2616,12 @@ INSERT INTO `sys_menu` VALUES ('b4cfa05bff2269fee06788b32115851a', 'b1851d1b1359
 INSERT INTO `sys_menu` VALUES ('b8db9ff560e383e59d604e19c9fbd3cb', 'b1851d1b13594e71840103c11a37a006', '', '', '', '列表', '', 'user:list', 4, '', 0, 0, 0, 0, 0, '2023-04-13 11:34:49', '2023-04-13 11:34:49', '');
 INSERT INTO `sys_menu` VALUES ('b9401c42bc1e58e0a48e6b3308cff617', '1ec1c1cb127d83f6346904220b3ed20b', '', '', '', '删除', '', 'dict:delete', 4, '', 0, 0, 0, 0, 0, '2023-04-13 16:27:48', '2023-04-13 16:27:48', '');
 INSERT INTO `sys_menu` VALUES ('d2df5734-1ca6-11ee-8b16-e0be038740d4', 'ea83fb03d2117cb287973d6889984686', 'table', '/table', 'Camera', '表格示例', 'table', NULL, 3, NULL, 1, 0, 0, 1, 1, '2023-07-07 17:15:32', '2023-07-07 17:15:32', '');
-INSERT INTO `sys_menu` VALUES ('db608f30-06ba-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e3718', '', '', '', '保存', '', 'workflow:save', 0, NULL, 0, 0, 0, 0, 0, '2025-03-22 09:13:26', '2025-03-22 09:13:26', '');
-INSERT INTO `sys_menu` VALUES ('e5c47de2-06ba-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e3718', '', '', '', '修改', '', 'workflow:update', 1, NULL, 0, 0, 0, 0, 0, '2025-03-22 09:13:43', '2025-03-22 09:13:43', '');
+INSERT INTO `sys_menu` VALUES ('db608f30-06ba-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e3718', '', '', '', '保存', '', 'model:save', 0, NULL, 0, 0, 0, 0, 0, '2025-03-25 21:18:30', '2025-03-22 09:13:26', '');
+INSERT INTO `sys_menu` VALUES ('e5c47de2-06ba-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e3718', '', '', '', '修改', '', 'model:update', 1, NULL, 0, 0, 0, 0, 0, '2025-03-25 21:18:37', '2025-03-22 09:13:43', '');
 INSERT INTO `sys_menu` VALUES ('ea83fb03d2117cb287973d6889984686', '0', 'demo', '/demo', 'ChromeFilled', '菜单实例', 'Demo', NULL, 5, '', 0, 0, 0, 1, 1, '2023-07-07 17:06:06', '2023-04-11 11:10:46', '实例');
 INSERT INTO `sys_menu` VALUES ('eb404f1c-1ca6-11ee-8b16-e0be038740d4', 'ea83fb03d2117cb287973d6889984686', 'images', '/images', 'Football', '轮播图', 'images', NULL, 4, NULL, 1, 0, 0, 1, 1, '2023-07-07 17:16:13', '2023-07-07 17:16:13', '');
 INSERT INTO `sys_menu` VALUES ('f3138bd5b256d82f9eebe07c6679cf15', 'b1851d1b13594e71840103c11a37a004', '', '', '', '修改', '', 'org:update', 2, '', 0, 0, 0, 0, 0, '2023-04-13 10:35:17', '2023-04-13 10:35:17', '');
-INSERT INTO `sys_menu` VALUES ('f4b37ac9-06ba-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e3718', '', '', '', '删除', '', 'workflow:delete', 2, NULL, 0, 0, 0, 0, 0, '2025-03-22 09:14:08', '2025-03-22 09:14:08', '');
+INSERT INTO `sys_menu` VALUES ('f4b37ac9-06ba-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e3718', '', '', '', '删除', '', 'model:delete', 2, NULL, 0, 0, 0, 0, 0, '2025-03-25 21:18:46', '2025-03-22 09:14:08', '');
 INSERT INTO `sys_menu` VALUES ('f8b972bc005a9c6691a43b76839b0666', 'b1851d1b13594e71840103c11a37a005', NULL, NULL, NULL, '列表', 'list', 'role:list', 1, '', 0, 0, 0, 0, 0, '2023-04-11 11:26:05', '2023-04-11 11:12:16', NULL);
 INSERT INTO `sys_menu` VALUES ('f8b972bc005a9c6691a43b76839b0667', 'b1851d1b13594e71840103c11a37a005', NULL, NULL, NULL, '添加', 'save', 'role:save', 1, '', 0, 0, 0, 0, 0, '2023-04-11 11:26:05', '2023-04-11 11:12:16', NULL);
 INSERT INTO `sys_menu` VALUES ('f8b972bc005a9c6691a43b76839b0668', 'b1851d1b13594e71840103c11a37a005', NULL, NULL, NULL, '修改', 'update', 'role:update', 1, '', 0, 0, 0, 0, 0, '2023-04-11 11:26:05', '2023-04-11 11:12:16', NULL);
@@ -399,8 +2629,9 @@ INSERT INTO `sys_menu` VALUES ('f8b972bc005a9c6691a43b76839b0669', 'b1851d1b1359
 INSERT INTO `sys_menu` VALUES ('f8b972bc005a9c6691a43b76839b0670', 'b1851d1b13594e71840103c11a37a005', NULL, NULL, NULL, '菜单权限', 'menu', 'role:menu', 1, '', 0, 0, 0, 0, 0, '2023-04-11 11:26:05', '2023-04-11 11:12:16', NULL);
 INSERT INTO `sys_menu` VALUES ('f8b972bc005a9c6691a43b76839b0671', 'b1851d1b13594e71840103c11a37a005', NULL, NULL, NULL, '数据权限', 'data', 'role:data', 1, '', 0, 0, 0, 0, 0, '2023-04-11 11:26:05', '2023-04-11 11:12:16', NULL);
 INSERT INTO `sys_menu` VALUES ('f8b972bc005a9c6691a43b76839b0675', 'ea83fb03d2117cb287973d6889984686', 'Iframe', 'https://www.bing.com/?mkt=zh-CN', 'Bicycle', '必应', 'Iframe', NULL, 1, '', 0, 1, 0, 0, 1, '2023-04-11 11:26:05', '2023-04-11 11:12:16', NULL);
+INSERT INTO `sys_menu` VALUES ('fc793c0e-097b-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e370', 'workflow', '/work/Workflow', 'ScaleToOriginal', '流程管理', 'Workflow', NULL, 0, NULL, 0, 0, 0, 1, 1, '2025-03-25 21:21:12', '2025-03-25 21:20:56', '');
 INSERT INTO `sys_menu` VALUES ('fdaf429afb33d54beeee7eaea93e5e96', '120d967459a9e7323692b3fa49c1ba59', 'operLog', '/monitor/OperLog', 'Cpu', '操作日志', 'OperLog', NULL, 2, NULL, 0, 0, 0, 1, 1, '2023-04-14 08:49:04', '2023-04-14 08:49:04', '');
-INSERT INTO `sys_menu` VALUES ('fe325d23-06ba-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e3718', '', '', '', '列表', '', 'workflow:list', 3, NULL, 0, 0, 0, 0, 0, '2025-03-22 09:14:24', '2025-03-22 09:14:24', '');
+INSERT INTO `sys_menu` VALUES ('fe325d23-06ba-11f0-b559-4ccc6a2e3718', '7840fc2e-0401-11f0-b559-4ccc6a2e3718', '', '', '', '列表', '', 'model:list', 3, NULL, 0, 0, 0, 0, 0, '2025-03-25 21:18:54', '2025-03-22 09:14:24', '');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -440,6 +2671,7 @@ INSERT INTO `sys_oper_log` VALUES ('00f3d5bf8b2144de841935a7f23eb0fa', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('01271d21a3804f16aa2534fec626505f', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:18:28');
 INSERT INTO `sys_oper_log` VALUES ('0145ba661d8547f28bf39f4946500c79', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:56:15');
 INSERT INTO `sys_oper_log` VALUES ('01591ff09aea4052abd1a6f49c21827a', NULL, 'GET', 'GET', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:31:55');
+INSERT INTO `sys_oper_log` VALUES ('01f61027c6c64f2d8bd092e858df5bb4', NULL, 'GET', 'GET', NULL, '{\"assignee\":\"6cfc6a42-0984-11f0-82ff-4ccc6a2e3718\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:21:56');
 INSERT INTO `sys_oper_log` VALUES ('025d06c844a64ed4ab94972fc0fe9b28', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:36:14');
 INSERT INTO `sys_oper_log` VALUES ('0292b196fb3d4e38985f64f6e2c29271', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:57:42');
 INSERT INTO `sys_oper_log` VALUES ('029765aa64d94b37a5ac442e2408abc9', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:21:38');
@@ -463,8 +2695,11 @@ INSERT INTO `sys_oper_log` VALUES ('0589def7c8bd4dd186eb4caef2e0b848', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('05d63b50fc7f4745b8435ebca174abe2', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:00:34');
 INSERT INTO `sys_oper_log` VALUES ('05d6e6d6cc664545bf1285e0af36e00f', NULL, 'GET', 'GET', NULL, '{\"name\":\"lc_pages\"}', NULL, 11, '1', NULL, 0, '/tansci/lowcode/generator/columns', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:09:59');
 INSERT INTO `sys_oper_log` VALUES ('05e8987001204f74802af487dfd68f01', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:42:09');
+INSERT INTO `sys_oper_log` VALUES ('05ebca547aae430ba5f3ba391278ca2f', NULL, 'POST', 'POST', NULL, '{}', NULL, 591, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:21:14');
+INSERT INTO `sys_oper_log` VALUES ('0643de7234ea4faa8b81d8e5525c5459', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:03');
 INSERT INTO `sys_oper_log` VALUES ('066cb7c523b94732990da7907e603355', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:11:52');
 INSERT INTO `sys_oper_log` VALUES ('06b2f5deeb0c4cada20e0fefc50ffe8c', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:14:39');
+INSERT INTO `sys_oper_log` VALUES ('06b891ddbc8143c089a88ae1ef6a0303', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:12');
 INSERT INTO `sys_oper_log` VALUES ('06c7d2216dba4855ba529557ae8e5601', NULL, 'GET', 'GET', NULL, '{}', NULL, 18, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-01-12 10:50:44');
 INSERT INTO `sys_oper_log` VALUES ('0754b88a12654bfc97fa1cfb97779f59', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:23:12');
 INSERT INTO `sys_oper_log` VALUES ('078afe5519f5421994362282d7756d1a', NULL, 'GET', 'GET', NULL, '{}', NULL, 0, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:49:56');
@@ -476,8 +2711,10 @@ INSERT INTO `sys_oper_log` VALUES ('082fc35f762d4569bccc4e52ef865f8f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('084564ac80f94dcc8175a5e53fdcdebc', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:45:02');
 INSERT INTO `sys_oper_log` VALUES ('0852a5a169914ad1a50411a47910266a', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/pagesInfo/d2df5734-1ca6-11ee-8b16-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:37');
 INSERT INTO `sys_oper_log` VALUES ('085f6d5a3e3d4f3b9f962a8fa20d88a5', NULL, 'GET', 'GET', NULL, '{}', NULL, 17, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:13:17');
+INSERT INTO `sys_oper_log` VALUES ('0886cc3b3b3e4d4596b8b661d2ea461e', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:12');
 INSERT INTO `sys_oper_log` VALUES ('089312728c67453b85fa03c91368736c', NULL, 'GET', 'GET', NULL, '{}', NULL, 29, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:37:56');
 INSERT INTO `sys_oper_log` VALUES ('089fc8ba48264953ad1e9f597bcbc3d3', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:45');
+INSERT INTO `sys_oper_log` VALUES ('08c96efb6dfe4e30ac39555e3f9d0d09', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:22:50');
 INSERT INTO `sys_oper_log` VALUES ('08ccba4a4b60402981f9c2d195ca9f9f', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:23:09');
 INSERT INTO `sys_oper_log` VALUES ('08fbf2ef6b8749b387e3dc7299dbc399', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:05:50');
 INSERT INTO `sys_oper_log` VALUES ('092e38471d544682a3cb36d18eccf119', NULL, 'GET', 'GET', NULL, '{\"name\":\"tansci_boot\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/generator/tables', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:41:47');
@@ -486,6 +2723,7 @@ INSERT INTO `sys_oper_log` VALUES ('0a141bf2c94f4ef79c4cceb1d2c94919', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('0a2583cc971e42b5b4f3285439d33071', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:58:42');
 INSERT INTO `sys_oper_log` VALUES ('0a3d6727053a47569d356690766bcaa7', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:51:10');
 INSERT INTO `sys_oper_log` VALUES ('0a58216af74240b2905f72332dd4388b', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 16, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:11:37');
+INSERT INTO `sys_oper_log` VALUES ('0a6c8d39166a4c1a9de94d0d543a7fbb', NULL, 'GET', 'GET', NULL, '{}', NULL, 25, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:51');
 INSERT INTO `sys_oper_log` VALUES ('0aac227d479c483699352ffefd32437c', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:17:16');
 INSERT INTO `sys_oper_log` VALUES ('0aadc59363224db5b9714792b9900478', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:11:17');
 INSERT INTO `sys_oper_log` VALUES ('0b32af3c6f7543d681b0b6a450627bf7', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:50');
@@ -499,6 +2737,8 @@ INSERT INTO `sys_oper_log` VALUES ('0bfd07b6697340feb10e47a84e71dd67', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('0c257b362da14d78adb6b1c8aac7c937', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:32:22');
 INSERT INTO `sys_oper_log` VALUES ('0c2bc722a4104b0c8d1d69ee0193858f', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:27:55');
 INSERT INTO `sys_oper_log` VALUES ('0c82b773bff240dcb411ead699347d93', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:42:17');
+INSERT INTO `sys_oper_log` VALUES ('0d4b679f73cc4c52abd7907b7526ca4d', NULL, 'POST', 'POST', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/work/workflow/deployProcess', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:18:49');
+INSERT INTO `sys_oper_log` VALUES ('0d4db6dffae0444d8cfc430a5ffca7dd', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:17:10');
 INSERT INTO `sys_oper_log` VALUES ('0d847877f2a648fd8cddb37248fca9c1', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:29:35');
 INSERT INTO `sys_oper_log` VALUES ('0da13da2a62b456db56241c2dbcf0ab4', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:22:39');
 INSERT INTO `sys_oper_log` VALUES ('0db6822511a84a85abf8ed29d8585b30', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:20:19');
@@ -509,6 +2749,7 @@ INSERT INTO `sys_oper_log` VALUES ('0ec652ccadfa4e87bb63e97e6dd6b9a2', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('0ee9a802eaf4456fb8e6c6770ddadfd4', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:55:22');
 INSERT INTO `sys_oper_log` VALUES ('0efd8f8e37dc41029110852d71c8bd1e', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:21:55');
 INSERT INTO `sys_oper_log` VALUES ('0f0ee1a13ee04055867af9ef9d42d914', NULL, 'GET', 'GET', NULL, '{\"classify\":\"56d41ddc-f09e-11ee-a7f7-e0be038740d4\",\"total\":\"1\",\"size\":\"8\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:32:28');
+INSERT INTO `sys_oper_log` VALUES ('0f15c01786cb4d2e8bfe2b95b0d52d0d', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:41:18');
 INSERT INTO `sys_oper_log` VALUES ('0f3e6d499c104985992f4e270f5171f4', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:58:55');
 INSERT INTO `sys_oper_log` VALUES ('0f5dc64dacd54f53afc15fa4b8574625', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 8, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:19:02');
 INSERT INTO `sys_oper_log` VALUES ('0f6529ea5a94457698f506c62b290d21', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"8\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:31:33');
@@ -517,6 +2758,7 @@ INSERT INTO `sys_oper_log` VALUES ('0fc529f871f547278e77ffad029f31fb', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('0fed0e3c9d874d29b53c2da37fa9da81', NULL, 'POST', 'POST', NULL, '{\"subTableName\":\"\",\"columns\":\"[{\\\"columnName\\\":\\\"columns\\\",\\\"columnComment\\\":\\\"字段信息json\\\",\\\"columnType\\\":\\\"text\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"createTime\\\",\\\"columnComment\\\":\\\"创建时间\\\",\\\"columnType\\\":\\\"datetime\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"dataSource\\\",\\\"columnComment\\\":\\\"数据源\\\",\\\"columnType\\\":\\\"varchar(50)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"info\\\",\\\"columnComment\\\":\\\"生成信息json\\\",\\\"columnType\\\":\\\"text\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"subColumns\\\",\\\"columnComment\\\":\\\"子表字段信息json\\\",\\\"columnType\\\":\\\"text\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"subTableComment\\\",\\\"columnComment\\\":\\\"子表注释\\\",\\\"columnType\\\":\\\"varchar(255)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"subTableName\\\",\\\"columnComment\\\":\\\"字表名称\\\",\\\"columnType\\\":\\\"varchar(255)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"tableComment\\\",\\\"columnComment\\\":\\\"表注释\\\",\\\"columnType\\\":\\\"varchar(255)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"tableName\\\",\\\"columnComment\\\":\\\"表名\\\",\\\"columnType\\\":\\\"varchar(255)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"updateTime\\\",\\\"columnComment\\\":\\\"更新时间\\\",\\\"columnType\\\":\\\"datetime\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false}]\",\"subColumns\":\"[]\",\"tableComment\":\"生成表信息\",\"interfaceId\":\"01d17bdac48a42fc9c84b7c724b309f5\",\"dataSource\":\"tansci_boot\",\"tableName\":\"sys_gen\",\"info\":\"{\\\"moduleName\\\":\\\"api\\\",\\\"modulePath\\\":\\\"/api\\\",\\\"businessName\\\":\\\"aa\\\",\\\"businessPath\\\":\\\"/aa\\\",\\\"template\\\":\\\"single\\\",\\\"pid\\\":\\\"\\\",\\\"treeId\\\":\\\"\\\",\\\"treePid\\\":\\\"\\\",\\\"subTable\\\":\\\"\\\",\\\"subTableKey\\\":\\\"\\\"}\"}', NULL, 21, '1', NULL, 0, '/tansci/lowcode/generator/save', '127.0.0.1', NULL, '2.0.0', '2024-02-02 12:30:30');
 INSERT INTO `sys_oper_log` VALUES ('102be07908c24e7e8b9c11ca6be7772f', NULL, 'GET', 'GET', NULL, '{}', NULL, 26, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:16:26');
 INSERT INTO `sys_oper_log` VALUES ('104d860bd2584069bb94a6a2c93ee010', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:55:45');
+INSERT INTO `sys_oper_log` VALUES ('105582f0b7814df2a37563e1d13be903', NULL, 'GET', 'GET', NULL, '{\"id\":\"e9606169-0982-11f0-b559-4ccc6a2e3718\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/model/details', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:11:29');
 INSERT INTO `sys_oper_log` VALUES ('10777b0cc2b84706a9908b8c523bdf4b', NULL, 'GET', 'GET', NULL, '{\"total\":\"2\",\"size\":\"8\",\"parentId\":\"306eeeb4daa0674cbf4026f6910ba5a0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:59:03');
 INSERT INTO `sys_oper_log` VALUES ('1079f3d9185341a3b2605865957a183b', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:17:53');
 INSERT INTO `sys_oper_log` VALUES ('107cf41127b3429386a54b73d5a0ab2a', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:33:05');
@@ -528,12 +2770,15 @@ INSERT INTO `sys_oper_log` VALUES ('11b8c1e154b44963b193b9a38b68d9b1', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('11c3c443efe0456baf0d4af9af0c2680', NULL, 'GET', 'GET', NULL, '{}', NULL, 60, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:40:32');
 INSERT INTO `sys_oper_log` VALUES ('11d26594599044d5bb870ef897307c0a', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:12:04');
 INSERT INTO `sys_oper_log` VALUES ('1208ce2f345b4e2e974bb18d165312ef', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 14, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 21:53:24');
+INSERT INTO `sys_oper_log` VALUES ('1243a90bfe0d4190926bec81d76b6f3b', NULL, 'POST', 'POST', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:21:13');
 INSERT INTO `sys_oper_log` VALUES ('12957a87972a4e18bc3b1ea4f03872e5', NULL, 'GET', 'GET', NULL, '{\"total\":\"3\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:31:30');
 INSERT INTO `sys_oper_log` VALUES ('129af804aa0745da9ad061fa6f391251', NULL, 'POST', 'POST', NULL, '{}', NULL, 63, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-02-02 09:23:35');
 INSERT INTO `sys_oper_log` VALUES ('12d7af29f0254e85bb9d2d6bd19a558e', NULL, 'POST', 'POST', NULL, '{}', NULL, 24, '1', NULL, 0, '/tansci/system/workflow/update', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:26:28');
 INSERT INTO `sys_oper_log` VALUES ('12da0a8d51f74e338290a9f7d1a014c1', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:15:48');
 INSERT INTO `sys_oper_log` VALUES ('12e4d69788c5438ca7c3de221012dda1', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:55:22');
 INSERT INTO `sys_oper_log` VALUES ('12eaab373af645ec933a76f7dd861970', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:30:26');
+INSERT INTO `sys_oper_log` VALUES ('12fe330bbd02448eb4f8aab22cc5a64b', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:27:48');
+INSERT INTO `sys_oper_log` VALUES ('132c4a1de8f94976a55dea187382e3c7', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:11:23');
 INSERT INTO `sys_oper_log` VALUES ('1359bb2858c1417fb133494dea1c87c3', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:27:56');
 INSERT INTO `sys_oper_log` VALUES ('1394ad2b31df4005bfdbf6fc68d1fe0b', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:54:04');
 INSERT INTO `sys_oper_log` VALUES ('13ecd6bc67024c36adb1e5d634d74798', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:58:32');
@@ -572,12 +2817,15 @@ INSERT INTO `sys_oper_log` VALUES ('17eeae625a6c4fa0899ba75c702b6fd7', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('180bb9911a0a41d3b467692caced9451', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:29:15');
 INSERT INTO `sys_oper_log` VALUES ('18627cd81f8f4109819877c07b0436dc', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/update', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:35');
 INSERT INTO `sys_oper_log` VALUES ('1895bca9e8d84fa9b4a32d4bf710569b', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"表格\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:11:44');
+INSERT INTO `sys_oper_log` VALUES ('18a9856a5b204504a48e19fcae7264b5', NULL, 'POST', 'POST', NULL, '{}', NULL, 531, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:15:53');
 INSERT INTO `sys_oper_log` VALUES ('18c7690bc82e4d2a97f81578231ac443', NULL, 'GET', 'GET', NULL, '{\"classify\":\"521ede02-f09d-11ee-a7f7-e0be038740d4\",\"total\":\"1\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:31:54');
 INSERT INTO `sys_oper_log` VALUES ('18db8e51e15944238f0b4acae53c7144', NULL, 'POST', 'POST', NULL, '{}', NULL, 15, '1', NULL, 0, '/tansci/system/workflow/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:45:38');
+INSERT INTO `sys_oper_log` VALUES ('18e3d7a018454cc6b81120494cd2b66e', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:21:13');
 INSERT INTO `sys_oper_log` VALUES ('190708dc490e420b829ebbac5d0e125f', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:12:05');
 INSERT INTO `sys_oper_log` VALUES ('1908fc1bb3654433833c75c086347a36', NULL, 'GET', 'GET', NULL, '{\"classify\":\"ce620f517565f989d718385d4e4033ac\",\"total\":\"3\",\"size\":\"8\"}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:37');
 INSERT INTO `sys_oper_log` VALUES ('1911b88f4aee4e5f820d83c7f4acd41e', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:11:19');
 INSERT INTO `sys_oper_log` VALUES ('19250ede5c084274adba3f9cc79c8321', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:26:18');
+INSERT INTO `sys_oper_log` VALUES ('192a4ebfb5ce490fb770b08bb4dba721', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:27:48');
 INSERT INTO `sys_oper_log` VALUES ('193c24b8ed64401ba7630908b77e7034', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:53:50');
 INSERT INTO `sys_oper_log` VALUES ('19d6d2daac574f4ebdc3932942e06297', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:55');
 INSERT INTO `sys_oper_log` VALUES ('1a0db55da7f04de49871d5f6ef3b029b', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:26:28');
@@ -602,13 +2850,17 @@ INSERT INTO `sys_oper_log` VALUES ('1d2fa2ad2ca2452fb5ef3461ac61f64c', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('1ddd17dbf780445b971f0a418962e9a1', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:42:17');
 INSERT INTO `sys_oper_log` VALUES ('1df94ac1cc614d2d852fce5fa806a670', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 12, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:49:33');
 INSERT INTO `sys_oper_log` VALUES ('1e120ddc0ca344bc8d72196839ddd74b', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:57:48');
+INSERT INTO `sys_oper_log` VALUES ('1e7fd5482a674378abb942095578b88c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:25:02');
+INSERT INTO `sys_oper_log` VALUES ('1ea80b62db2541588bb117788fe0e98e', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:12');
 INSERT INTO `sys_oper_log` VALUES ('1f026cc6a40a4386a931a0002ab41d41', NULL, 'GET', 'GET', NULL, '{\"classify\":\"56d41ddc-f09e-11ee-a7f7-e0be038740d4\",\"total\":\"3\",\"size\":\"8\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:32:12');
 INSERT INTO `sys_oper_log` VALUES ('1f1fcd7e2f1042dba36af7e91d268919', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:35:28');
 INSERT INTO `sys_oper_log` VALUES ('1f312d0213d245e6a40c32dc937511c6', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"aaaa\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:12:17');
 INSERT INTO `sys_oper_log` VALUES ('1f637f4b41ce441aa1844f7b18f70205', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:20:32');
 INSERT INTO `sys_oper_log` VALUES ('1f940b745a9c47299e74ff3f4cb47e51', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:21:17');
+INSERT INTO `sys_oper_log` VALUES ('1fab8d51ef22431b8e5f7891b0b4234f', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:37:46');
 INSERT INTO `sys_oper_log` VALUES ('1fd6aa958d2b41fc98c6ea92346c34a0', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:20:01');
 INSERT INTO `sys_oper_log` VALUES ('1feb2b0e63cd42f1b7c108d75746d8b1', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:48:49');
+INSERT INTO `sys_oper_log` VALUES ('2006c8d3661941f3994b536f1adce97b', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:21:35');
 INSERT INTO `sys_oper_log` VALUES ('20349a191dde4bde832236105d4a9473', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:51:10');
 INSERT INTO `sys_oper_log` VALUES ('205213373d284ddc8a5d41ab8a96897b', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:24:16');
 INSERT INTO `sys_oper_log` VALUES ('20c2790c89a340f6a837d8ab4a06108f', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:49:39');
@@ -618,6 +2870,7 @@ INSERT INTO `sys_oper_log` VALUES ('20fa57fce6a64ce68d640b6b3e0aed03', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('210130d16e544e7d86cd69041f3dc332', NULL, 'GET', 'GET', NULL, '{\"id\":\"9886a2f4-06fd-11f0-b559-4ccc6a2e3718\"}', NULL, 15, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:19:13');
 INSERT INTO `sys_oper_log` VALUES ('2101a0731c244df19bd5383665b70e25', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:41:24');
 INSERT INTO `sys_oper_log` VALUES ('21812855f2ef4eb8b1d60ff9f57150ea', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:32:31');
+INSERT INTO `sys_oper_log` VALUES ('21d200027e504115a01e8afafcc493d1', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:24:52');
 INSERT INTO `sys_oper_log` VALUES ('21f7b8b2d3934d3bb4fb61e3e2a0c2d0', NULL, 'POST', 'POST', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:36:13');
 INSERT INTO `sys_oper_log` VALUES ('2204e72023f7489d87af7209ffa146a5', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:11:33');
 INSERT INTO `sys_oper_log` VALUES ('222f796a294a44a78900a46f72651b91', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:17:53');
@@ -626,6 +2879,7 @@ INSERT INTO `sys_oper_log` VALUES ('2295c1c56dd34616acde189fb0072cc2', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('22a093426a024ffd9bd6adbec472d61c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:18:28');
 INSERT INTO `sys_oper_log` VALUES ('22adba122dda49b2ad798b807331d03c', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:32:32');
 INSERT INTO `sys_oper_log` VALUES ('22b8a38760d044cbb2cb413041e61676', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:50:41');
+INSERT INTO `sys_oper_log` VALUES ('2330806e9e224c1892d28578b7779619', NULL, 'GET', 'GET', NULL, '{}', NULL, 59, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:21:14');
 INSERT INTO `sys_oper_log` VALUES ('233da13ee91843e69861e71d3e16ec85', NULL, 'GET', 'GET', NULL, '{}', NULL, 17, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:10:43');
 INSERT INTO `sys_oper_log` VALUES ('235260548c6c4e93b81f507afba38486', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:53:11');
 INSERT INTO `sys_oper_log` VALUES ('2358e1e7c3564b64a4928be620dcb712', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:43');
@@ -638,6 +2892,7 @@ INSERT INTO `sys_oper_log` VALUES ('253b0f427d58415b9a47230e1398da0f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('254c766c779f45c0923bc1e06ce9ce9a', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:49');
 INSERT INTO `sys_oper_log` VALUES ('254cb5b3162f4012b422a1734525043c', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:40:01');
 INSERT INTO `sys_oper_log` VALUES ('25626767a689429795aaa00801b4c612', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 22:57:49');
+INSERT INTO `sys_oper_log` VALUES ('25c2db082c9f4252897250886c2559ad', NULL, 'POST', 'POST', NULL, '{}', NULL, 83, '1', NULL, 0, '/tansci/system/work/workflow/deployProcess', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:21:22');
 INSERT INTO `sys_oper_log` VALUES ('2620433e1cde48ecaf078eab0b7e2acf', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:52:33');
 INSERT INTO `sys_oper_log` VALUES ('262c3e163f804ecf82436b0bfcd00468', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:49:46');
 INSERT INTO `sys_oper_log` VALUES ('263d563b27934cd6b05729d04dc7c978', NULL, 'GET', 'GET', NULL, '{}', NULL, 29, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:27:21');
@@ -648,6 +2903,7 @@ INSERT INTO `sys_oper_log` VALUES ('27849a538cc542e58beffa443c41d6fd', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('27a77c5ee06846c78cc220ec9395af0a', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:56:15');
 INSERT INTO `sys_oper_log` VALUES ('284faa9687174bbdb4a126dcec41251d', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:53:18');
 INSERT INTO `sys_oper_log` VALUES ('2857a76a05074a869ce99f96b0fb825f', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:08:42');
+INSERT INTO `sys_oper_log` VALUES ('28746cff9bd14dfea157ef84120c6be8', NULL, 'POST', 'POST', NULL, '{}', NULL, 15, '1', NULL, 0, '/tansci/system/work/model/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:47:47');
 INSERT INTO `sys_oper_log` VALUES ('28d9151bf3e64a4c9b92ac5bd1aaee20', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:17:28');
 INSERT INTO `sys_oper_log` VALUES ('28e31aee95bf436cace2cb2756afae53', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:28:16');
 INSERT INTO `sys_oper_log` VALUES ('28f3e24576494acd9cb57d8f9a5b137e', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:27:56');
@@ -662,16 +2918,21 @@ INSERT INTO `sys_oper_log` VALUES ('29caf5bfd83c4b1ea830e10cb43a45f5', NULL, 'PO
 INSERT INTO `sys_oper_log` VALUES ('2a18910a51344f8b96ff2dbbaaf9b3e6', NULL, 'GET', 'GET', NULL, '{\"name\":\"tansci_boot\"}', NULL, 15, '1', NULL, 0, '/tansci/lowcode/generator/tables', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:44:31');
 INSERT INTO `sys_oper_log` VALUES ('2ac00432c253446f9fc3bfed26cc3433', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:24:16');
 INSERT INTO `sys_oper_log` VALUES ('2ad90c1779404c088fbfe90c16851182', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:20:54');
+INSERT INTO `sys_oper_log` VALUES ('2ada1e9b03974beea1c469110d99a4bd', NULL, 'GET', 'GET', NULL, '{\"id\":\"e9606169-0982-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/work/model/details', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:10:40');
 INSERT INTO `sys_oper_log` VALUES ('2ae23fee85044bdf9fb6fead2f8eb5ec', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:46:09');
 INSERT INTO `sys_oper_log` VALUES ('2ae59442b5c6446695a56200793f5ffe', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:31:16');
 INSERT INTO `sys_oper_log` VALUES ('2aedfa74fe184e73b405704a3b915f79', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:58:26');
+INSERT INTO `sys_oper_log` VALUES ('2b4800c01a674ea1b8999fdbd9db171e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 7, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:27:20');
 INSERT INTO `sys_oper_log` VALUES ('2b85f8a7598e46028e397fb694130dbf', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 13, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:30:50');
 INSERT INTO `sys_oper_log` VALUES ('2bed53f8cbdb416e882f4ee782e02f68', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:09:38');
+INSERT INTO `sys_oper_log` VALUES ('2bffcf258b3e441fb250536d74b9c611', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/work/model/details', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:49:36');
 INSERT INTO `sys_oper_log` VALUES ('2c32d12cee1b4f68847005a510ba2849', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:38:51');
 INSERT INTO `sys_oper_log` VALUES ('2c3c899c8bed48b7a55fac43b2359fa4', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 10, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:20:32');
 INSERT INTO `sys_oper_log` VALUES ('2c6b4ff401aa4de8aed450cd6a550a6e', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 21:48:06');
 INSERT INTO `sys_oper_log` VALUES ('2c7acce352964c2dacd34fa1b0527d85', NULL, 'GET', 'GET', NULL, '{\"id\":\"9886a2f4-06fd-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:13:41');
 INSERT INTO `sys_oper_log` VALUES ('2c9495e5777449ea8d7d2e65f025ad74', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:02');
+INSERT INTO `sys_oper_log` VALUES ('2cbcdaca48cf433fa43c0753dbb0089c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:15:39');
+INSERT INTO `sys_oper_log` VALUES ('2d025859d41c4e5aba7098aaeeb36e04', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 13, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:08');
 INSERT INTO `sys_oper_log` VALUES ('2d3230d5121045dc962305033f46ab25', NULL, 'POST', 'POST', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:10:42');
 INSERT INTO `sys_oper_log` VALUES ('2d4f34ac13f34677b07f93f5b69042a4', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:25:27');
 INSERT INTO `sys_oper_log` VALUES ('2d6bb2545aa8466180b05987de19a89c', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:43:18');
@@ -683,6 +2944,7 @@ INSERT INTO `sys_oper_log` VALUES ('2d93861dfa74478dbf59a928cb165cc2', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('2dc4a52abb714a96afe2fa57c3df21d9', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:49');
 INSERT INTO `sys_oper_log` VALUES ('2e080c4bc80a42a8bd1fbf79e8d15144', NULL, 'GET', 'GET', NULL, '{\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-02-02 12:31:16');
 INSERT INTO `sys_oper_log` VALUES ('2e178449dbc545dda4b42385943d86d2', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/pagesInfo/d2df5734-1ca6-11ee-8b16-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:49');
+INSERT INTO `sys_oper_log` VALUES ('2e2768fffa634ea0bc78c01bb0ffe245', NULL, 'POST', 'POST', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/save', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:20:57');
 INSERT INTO `sys_oper_log` VALUES ('2e327223393f46a4b4b3c616c327fa45', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:06:48');
 INSERT INTO `sys_oper_log` VALUES ('2e3934eb153d44eb90037f5747d4ecd4', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:58:42');
 INSERT INTO `sys_oper_log` VALUES ('2e3955566d814e66877a70f836bb11a5', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:13:32');
@@ -696,7 +2958,9 @@ INSERT INTO `sys_oper_log` VALUES ('300f81832b7f4c16a46bbc05b30eaa5c', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('30550d27fcf84553bd68f9bd432ea931', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:57:56');
 INSERT INTO `sys_oper_log` VALUES ('309dfa92ff61455780d8187462cc81d9', NULL, 'POST', 'POST', NULL, '{}', NULL, 38, '1', NULL, 0, '/tansci/system/menu/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:13:26');
 INSERT INTO `sys_oper_log` VALUES ('31420c8bfcfe43839645a95dca915ae3', NULL, 'GET', 'GET', NULL, '{}', NULL, 14, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:02');
+INSERT INTO `sys_oper_log` VALUES ('3152ed2489244c78b1b39cdcaf54b0cf', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:41:04');
 INSERT INTO `sys_oper_log` VALUES ('31b030ca9c4c46b1a54cc64389a106ad', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:58:45');
+INSERT INTO `sys_oper_log` VALUES ('31bdb8d8c0654f9f82aaa835e3f1e6ff', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:26');
 INSERT INTO `sys_oper_log` VALUES ('31cb19cd8a794775a9cf0acc08e8d37e', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:07:28');
 INSERT INTO `sys_oper_log` VALUES ('31f295c7014a4a459215a2805282b405', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:14:09');
 INSERT INTO `sys_oper_log` VALUES ('3220be4673f740269d197fbfe8b3d238', NULL, 'GET', 'GET', NULL, '{}', NULL, 88, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:23:09');
@@ -720,6 +2984,7 @@ INSERT INTO `sys_oper_log` VALUES ('34e6e95ce3a841a185e79c994ad5d5f0', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('34f6119d434e442385a8ab0e61c92724', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:23:16');
 INSERT INTO `sys_oper_log` VALUES ('355b149da9944bc5960c9854479893a2', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/delete/7f08e688-de5a-11ed-8f49-00163e228eed', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:59:07');
 INSERT INTO `sys_oper_log` VALUES ('3568472979ec489cafd306bc251ba29b', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:29:57');
+INSERT INTO `sys_oper_log` VALUES ('35851cf3116e4fe787332d98a9fa0644', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:47');
 INSERT INTO `sys_oper_log` VALUES ('35bea5768e914923bee935b5ec6e4eb6', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:56:30');
 INSERT INTO `sys_oper_log` VALUES ('35ea5db4c4b6486d98d477e2515cdd5f', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:37:56');
 INSERT INTO `sys_oper_log` VALUES ('360d3cd0b04747e3be02eb345112c764', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 21:53:27');
@@ -730,6 +2995,8 @@ INSERT INTO `sys_oper_log` VALUES ('37699137204f4c0ea3134987e3178698', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('3771d5c1cf9540468d04d19dca86e84e', NULL, 'GET', 'GET', NULL, '{}', NULL, 25, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:42:25');
 INSERT INTO `sys_oper_log` VALUES ('378f5735e34548508a47df527b4300b3', NULL, 'GET', 'GET', NULL, '{\"classify\":\"521ede02-f09d-11ee-a7f7-e0be038740d4\",\"total\":\"3\",\"size\":\"8\"}', NULL, 5, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:14:04');
 INSERT INTO `sys_oper_log` VALUES ('3797990dc8bd46b28af6919179e8de74', NULL, 'GET', 'GET', NULL, '{}', NULL, 15, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:11');
+INSERT INTO `sys_oper_log` VALUES ('37eb4ce66af44e308c83e9d001615056', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 7, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:34:58');
+INSERT INTO `sys_oper_log` VALUES ('3807a9577243404698ee50f3fdae6f1b', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:20:57');
 INSERT INTO `sys_oper_log` VALUES ('38243fcad41b4891a76b16fdfc22c548', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:39:19');
 INSERT INTO `sys_oper_log` VALUES ('383cee8ae902400892c5fa0daa53e7f8', NULL, 'POST', 'POST', NULL, '{}', NULL, 89, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-02-26 15:37:03');
 INSERT INTO `sys_oper_log` VALUES ('3857d0b06b8f4569a5cb31453a1f0e4f', NULL, 'GET', 'GET', NULL, '{\"total\":\"4\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:10:52');
@@ -746,6 +3013,7 @@ INSERT INTO `sys_oper_log` VALUES ('3a57289ad0684e1e8ace99b6455b2b3f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('3a91b494cc6d4c518e6987a942eaee7e', NULL, 'GET', 'GET', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:54:04');
 INSERT INTO `sys_oper_log` VALUES ('3aca249c7839425cbff3ae25088f71cd', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:16:26');
 INSERT INTO `sys_oper_log` VALUES ('3ae77fb22bec4b609849763f81cbb377', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:19:13');
+INSERT INTO `sys_oper_log` VALUES ('3b1509c643a640f6b24fa7dd654f638e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 42, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:41:15');
 INSERT INTO `sys_oper_log` VALUES ('3b178d57976a449290104c7a004dd08c', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:54:08');
 INSERT INTO `sys_oper_log` VALUES ('3b5ab90c17b94c9dad60b734e78a8cb5', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-02 09:23:35');
 INSERT INTO `sys_oper_log` VALUES ('3b695658fa95444f93a4a6f5885a1ec8', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:05:51');
@@ -769,9 +3037,11 @@ INSERT INTO `sys_oper_log` VALUES ('3dc3ad9c5f184a98a22e71395b8e9ac9', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('3e390a7a2219403c942a3e138a133306', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:05');
 INSERT INTO `sys_oper_log` VALUES ('3e40ad4586454d4782893b0f3ffa85aa', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:31');
 INSERT INTO `sys_oper_log` VALUES ('3e4d0205c6e6446ca54d29c5d4b8c239', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:55:49');
+INSERT INTO `sys_oper_log` VALUES ('3e66d5dac032433ba52b6695b8df2750', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:49:19');
 INSERT INTO `sys_oper_log` VALUES ('3e69253739db4370aa04539a4924df21', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:20:17');
 INSERT INTO `sys_oper_log` VALUES ('3ea9d01859fa4955bbaa5a19c5f0385d', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:16');
 INSERT INTO `sys_oper_log` VALUES ('3eb41f12548c4bab9353345af79a864d', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:37:43');
+INSERT INTO `sys_oper_log` VALUES ('3edaff1a93804f09bf0e1344c2730025', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:22:55');
 INSERT INTO `sys_oper_log` VALUES ('3f103ffd47604d31ba4b13713f6119cc', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:01:02');
 INSERT INTO `sys_oper_log` VALUES ('3f523f3b054f48f596ec729d7ac09dc0', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:58:39');
 INSERT INTO `sys_oper_log` VALUES ('3f73176bc4cb4b50bcb7a7af4f7d97e8', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:35:31');
@@ -789,6 +3059,7 @@ INSERT INTO `sys_oper_log` VALUES ('41aef7a3ac9645ae87f7efc30f4f7f3c', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('41b84f49f330468f80077a6631c982e0', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/update', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:45');
 INSERT INTO `sys_oper_log` VALUES ('41d5211ae6fe4caebe9e9aa9a78d792b', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/monitor/onlineUser', '127.0.0.1', NULL, '2.0.0', '2024-02-26 15:49:13');
 INSERT INTO `sys_oper_log` VALUES ('4209e3d218ae474997c3c44a80860978', NULL, 'GET', 'GET', NULL, '{}', NULL, 21, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:52:30');
+INSERT INTO `sys_oper_log` VALUES ('421c07455bee4d18ae0d2b3a6b093ee1', NULL, 'POST', 'POST', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/work/workflow/deployProcess', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:18:31');
 INSERT INTO `sys_oper_log` VALUES ('421f54d4f2bf4324a46834d68cf7addb', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 21:58:20');
 INSERT INTO `sys_oper_log` VALUES ('423e789823b84ccfa0003a1ce6387c89', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:48:11');
 INSERT INTO `sys_oper_log` VALUES ('4261c13961154708a6c35dcfbe74652a', NULL, 'GET', 'GET', NULL, '{\"total\":\"3\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:31:50');
@@ -799,6 +3070,7 @@ INSERT INTO `sys_oper_log` VALUES ('42c2d06a4b964f47a630d3ad1045730b', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('4309ac186dd141248405c3f11fc617cc', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:58:26');
 INSERT INTO `sys_oper_log` VALUES ('4312e7e553a44f2a934287379ed3f029', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:53:58');
 INSERT INTO `sys_oper_log` VALUES ('4339a8c17cc64e0d8e77502838d7da06', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:36:25');
+INSERT INTO `sys_oper_log` VALUES ('43861d6e74754cb2a59535c131193477', NULL, 'POST', 'POST', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:37:21');
 INSERT INTO `sys_oper_log` VALUES ('440121d993be4b58b72e8473e77a166b', NULL, 'GET', 'GET', NULL, '{}', NULL, 18, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:11:51');
 INSERT INTO `sys_oper_log` VALUES ('44121d3784cb44f783cfe0f4358002ac', NULL, 'GET', 'GET', NULL, '{}', NULL, 26, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:42:57');
 INSERT INTO `sys_oper_log` VALUES ('448d0bb7aa69463bb51f57f8a2d7ef99', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:40:01');
@@ -806,13 +3078,18 @@ INSERT INTO `sys_oper_log` VALUES ('44a2fdf9ae2d4d09a19bf6911fca5a4b', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('44cc0a09a3b045d0ae2a1682977f884d', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:43:36');
 INSERT INTO `sys_oper_log` VALUES ('44e87d3e85f34d20a1fa83b68d743dce', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/workflow/delete/3f88084b-06fc-11f0-b559-4ccc6a2e3718', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:10:51');
 INSERT INTO `sys_oper_log` VALUES ('4543cc42cf244a36b51cb67be43549a3', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:18:28');
+INSERT INTO `sys_oper_log` VALUES ('4550ae3f5e32442e924c4bf086549351', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/dict/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:46');
 INSERT INTO `sys_oper_log` VALUES ('455696afae4b4ca386047e240edc7ee1', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:45:32');
+INSERT INTO `sys_oper_log` VALUES ('4596b1da6d924d1a8240ad581ce8d57f', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:07:12');
+INSERT INTO `sys_oper_log` VALUES ('45e2d1f2a104430eb6d07157879f8ed7', NULL, 'GET', 'GET', NULL, '{\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:27:18');
 INSERT INTO `sys_oper_log` VALUES ('4615d7c0a5cc4a2491fede0474c3a805', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:20:18');
 INSERT INTO `sys_oper_log` VALUES ('464a03e298154933b9c3609097c493ff', NULL, 'GET', 'GET', NULL, '{}', NULL, 53, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 22:57:30');
+INSERT INTO `sys_oper_log` VALUES ('465bb45aa3554ab0b61d0760869c771f', NULL, 'GET', 'GET', NULL, '{}', NULL, 14, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:22:50');
 INSERT INTO `sys_oper_log` VALUES ('467a0c485d754fc48856fcb548b2e1f8', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:23:38');
 INSERT INTO `sys_oper_log` VALUES ('469d870c07fd42fc99ad3ae355a7d479', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 9, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:36:25');
 INSERT INTO `sys_oper_log` VALUES ('4771e8c133604b9fbd8be776dfe40ff3', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:15:25');
 INSERT INTO `sys_oper_log` VALUES ('4784fd5865f345118fb4c47e42a1d1aa', NULL, 'GET', 'GET', NULL, '{\"total\":\"3\",\"size\":\"8\",\"parentId\":\"ce620f517565f989d718385d4e4033ac\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:31:31');
+INSERT INTO `sys_oper_log` VALUES ('47938d47adce43bfb2d13296bf2cb5c3', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:27:42');
 INSERT INTO `sys_oper_log` VALUES ('47a7fcc8f01e4affb88ca183bb3a3770', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:51:56');
 INSERT INTO `sys_oper_log` VALUES ('47e5a3f676fe4a158e90486ca85a3008', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:49:26');
 INSERT INTO `sys_oper_log` VALUES ('47f3f20640c9446b8af248f9669e96cf', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:35:15');
@@ -825,15 +3102,19 @@ INSERT INTO `sys_oper_log` VALUES ('488924ecd70249bda92b3faf1c0be455', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('488d8e6231144d87b60e2e8436afc1de', NULL, 'POST', 'POST', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/update', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:05:59');
 INSERT INTO `sys_oper_log` VALUES ('48c856ed56b84454b1a7f17d5e7b320e', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:54:08');
 INSERT INTO `sys_oper_log` VALUES ('48df9821e5994b3c9cd636380811eaea', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:32:32');
+INSERT INTO `sys_oper_log` VALUES ('495bade25dc24d87a9f9d4d5d72e83d9', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:18');
 INSERT INTO `sys_oper_log` VALUES ('49748969abce4dd7a016bfdfe76eb08e', NULL, 'GET', 'GET', NULL, '{\"total\":\"2\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:45:44');
 INSERT INTO `sys_oper_log` VALUES ('498d2285918e49b290e806def14b3caa', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:24:21');
 INSERT INTO `sys_oper_log` VALUES ('49a51ba6d657480aab6b97a7595d2f3e', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/pagesInfo/1cda1e6f35077cb1f89007fa36343a3d', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:14:26');
 INSERT INTO `sys_oper_log` VALUES ('49c13bf957aa46858fd91a7b80525f1c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:23:16');
+INSERT INTO `sys_oper_log` VALUES ('49e2792df5a2474792a9d42ec6d41b8e', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:21:35');
 INSERT INTO `sys_oper_log` VALUES ('49eeb17c743141828751ff497cfd2eba', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:05:59');
 INSERT INTO `sys_oper_log` VALUES ('4a233f6f1ec34f0482eadd9eaf9989d2', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:50:35');
 INSERT INTO `sys_oper_log` VALUES ('4a5a90bcfeb342ada90c54864f11e3d4', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:29:16');
+INSERT INTO `sys_oper_log` VALUES ('4a5c0044b75f42b987e49aa2c914994a', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:19:13');
 INSERT INTO `sys_oper_log` VALUES ('4a648ef2b2d24391aff521087e56ed76', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:56');
 INSERT INTO `sys_oper_log` VALUES ('4a69552a797a4229b5f223e282e4b8f7', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:42:57');
+INSERT INTO `sys_oper_log` VALUES ('4a84a16098a249ec84dff8aaca81822f', NULL, 'GET', 'GET', NULL, '{}', NULL, 14, '1', NULL, 0, '/tansci/system/work/model/delete/d1ce258d-06fe-11f0-b559-4ccc6a2e3718', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:11:28');
 INSERT INTO `sys_oper_log` VALUES ('4ab95865d9014c81ab99c304e7832564', NULL, 'POST', 'POST', NULL, '{}', NULL, 298, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-01-12 10:37:37');
 INSERT INTO `sys_oper_log` VALUES ('4b1e080b25674e37b7775acf1ce3ca7f', NULL, 'GET', 'GET', NULL, '{}', NULL, 31, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:36:41');
 INSERT INTO `sys_oper_log` VALUES ('4b4520b25abe40a0a1bd0632f989f8d2', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:23:38');
@@ -842,6 +3123,7 @@ INSERT INTO `sys_oper_log` VALUES ('4b621f5b27a8479c900cdff2f716c87e', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('4b7608b0e7784e06ae2adee5f787ec66', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:03:47');
 INSERT INTO `sys_oper_log` VALUES ('4b9b7c1a45064a41887682a3365faa51', NULL, 'POST', 'POST', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:21:17');
 INSERT INTO `sys_oper_log` VALUES ('4bbef9d89dff429eae93fb80d946a16c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:36:32');
+INSERT INTO `sys_oper_log` VALUES ('4c38198d488f415aa5de60b0e9fb02dd', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:36:04');
 INSERT INTO `sys_oper_log` VALUES ('4c47d788d774412c8ab03bd584122d67', NULL, 'GET', 'GET', NULL, '{}', NULL, 20, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:56:03');
 INSERT INTO `sys_oper_log` VALUES ('4c535a6def1040dfa517bdb552879cdb', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:02:22');
 INSERT INTO `sys_oper_log` VALUES ('4c5536b89a0f47f690f032651b481686', NULL, 'GET', 'GET', NULL, '{}', NULL, 15, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:19:52');
@@ -850,6 +3132,7 @@ INSERT INTO `sys_oper_log` VALUES ('4c81231c936c42509eb6337e54987b8f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('4c8b04d387244c1d919de827f57c5e97', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-01-12 10:44:31');
 INSERT INTO `sys_oper_log` VALUES ('4c9bf5fed44d4a4c9b6891f21388cfe6', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:09:22');
 INSERT INTO `sys_oper_log` VALUES ('4ca0953510f249e793aa3e6ac44d6fe0', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/workflow/delete/6db7e31f-06fd-11f0-b559-4ccc6a2e3718', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:10:48');
+INSERT INTO `sys_oper_log` VALUES ('4cd3f4784191495782cd96a4ba82bfce', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:24:51');
 INSERT INTO `sys_oper_log` VALUES ('4ce1ab60f50b4f36ba6432962db1f2ef', NULL, 'GET', 'GET', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:29:35');
 INSERT INTO `sys_oper_log` VALUES ('4ceb6722324e48058c55f9a4f2d44d86', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:58:38');
 INSERT INTO `sys_oper_log` VALUES ('4cfef212d69a4b079823a5596b69fdff', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:58:42');
@@ -857,6 +3140,7 @@ INSERT INTO `sys_oper_log` VALUES ('4d08f0eb7a1a4b11bd218b876ac9f1d0', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('4d2b9b38795e49faa2b3881d4a84d734', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:41:24');
 INSERT INTO `sys_oper_log` VALUES ('4d4eb0a02e6a4caa82a84e45e75f86ae', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:19:22');
 INSERT INTO `sys_oper_log` VALUES ('4d75a63de74a489faf19c70d19c28920', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-01-12 10:50:44');
+INSERT INTO `sys_oper_log` VALUES ('4e1fcb5ec37d4cb481f875e5187e4e0d', NULL, 'GET', 'GET', NULL, '{}', NULL, 14, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:02');
 INSERT INTO `sys_oper_log` VALUES ('4e29a5709e2c47c98ad0ad196e296877', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 7, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:06:27');
 INSERT INTO `sys_oper_log` VALUES ('4e43adffcead4bb09cfedf6d715f9672', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/pagesInfo/d2df5734-1ca6-11ee-8b16-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:11:44');
 INSERT INTO `sys_oper_log` VALUES ('4e9ed2917df446a9ada135cd0694a0dd', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:29:41');
@@ -865,6 +3149,7 @@ INSERT INTO `sys_oper_log` VALUES ('4f1d15f902f34d1f98c47493afd9b298', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('4f6353ba3ff2481bb3ec799c603f5a7c', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:08:00');
 INSERT INTO `sys_oper_log` VALUES ('4f69e6f8a449448ebb86b66f6bca4047', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/pagesInfo/d2df5734-1ca6-11ee-8b16-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:12:05');
 INSERT INTO `sys_oper_log` VALUES ('4f713ade068e4d2ab50042d40e72fde0', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:38:46');
+INSERT INTO `sys_oper_log` VALUES ('4f72c1acb68d4ed6a1cd7803027e6506', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/work/model/save', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:10:31');
 INSERT INTO `sys_oper_log` VALUES ('4fe4ff0ab16e4a9faac8bc3606a62944', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:29:54');
 INSERT INTO `sys_oper_log` VALUES ('4feb9e8f7b7448618c8f641a90f116ff', NULL, 'GET', 'GET', NULL, '{}', NULL, 43, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:35:41');
 INSERT INTO `sys_oper_log` VALUES ('50509eb5302b4a489460da6f295d1f36', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:55:50');
@@ -878,11 +3163,14 @@ INSERT INTO `sys_oper_log` VALUES ('51cb8ddfb2484d40a1a1dc0cdded084f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('51ef36913def443e839e59790c3a5931', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:08:26');
 INSERT INTO `sys_oper_log` VALUES ('5225dceda94d4d26bab9b2d9c2587f02', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:20:20');
 INSERT INTO `sys_oper_log` VALUES ('523577a21ae74221b9db579ca82ce609', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"8\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:31:57');
+INSERT INTO `sys_oper_log` VALUES ('525e07802f63492c9bd3bc4c94cf0e3c', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:19:13');
 INSERT INTO `sys_oper_log` VALUES ('5261cb3e7ef942bf88895a630fa2542a', NULL, 'GET', 'GET', NULL, '{}', NULL, 20, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:17:28');
 INSERT INTO `sys_oper_log` VALUES ('5281cd9235ee4476a9e7200e25d28a40', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:08:04');
 INSERT INTO `sys_oper_log` VALUES ('52b8e5caab3d41fe8661e912781bfb61', NULL, 'GET', 'GET', NULL, '{}', NULL, 30, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:55:27');
 INSERT INTO `sys_oper_log` VALUES ('52c00438236442eba0643cd6ae45075b', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:02:50');
 INSERT INTO `sys_oper_log` VALUES ('53d48d85453d44b6999d5538c01aaa70', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:00:20');
+INSERT INTO `sys_oper_log` VALUES ('53fe2f2381cd48b0935efe8351f40f69', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:36:18');
+INSERT INTO `sys_oper_log` VALUES ('5405b58ecbd344ca8d23888196ca29dc', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:41:04');
 INSERT INTO `sys_oper_log` VALUES ('54d630a6f97d4e038a2494f6a0c6fbef', NULL, 'GET', 'GET', NULL, '{}', NULL, 24, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-01-12 10:37:37');
 INSERT INTO `sys_oper_log` VALUES ('54f2940020be4f9387f61fb087048fc0', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 27, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:13:41');
 INSERT INTO `sys_oper_log` VALUES ('5512848f103b4f69a278238d57896289', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:49:54');
@@ -891,14 +3179,21 @@ INSERT INTO `sys_oper_log` VALUES ('552e4160bdad46ad821041807b12aae5', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('553e49cb29924d119816cdf78b1c6c14', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:20:19');
 INSERT INTO `sys_oper_log` VALUES ('55c01de6f4334c91a18e5db81e6ec87a', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:44:29');
 INSERT INTO `sys_oper_log` VALUES ('55d039627f3a470f9b81b1056f8b7376', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:28:05');
+INSERT INTO `sys_oper_log` VALUES ('55e7b566206f4d64adedf379592f40bd', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/model/details', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:41:22');
 INSERT INTO `sys_oper_log` VALUES ('55fd36a845974f0f8a365ba816c58b7f', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:07:28');
 INSERT INTO `sys_oper_log` VALUES ('5606774e714348ab9305ba4d75659fdb', NULL, 'GET', 'GET', NULL, '{\"classify\":\"306eeeb4daa0674cbf4026f6910ba5a0\",\"total\":\"0\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:25:40');
 INSERT INTO `sys_oper_log` VALUES ('561bf68bd33f4fa18877b2986df7059f', NULL, 'GET', 'GET', NULL, '{}', NULL, 16, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:07:30');
+INSERT INTO `sys_oper_log` VALUES ('5640a9746025446893576156b5f4e1c3', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:07:12');
+INSERT INTO `sys_oper_log` VALUES ('56a2f30842d546b9b6e453f09735d1c7', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:36:02');
+INSERT INTO `sys_oper_log` VALUES ('56e744a9dca44978a72e2e835e2e3a38', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 14, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:28');
 INSERT INTO `sys_oper_log` VALUES ('570bbcc956494e5c9f285ed46c79072c', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:36:25');
 INSERT INTO `sys_oper_log` VALUES ('57214e54b63e4fc682057de09c505a53', NULL, 'GET', 'GET', NULL, '{}', NULL, 16, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:08:05');
 INSERT INTO `sys_oper_log` VALUES ('57312662d4954732b5187b0260643922', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:49:56');
+INSERT INTO `sys_oper_log` VALUES ('573ae36a5b3e4ca89b37c3ec7cd8bea9', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:37:21');
 INSERT INTO `sys_oper_log` VALUES ('576386b9d86746bb82f7b6286b3a90f2', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:24:06');
 INSERT INTO `sys_oper_log` VALUES ('57a7589600bc4b3d94203bfba11aeaca', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:48:12');
+INSERT INTO `sys_oper_log` VALUES ('57d7498b1d72457997679ee308d08a46', NULL, 'GET', 'GET', NULL, '{\"total\":\"31\",\"size\":\"20\"}', NULL, 5, '1', NULL, 0, '/tansci/monitor/loginLog', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:29:14');
+INSERT INTO `sys_oper_log` VALUES ('57ed29eadc6a4b4caaa0fa5f497fe66e', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:07:12');
 INSERT INTO `sys_oper_log` VALUES ('582cbc36ff3f4810b154f08ac082be08', NULL, 'GET', 'GET', NULL, '{\"classify\":\"521ede02-f09d-11ee-a7f7-e0be038740d4\",\"total\":\"0\",\"size\":\"8\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:30:41');
 INSERT INTO `sys_oper_log` VALUES ('58821ae4a7d541f989332c2a0b630c06', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:12:32');
 INSERT INTO `sys_oper_log` VALUES ('589b0836da4a45be909750957737e0d0', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"10\"}', NULL, 7, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:15:39');
@@ -906,6 +3201,7 @@ INSERT INTO `sys_oper_log` VALUES ('58f0cab177224b87abeb6a792c086eb3', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('590e5f2586134e46a5111ce076ea16ee', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:27:29');
 INSERT INTO `sys_oper_log` VALUES ('592dbcde823f4c69b301a37d7ba72f21', NULL, 'GET', 'GET', NULL, '{\"classify\":\"521ede02-f09d-11ee-a7f7-e0be038740d4\",\"total\":\"2\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:32:13');
 INSERT INTO `sys_oper_log` VALUES ('5949ea04e7d8434ba2d40c32ad0188b2', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:25:05');
+INSERT INTO `sys_oper_log` VALUES ('5980920f076e4e968432a64d92eb048d', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:19:31');
 INSERT INTO `sys_oper_log` VALUES ('59973d827df941cca228b8931fa07dfd', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:22');
 INSERT INTO `sys_oper_log` VALUES ('59b1ad9a784b4bd29e50b6eb1f966030', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:18:44');
 INSERT INTO `sys_oper_log` VALUES ('59b43ba7501d4c46b120a2d496a05799', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:17:16');
@@ -914,6 +3210,7 @@ INSERT INTO `sys_oper_log` VALUES ('59f010e482d9449ca3e550432ff764ea', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('5a13f92b96244e7fac5c72df61738aa8', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:45:32');
 INSERT INTO `sys_oper_log` VALUES ('5a1f5cc7f4754494a218b8715d6cc2cd', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:01:16');
 INSERT INTO `sys_oper_log` VALUES ('5a7374e037f94b288245f4c806439f8d', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:21:40');
+INSERT INTO `sys_oper_log` VALUES ('5a825bb216b941fcad7e823f480b9f26', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:37:49');
 INSERT INTO `sys_oper_log` VALUES ('5aa7788ee5884ff582315769a8634b1e', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:33:42');
 INSERT INTO `sys_oper_log` VALUES ('5ab32d7812cd4e3995c65c3c53d89d82', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-02 10:49:42');
 INSERT INTO `sys_oper_log` VALUES ('5adedf7027974d25935b575e54661f11', NULL, 'GET', 'GET', NULL, '{\"id\":\"bc85d7c4-06ed-11f0-b559-4ccc6a2e3718\"}', NULL, 14, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:26:20');
@@ -922,8 +3219,10 @@ INSERT INTO `sys_oper_log` VALUES ('5b086ae905c342e689e5141175a01c0d', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('5b104044aac248a9951ab865fecb9efc', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:35:18');
 INSERT INTO `sys_oper_log` VALUES ('5b254fa2b0dd4807858c00a992738959', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:21:20');
 INSERT INTO `sys_oper_log` VALUES ('5b340da443624e65857537eba892c826', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/workflow/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:17:39');
+INSERT INTO `sys_oper_log` VALUES ('5b463b55ad0a4137a36c84c384ccb8cb', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:15');
 INSERT INTO `sys_oper_log` VALUES ('5b504b86efc748ff8b27d57cf70f5aea', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 21:59:11');
 INSERT INTO `sys_oper_log` VALUES ('5b540f9ac4314ea8a3526f1e992fbe84', NULL, 'GET', 'GET', NULL, '{\"name\":\"lc_pages_menu\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/generator/columns', '127.0.0.1', NULL, '2.0.0', '2024-02-02 12:34:09');
+INSERT INTO `sys_oper_log` VALUES ('5b8cc0ab8d4f4479b72e9d5856153679', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:36:04');
 INSERT INTO `sys_oper_log` VALUES ('5bdc9c47dc2a4ca19f752c93b007e69c', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:58:00');
 INSERT INTO `sys_oper_log` VALUES ('5be2df3ccabe45ed8b920c7a5da53790', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:37:43');
 INSERT INTO `sys_oper_log` VALUES ('5bf1e1df6f1d4ac1a3efa16f76c2aa27', NULL, 'POST', 'POST', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/save', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:55');
@@ -939,6 +3238,7 @@ INSERT INTO `sys_oper_log` VALUES ('5cdd755cb9764031a124a65c2fa5471c', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('5ce6b09e61be4d3bb9cf1b68d5337e8a', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:35');
 INSERT INTO `sys_oper_log` VALUES ('5cf7789fb0ba4c37af8312b0ddede85e', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:24:30');
 INSERT INTO `sys_oper_log` VALUES ('5d0275ce61ea44b89ed4ba188d9ff576', NULL, 'GET', 'GET', NULL, '{}', NULL, 40, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:19:47');
+INSERT INTO `sys_oper_log` VALUES ('5d450aadc59b46c3946ba605ba37a220', NULL, 'GET', 'GET', NULL, '{\"current\":\"2\",\"total\":\"31\",\"size\":\"20\"}', NULL, 5, '1', NULL, 0, '/tansci/monitor/loginLog', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:29:20');
 INSERT INTO `sys_oper_log` VALUES ('5d4f51feab1040b6b4321cdf5d512021', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/workflow/delete/9886a2f4-06fd-11f0-b559-4ccc6a2e3718', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:20:52');
 INSERT INTO `sys_oper_log` VALUES ('5d56c57c0b084ad5af822cd1d9066b1e', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:04:53');
 INSERT INTO `sys_oper_log` VALUES ('5d75daba310b4e13b7a6a26dae0102b9', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-20 22:05:16');
@@ -967,7 +3267,9 @@ INSERT INTO `sys_oper_log` VALUES ('60b42f191fd543fab24602c1712b5279', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('60bced33e6ee46e8bc9aa514bafc002a', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:49:39');
 INSERT INTO `sys_oper_log` VALUES ('60e2fba0e80c44278117a3c52bb086a1', NULL, 'GET', 'GET', NULL, '{}', NULL, 14, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:17:32');
 INSERT INTO `sys_oper_log` VALUES ('60f4fce1fb6a41b7a703cfb3b6e17c2a', NULL, 'GET', 'GET', NULL, '{\"id\":\"24528f9a-06ef-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:56:09');
+INSERT INTO `sys_oper_log` VALUES ('61038bd07fc248afa07fdee1ca32eb4c', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:37:45');
 INSERT INTO `sys_oper_log` VALUES ('611cc0a1fb2149aeaf3f22dfcfde09a7', NULL, 'POST', 'POST', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/lowcode/lcPages/update', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:31:30');
+INSERT INTO `sys_oper_log` VALUES ('615c9894dcfd4fc3b23a9ae2c5a31678', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:18');
 INSERT INTO `sys_oper_log` VALUES ('61a2d2f6256643b49d269ba4d62b867e', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:11:44');
 INSERT INTO `sys_oper_log` VALUES ('61abf78386644980b1181f33c34cd1ba', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:59:07');
 INSERT INTO `sys_oper_log` VALUES ('61ac2cda21fa46f0937fc129731740c5', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:35:15');
@@ -981,12 +3283,14 @@ INSERT INTO `sys_oper_log` VALUES ('62c8a222b21041f8a0728a931abc2361', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('62debc68469847a5b1f0531c0e954e71', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:46:09');
 INSERT INTO `sys_oper_log` VALUES ('62def05480d14c6eaaabb0c40c426db8', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:47:28');
 INSERT INTO `sys_oper_log` VALUES ('62e99f542f064435bc05ed2976bee13a', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:46:53');
+INSERT INTO `sys_oper_log` VALUES ('632475dd344c4857adb6c3c4520bfe6b', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:18');
 INSERT INTO `sys_oper_log` VALUES ('63262f9b90054b1c80598d79f637e87d', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/monitor/onlineUser', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:52:56');
 INSERT INTO `sys_oper_log` VALUES ('632cb50afb0b401aae5049232018232f', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:51:24');
 INSERT INTO `sys_oper_log` VALUES ('63557c16196043a3ba005a4950ec88f5', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:00:54');
 INSERT INTO `sys_oper_log` VALUES ('63bcc76d2b654e4382bb8333326a1b9a', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:30:00');
 INSERT INTO `sys_oper_log` VALUES ('63c5ed1d75ec4036b5fc875bee52936f', NULL, 'POST', 'POST', NULL, '{}', NULL, 20, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-01-12 10:50:30');
 INSERT INTO `sys_oper_log` VALUES ('642a12385e6d4ee1a31d58c948ee4036', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:51:56');
+INSERT INTO `sys_oper_log` VALUES ('642c0bb974124ebf891cce5cfb4ce51c', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:41:03');
 INSERT INTO `sys_oper_log` VALUES ('643e97d7bfaf4755a547232602180dc1', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:34:07');
 INSERT INTO `sys_oper_log` VALUES ('645b028e77f248ee848f345987108ed3', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:59:04');
 INSERT INTO `sys_oper_log` VALUES ('645d72714a3f4e13a07b6b200ad57f17', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:49:39');
@@ -1010,6 +3314,7 @@ INSERT INTO `sys_oper_log` VALUES ('66d92e08dd4e4d8f9f8a1976a0116a3c', NULL, 'PO
 INSERT INTO `sys_oper_log` VALUES ('672ada40e1614f83ab8ca7bc54ba0803', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:24:15');
 INSERT INTO `sys_oper_log` VALUES ('6730ff37814048e585d489f5ea62a928', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:34:04');
 INSERT INTO `sys_oper_log` VALUES ('680d2bdb874b4bd4ba664c1e7169e8dd', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:27:55');
+INSERT INTO `sys_oper_log` VALUES ('684cea61ef684b84be9ace5044af21b0', NULL, 'GET', 'GET', NULL, '{}', NULL, 15, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:30');
 INSERT INTO `sys_oper_log` VALUES ('685284debce542e7bd65aa4d5e74ab79', NULL, 'GET', 'GET', NULL, '{\"id\":\"bc85d7c4-06ed-11f0-b559-4ccc6a2e3718\"}', NULL, 14, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:22:28');
 INSERT INTO `sys_oper_log` VALUES ('692e038082f64765b60eed3fdbb965ac', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:23:22');
 INSERT INTO `sys_oper_log` VALUES ('69412a2fdbbb48cea06a9bcdda4ddd07', NULL, 'POST', 'POST', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/workflow/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:11:10');
@@ -1025,6 +3330,7 @@ INSERT INTO `sys_oper_log` VALUES ('6b2680246b76432e8a6e3bff499f4f88', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('6bcc70381c884f6681543937ac8e81d4', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:16');
 INSERT INTO `sys_oper_log` VALUES ('6c1b37593ddd4bfa808109e0f932f6f9', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:50');
 INSERT INTO `sys_oper_log` VALUES ('6cc7e08b80b24ae58f53b234f9a34d7f', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 2, '1', NULL, 0, '/tansci/monitor/onlineUser', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:49:58');
+INSERT INTO `sys_oper_log` VALUES ('6cd6c1a8fc8a4d14956e8f89ee46c319', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:51');
 INSERT INTO `sys_oper_log` VALUES ('6ce67aae183d40b2b350242618d9bedc', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:08:05');
 INSERT INTO `sys_oper_log` VALUES ('6cfcdaa6eba841b6bc7eeff7cea020ce', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:35:41');
 INSERT INTO `sys_oper_log` VALUES ('6dac9393e2ce42eca1e8c2472743992c', NULL, 'GET', 'GET', NULL, '{}', NULL, 64, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:24:15');
@@ -1035,8 +3341,11 @@ INSERT INTO `sys_oper_log` VALUES ('6e893d070b48476cb1c84997c9365700', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('6ea752abdce54000902a365d272f459a', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/workflow/delete/1673a2dd-06fc-11f0-b559-4ccc6a2e3718', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:10:52');
 INSERT INTO `sys_oper_log` VALUES ('6ed42c6f8d3544129b81508d6a72f00f', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:20:27');
 INSERT INTO `sys_oper_log` VALUES ('6f122dc20b5c421f945375af1263f9fb', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:22');
+INSERT INTO `sys_oper_log` VALUES ('6f42e18e39c54fcc9b9dab67d4cc96a7', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:27:47');
+INSERT INTO `sys_oper_log` VALUES ('6f4644260bb2487980ba10b08d49ad1e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:36:07');
 INSERT INTO `sys_oper_log` VALUES ('6f531b2039be4b53904436bdf497e88a', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:49:26');
 INSERT INTO `sys_oper_log` VALUES ('6f8ec9928a3d404cbf08bf01c44122be', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:30');
+INSERT INTO `sys_oper_log` VALUES ('6fa27421c3c84034b16db552eefae2de', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 14, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:55');
 INSERT INTO `sys_oper_log` VALUES ('6fdd9cbcd25c4effaa6eea466287d478', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:19:29');
 INSERT INTO `sys_oper_log` VALUES ('6ffd803778134a169fd973f635a66b3c', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:11');
 INSERT INTO `sys_oper_log` VALUES ('7056b09e1fa84ec4a45927f85f0d265b', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:42:01');
@@ -1045,11 +3354,14 @@ INSERT INTO `sys_oper_log` VALUES ('706951fae28f404a8dfdb536225622c0', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('707253b940bb46b59a52a0426dc0f1db', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:34:22');
 INSERT INTO `sys_oper_log` VALUES ('707d41d697944ab98a5402b8b6d691c3', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:54:11');
 INSERT INTO `sys_oper_log` VALUES ('70a7ef10b4eb456b8739dffeacaaaf97', NULL, 'GET', 'GET', NULL, '{\"classify\":\"ce620f517565f989d718385d4e4033ac\",\"total\":\"3\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:25:38');
+INSERT INTO `sys_oper_log` VALUES ('70fb6a47f9914233a5cde74a7bcf10b9', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:55');
 INSERT INTO `sys_oper_log` VALUES ('7103bc35d58048e2a00de714f0aa4bba', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:15:02');
 INSERT INTO `sys_oper_log` VALUES ('71093d7489d249c88f5269d0c4b4b4cb', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 22:57:30');
+INSERT INTO `sys_oper_log` VALUES ('711aa2e934ff4682871d7f7d73663df1', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/monitor/loginLog', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:29:11');
 INSERT INTO `sys_oper_log` VALUES ('71203c4e8fa04059bfd6c381ef7e44d0', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:59:10');
 INSERT INTO `sys_oper_log` VALUES ('71598ff1cb10468280e2fdbbccf1238f', NULL, 'POST', 'POST', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:13:10');
 INSERT INTO `sys_oper_log` VALUES ('715e781fd07e44dd94de3e5135a18ac9', NULL, 'GET', 'GET', NULL, '{}', NULL, 18, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:15:38');
+INSERT INTO `sys_oper_log` VALUES ('7167de6100a14a25a1c6d6a5673a1223', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:18:46');
 INSERT INTO `sys_oper_log` VALUES ('7176b6010fc34e858306ab40e4d3c630', NULL, 'GET', 'GET', NULL, '{}', NULL, 18, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:29:57');
 INSERT INTO `sys_oper_log` VALUES ('71a8d66810844f28abc2e9c1c0409b4c', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:30:25');
 INSERT INTO `sys_oper_log` VALUES ('71c1db91d2004345bb36cb5d7a786911', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:16:26');
@@ -1064,6 +3376,7 @@ INSERT INTO `sys_oper_log` VALUES ('7339b62702f748f3aaa83ba934c7960a', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('7367da572dce41a0a6d2a38993ea01ed', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:28:05');
 INSERT INTO `sys_oper_log` VALUES ('737adf9f5b20472dbb4e70aa0adbb1ac', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 6, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:57:57');
 INSERT INTO `sys_oper_log` VALUES ('737f68bf103142a1874acc69ec155531', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:02:22');
+INSERT INTO `sys_oper_log` VALUES ('737f6cf060cd42019f9791406fef386d', NULL, 'GET', 'GET', NULL, '{\"id\":\"e9606169-0982-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/work/model/details', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:10:50');
 INSERT INTO `sys_oper_log` VALUES ('7398c53ecd0947d1b8f3f3a4bf60f205', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:09:38');
 INSERT INTO `sys_oper_log` VALUES ('73d05194cb164d38b359164c7fcf7124', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:56:15');
 INSERT INTO `sys_oper_log` VALUES ('73e614e7edb249a19b94b4172ca7ca67', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 15, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:28:53');
@@ -1079,15 +3392,21 @@ INSERT INTO `sys_oper_log` VALUES ('74f1d3ee30cd40aea53e119780360156', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('756dd72469fd4e97970a3debc0e1e67d', NULL, 'POST', 'POST', NULL, '{}', NULL, 15, '1', NULL, 0, '/tansci/system/workflow/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:27:36');
 INSERT INTO `sys_oper_log` VALUES ('7571a97295644d6c8bd7d8f0b0a4e47c', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:53:12');
 INSERT INTO `sys_oper_log` VALUES ('7572fbd67a2b46bd8ca74fe62778e1eb', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:55');
+INSERT INTO `sys_oper_log` VALUES ('759820787235487f9966488779ac25ad', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:02');
 INSERT INTO `sys_oper_log` VALUES ('75aa311feb8345e7a5bd16f1563fcfb3', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:20:01');
 INSERT INTO `sys_oper_log` VALUES ('75ce53fa39d84da398d63d52343c375c', NULL, 'GET', 'GET', NULL, '{}', NULL, 33, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:12:32');
 INSERT INTO `sys_oper_log` VALUES ('75cee5fcc95f40a28e6968363cb3f2ba', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:05:51');
+INSERT INTO `sys_oper_log` VALUES ('760c3712707f4853ae6d4156b5f368cb', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:15:53');
 INSERT INTO `sys_oper_log` VALUES ('76209456107044639bbb08872842aef7', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:15:25');
 INSERT INTO `sys_oper_log` VALUES ('7667db50faf64aa1b9f514cb228a1367', NULL, 'POST', 'POST', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/workflow/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:27:42');
+INSERT INTO `sys_oper_log` VALUES ('7681b31c0af14aa1bc8e76fa17524413', NULL, 'POST', 'POST', NULL, '{}', NULL, 45, '1', NULL, 0, '/tansci/system/work/workflow/deployProcess', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:17:17');
+INSERT INTO `sys_oper_log` VALUES ('768e3e4378c14d0ab923e39aabdd7ed8', NULL, 'GET', 'GET', NULL, '{\"assignee\":\"1\"}', NULL, 39, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:09');
+INSERT INTO `sys_oper_log` VALUES ('76ab34d32e9a41f0b7a994ee431b9945', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:10:32');
 INSERT INTO `sys_oper_log` VALUES ('76cac80065b7451587b5d69e37847d83', NULL, 'GET', 'GET', NULL, '{}', NULL, 26, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:34:07');
 INSERT INTO `sys_oper_log` VALUES ('76f80993508f4c9c8a5e4fc6fe9aa427', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:46:09');
 INSERT INTO `sys_oper_log` VALUES ('7706cab4b6d046c68ec71c5e116c6768', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:50:27');
 INSERT INTO `sys_oper_log` VALUES ('7719f2dbe75443fb86b060c87a5cd4b1', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/workflow/update', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:21:11');
+INSERT INTO `sys_oper_log` VALUES ('773c6f3f7e724c219e87ba24954aed8d', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:36:04');
 INSERT INTO `sys_oper_log` VALUES ('7751be47cc06419e8ef0d5e23643fa6e', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:59:29');
 INSERT INTO `sys_oper_log` VALUES ('7793772c4b794cb4bc043034765ed0bb', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:55:49');
 INSERT INTO `sys_oper_log` VALUES ('77aa8401d05c428b9527e2b1b6fdca76', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:23:16');
@@ -1101,6 +3420,7 @@ INSERT INTO `sys_oper_log` VALUES ('78d33bb9f09e4598bec3e1a8f4f1f669', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('78f3c229a13b4a6e955c0d9c20d52229', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:20:54');
 INSERT INTO `sys_oper_log` VALUES ('78f53e4750de4ed788fee8c85e9f51f7', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/monitor/onlineUser', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:54:09');
 INSERT INTO `sys_oper_log` VALUES ('7900a7ca43f246c18ed438fd2254f9f2', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 6, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:43:33');
+INSERT INTO `sys_oper_log` VALUES ('7903809eb1054b0790b2e7bb3af26d0c', NULL, 'GET', 'GET', NULL, '{}', NULL, 25, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:16:45');
 INSERT INTO `sys_oper_log` VALUES ('79258def65b542b0ae14979568777b0d', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:20:32');
 INSERT INTO `sys_oper_log` VALUES ('793a2826a6a946a590768b5e989061f2', NULL, 'GET', 'GET', NULL, '{\"name\":\"magic_api_backup\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/generator/columns', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:40:11');
 INSERT INTO `sys_oper_log` VALUES ('79426f9f9460463a984475c32187f19a', NULL, 'GET', 'GET', NULL, '{\"id\":\"24528f9a-06ef-11f0-b559-4ccc6a2e3718\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:27:59');
@@ -1109,14 +3429,18 @@ INSERT INTO `sys_oper_log` VALUES ('795c1699b9f142a7bad0dcc39d4b4b29', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('795da0e4c781438fac3c97041c473b2a', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:21:55');
 INSERT INTO `sys_oper_log` VALUES ('798ff9683ca54375a38e235ce5eb0b67', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:53:44');
 INSERT INTO `sys_oper_log` VALUES ('79a91986943f4518ac8ee0ac7c49deaf', NULL, 'POST', 'POST', NULL, '{}', NULL, 41, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:52');
+INSERT INTO `sys_oper_log` VALUES ('79b74e83f48f41dfa9b3b32acf9d45c7', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:15:53');
 INSERT INTO `sys_oper_log` VALUES ('7a0c53ae36f14225bc0634011f619535', NULL, 'GET', 'GET', NULL, '{}', NULL, 29, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 14:42:46');
 INSERT INTO `sys_oper_log` VALUES ('7a2562c3da9749da8438119d137e769a', NULL, 'GET', 'GET', NULL, '{}', NULL, 383, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2024-02-26 15:36:55');
+INSERT INTO `sys_oper_log` VALUES ('7a2cdf13cea04592935ba3ffa3c62c6e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:18:29');
 INSERT INTO `sys_oper_log` VALUES ('7a4daebb77c64a9184cc418d17994a1e', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:24:30');
 INSERT INTO `sys_oper_log` VALUES ('7aeaa5a80fce44efb2c05db4b92f4735', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:33:53');
 INSERT INTO `sys_oper_log` VALUES ('7aedde8e11214858a780bebeb626608d', NULL, 'GET', 'GET', NULL, '{\"name\":\"tansci_boot\"}', NULL, 11, '1', NULL, 0, '/tansci/lowcode/generator/tables', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:09:55');
+INSERT INTO `sys_oper_log` VALUES ('7b243659dea84dc1930913cab4d98f54', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:47');
 INSERT INTO `sys_oper_log` VALUES ('7b5dd894ab2f4aa1841fec3344a49a42', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:24:22');
 INSERT INTO `sys_oper_log` VALUES ('7bda8866e7d74451afc2af05143e46a6', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:49:04');
 INSERT INTO `sys_oper_log` VALUES ('7c06ca545c4a4184a8f3a28a17269b63', NULL, 'POST', 'POST', NULL, '{}', NULL, 16, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:56:15');
+INSERT INTO `sys_oper_log` VALUES ('7c0e454207b24792aa905c6ada92789b', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:19:31');
 INSERT INTO `sys_oper_log` VALUES ('7c415841c98d4319abdf5fff96ba406d', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:06:44');
 INSERT INTO `sys_oper_log` VALUES ('7c58294556a04e3a9cc20251f902eaf6', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:59:48');
 INSERT INTO `sys_oper_log` VALUES ('7c5ba60cc5ff4c358adcb6edb65dc6a7', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 9, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:21:54');
@@ -1137,6 +3461,7 @@ INSERT INTO `sys_oper_log` VALUES ('8089c68a964f4e688272a5474207f0ce', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('80a818c24ac0414c926e6517cc43f732', NULL, 'GET', 'GET', NULL, '{\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:48:53');
 INSERT INTO `sys_oper_log` VALUES ('80c0c5e6ce3e4fffaeaf1514c7983922', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:16:27');
 INSERT INTO `sys_oper_log` VALUES ('8126d88148ac439a823784a5bbbd49b3', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:59:04');
+INSERT INTO `sys_oper_log` VALUES ('812b736930074135ac04fe6974d4dca2', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 6, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:29');
 INSERT INTO `sys_oper_log` VALUES ('814ac0cec30d47ddacfa583b3fd011a9', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:07:48');
 INSERT INTO `sys_oper_log` VALUES ('815105b790ba4d52a2a3ba7fb3e41c98', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 5, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:05');
 INSERT INTO `sys_oper_log` VALUES ('815cb2cc0c964adb97ec09103a243dab', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:20:41');
@@ -1153,7 +3478,9 @@ INSERT INTO `sys_oper_log` VALUES ('8321422cf7694a279e9ed251692ea21b', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('833fc42b097d424292a6fe63775bdf5d', NULL, 'GET', 'GET', NULL, '{}', NULL, 26, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:05:47');
 INSERT INTO `sys_oper_log` VALUES ('834de6b0126b4754a0cd5131c729df98', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:04:50');
 INSERT INTO `sys_oper_log` VALUES ('835c1818d5804ec48335e5ee0d15cbfb', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:56:30');
+INSERT INTO `sys_oper_log` VALUES ('835c9ec8b019457d80e17a6c9fc68661', NULL, 'POST', 'POST', NULL, '{}', NULL, 41, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:36:02');
 INSERT INTO `sys_oper_log` VALUES ('835e4711288345cab5e837de065ded64', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:43:18');
+INSERT INTO `sys_oper_log` VALUES ('8399ee3cda0e4e1c869f4564b4adf1e0', NULL, 'GET', 'GET', NULL, '{\"assignee\":\"1\"}', NULL, 2, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:33');
 INSERT INTO `sys_oper_log` VALUES ('83c3f17ea0bf41cda5378af4c29613c4', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:01:17');
 INSERT INTO `sys_oper_log` VALUES ('83d211c6ccc4411694726a9a9b797abc', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 17, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:40:52');
 INSERT INTO `sys_oper_log` VALUES ('84185ccca2fa49f4aba37955aa9c24a6', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:55:09');
@@ -1166,6 +3493,7 @@ INSERT INTO `sys_oper_log` VALUES ('84c44331a0c44d9597784d673beaadfe', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('85aea6f6f3754e0d8165228b42e53172', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:59:29');
 INSERT INTO `sys_oper_log` VALUES ('85cf4f156441451cbbc5625af78a4f8c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:58:48');
 INSERT INTO `sys_oper_log` VALUES ('85e4c9c8184d4aa3951fb7f128b6b35c', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:14:39');
+INSERT INTO `sys_oper_log` VALUES ('8615b0be7f1d45d2b4a2139c07166fdf', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:47:24');
 INSERT INTO `sys_oper_log` VALUES ('862a3e8cea704d7a87f3b0018ff24a54', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:20:41');
 INSERT INTO `sys_oper_log` VALUES ('865b9bcb3ce04a6bafb09027fb1bd247', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:11');
 INSERT INTO `sys_oper_log` VALUES ('866005085446495d880b4230903fe4a4', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:19:47');
@@ -1175,6 +3503,7 @@ INSERT INTO `sys_oper_log` VALUES ('868fd183b8ca4a978286db6073fdba90', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('8695bb18c35843a788679bb5bcd360a3', NULL, 'GET', 'GET', NULL, '{}', NULL, 24, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-02 09:23:35');
 INSERT INTO `sys_oper_log` VALUES ('86b154ce66a94a2d985f8a22a6ebaa96', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:58:18');
 INSERT INTO `sys_oper_log` VALUES ('86c3e02e3ea542e5bb3c0838b521ebf6', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 15:37:03');
+INSERT INTO `sys_oper_log` VALUES ('86c58294e8894ca9a4390a8ad90a274c', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:17');
 INSERT INTO `sys_oper_log` VALUES ('86ddcaae2b5d4e6580ba15af61b4e44d', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:09:38');
 INSERT INTO `sys_oper_log` VALUES ('86ed337e995e4a36979c2148ba111c0d', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:07:34');
 INSERT INTO `sys_oper_log` VALUES ('870bf335511c4968aabeee92f20cf6b6', NULL, 'GET', 'GET', NULL, '{\"total\":\"3\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:10:54');
@@ -1188,6 +3517,7 @@ INSERT INTO `sys_oper_log` VALUES ('885cb43aa97941bbb8e806383f30364f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('894960721024495fb5b8a10bdb3bb691', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:53:29');
 INSERT INTO `sys_oper_log` VALUES ('89579be965324437a3ca9813a20d30a6', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:01:21');
 INSERT INTO `sys_oper_log` VALUES ('897134492fe047b8b6a541b58a102a5f', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:16:26');
+INSERT INTO `sys_oper_log` VALUES ('899a8b4845fd47de9888a49cab70b507', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:49:19');
 INSERT INTO `sys_oper_log` VALUES ('89b6cce1f77a4ce5b146d3c70244c241', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:22:39');
 INSERT INTO `sys_oper_log` VALUES ('89f6a0df8b7d4e6b91ce0b27099d7a01', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:56:03');
 INSERT INTO `sys_oper_log` VALUES ('8a06bc21bafe484792b45b218dd393ff', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:31:55');
@@ -1204,6 +3534,7 @@ INSERT INTO `sys_oper_log` VALUES ('8aeded3df2a84fea94bb52a2948ab329', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('8af3e4d53a5e4169aa08314ed88170d2', NULL, 'POST', 'POST', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:26:26');
 INSERT INTO `sys_oper_log` VALUES ('8b1426abf919484e9c7dba5e5a0ddbd0', NULL, 'GET', 'GET', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:17:02');
 INSERT INTO `sys_oper_log` VALUES ('8b35e6acea33462ea72c495b433a0ab3', NULL, 'GET', 'GET', NULL, '{\"name\":\"tansci_boot\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/generator/tables', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:14:38');
+INSERT INTO `sys_oper_log` VALUES ('8b73cfe8ffa945f88db1cada40e56ad7', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:21:14');
 INSERT INTO `sys_oper_log` VALUES ('8b956b231e7c4dd7ba352260856b33d6', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:55:06');
 INSERT INTO `sys_oper_log` VALUES ('8bbbf3bc15154f4f83b0a79407651fc5', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:57:46');
 INSERT INTO `sys_oper_log` VALUES ('8bc244144d16497a82c54375eb5ed88b', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:25:31');
@@ -1220,14 +3551,17 @@ INSERT INTO `sys_oper_log` VALUES ('8d6d9a1aec07408bbc491e67f5b09eb7', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('8d884fb639694018abfae38551e2a772', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 56, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:39:53');
 INSERT INTO `sys_oper_log` VALUES ('8d8f25b592e548f3a79786ef035ad25d', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:46:09');
 INSERT INTO `sys_oper_log` VALUES ('8d923cc99d3b4ad4bb74a8d718ae8704', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:29:35');
+INSERT INTO `sys_oper_log` VALUES ('8d97d64637484f409ad99e24dc9849c7', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:17');
 INSERT INTO `sys_oper_log` VALUES ('8da0302ac7f0476b90ac6df1167f1f73', NULL, 'GET', 'GET', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:02:05');
 INSERT INTO `sys_oper_log` VALUES ('8da4bb9f3847487eade0459bd1774d35', NULL, 'GET', 'GET', NULL, '{\"classify\":\"ce620f517565f989d718385d4e4033ac\",\"total\":\"3\",\"size\":\"8\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:31:52');
 INSERT INTO `sys_oper_log` VALUES ('8db5f726fba54a728317b10b667637de', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:26:27');
 INSERT INTO `sys_oper_log` VALUES ('8def4dff5d894bd78b5f21d80354ba0d', NULL, 'GET', 'GET', NULL, '{}', NULL, 30, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:41:39');
 INSERT INTO `sys_oper_log` VALUES ('8e0aa220304a48a6a2323a28b239a016', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:41:24');
 INSERT INTO `sys_oper_log` VALUES ('8e2dee7bfb034b87bce905184880e36f', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:58:28');
+INSERT INTO `sys_oper_log` VALUES ('8ec972b3bc8445969d484eb3c409f84c', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:50');
 INSERT INTO `sys_oper_log` VALUES ('8ecd449da46a44b2a90fea8d889c3e38', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:59:10');
 INSERT INTO `sys_oper_log` VALUES ('8eda6770e71648a7b559ce7906593d9a', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:38:51');
+INSERT INTO `sys_oper_log` VALUES ('8edfe7ac4f5c43a097c8e22cfcea5f52', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:05');
 INSERT INTO `sys_oper_log` VALUES ('8f15185e38fb4e7da96b9686d0aa2994', NULL, 'GET', 'GET', NULL, '{}', NULL, 22, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:07:39');
 INSERT INTO `sys_oper_log` VALUES ('8f3d8baaed504eaea743845c3570bf15', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:13:44');
 INSERT INTO `sys_oper_log` VALUES ('8f419c3ab04f46f996a9df1bbe0cf8fe', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:54:09');
@@ -1239,6 +3573,7 @@ INSERT INTO `sys_oper_log` VALUES ('8fcaa630656544aeb6e3deb3895ee10b', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('8fd2865d5eb14118828aa214d99faf91', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-02 09:23:35');
 INSERT INTO `sys_oper_log` VALUES ('8febf2f1d7284174bb9473c93c681f43', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:21:55');
 INSERT INTO `sys_oper_log` VALUES ('900f89bab5f44ea3ac630ba0bf0698fe', NULL, 'GET', 'GET', NULL, '{}', NULL, 17, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:13:32');
+INSERT INTO `sys_oper_log` VALUES ('907c4f98a4c846ee936493fdbf1523dd', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:46');
 INSERT INTO `sys_oper_log` VALUES ('90a479d97da0406d8ca84dafaf63125a', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:11:20');
 INSERT INTO `sys_oper_log` VALUES ('90d74d325a4949e0b7bf4e1d592b1fbf', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:16:32');
 INSERT INTO `sys_oper_log` VALUES ('90edd5391c804bdeb5c1081388843a57', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:39:55');
@@ -1250,6 +3585,7 @@ INSERT INTO `sys_oper_log` VALUES ('912e0b7e0f0c4d9fbfb12f0c07afe7d2', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('9133c44d1aa647f7a32921c1ddca5d7f', NULL, 'GET', 'GET', NULL, '{}', NULL, 18, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:06:47');
 INSERT INTO `sys_oper_log` VALUES ('91370cdd600541ec850c84f2548523fa', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:19:02');
 INSERT INTO `sys_oper_log` VALUES ('91395e0f3aa2477580e54569ca407351', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 8, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:20:20');
+INSERT INTO `sys_oper_log` VALUES ('9145da66e0604a4c872c3fb72f7f1358', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:17');
 INSERT INTO `sys_oper_log` VALUES ('91616e0f01634209af69a86a75637b24', NULL, 'GET', 'GET', NULL, '{\"classify\":\"7f08e688-de5a-11ed-8f49-00163e228eed\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:35:28');
 INSERT INTO `sys_oper_log` VALUES ('916561913d7c49efb3fe0309f376a15e', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:08:05');
 INSERT INTO `sys_oper_log` VALUES ('9176c4b837904172996e003ab02efbd2', NULL, 'POST', 'POST', NULL, '{}', NULL, 71, '1', NULL, 0, '/tansci/system/menu/save', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:06:07');
@@ -1258,6 +3594,7 @@ INSERT INTO `sys_oper_log` VALUES ('91f4d39dba4e4601bb5b257036ef9104', NULL, 'PO
 INSERT INTO `sys_oper_log` VALUES ('92003199b6af4280b63b7b666183f429', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 21:58:28');
 INSERT INTO `sys_oper_log` VALUES ('92044d966c9d48b1b1d152ae30cae048', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:39:55');
 INSERT INTO `sys_oper_log` VALUES ('92288a35e3574b77a2a7e82130b4bb99', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:10:46');
+INSERT INTO `sys_oper_log` VALUES ('923122ef53254063b789debfffbec786', NULL, 'GET', 'GET', NULL, '{}', NULL, 14, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:14');
 INSERT INTO `sys_oper_log` VALUES ('92694ffd93e44eea84d4f5797ce720d9', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:25:31');
 INSERT INTO `sys_oper_log` VALUES ('926f6d83c9474ef0b4ea11743e023535', NULL, 'POST', 'POST', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:55:22');
 INSERT INTO `sys_oper_log` VALUES ('92849872906c4f40b3a1d1dffd2568e8', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:10:46');
@@ -1271,8 +3608,11 @@ INSERT INTO `sys_oper_log` VALUES ('9354ddc3802545b4b45860306a12ca5b', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('9355481acb264481955dd951d5dc94a3', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 34, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:09:59');
 INSERT INTO `sys_oper_log` VALUES ('9394626af51c4519be88a0ee033ec890', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:34:10');
 INSERT INTO `sys_oper_log` VALUES ('93ace5d8d0dc49808c76fd602d162c89', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:14:45');
+INSERT INTO `sys_oper_log` VALUES ('93b3965bea8946d78be55f16d0873468', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:22:50');
 INSERT INTO `sys_oper_log` VALUES ('93b580a2789546bc914b27382f60d51e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:26:44');
 INSERT INTO `sys_oper_log` VALUES ('93bcfca7ac8b40fea0d1bb8fecadab32', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-01-12 10:50:44');
+INSERT INTO `sys_oper_log` VALUES ('93ebdc06cc7b433fa39cc5ec36abc817', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:22:50');
+INSERT INTO `sys_oper_log` VALUES ('9402297634e348a0945dfbc311f18f59', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:26');
 INSERT INTO `sys_oper_log` VALUES ('9410f0356ae349a4a714a240e95affba', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:39:06');
 INSERT INTO `sys_oper_log` VALUES ('94335e7fc2864d528a9d1ce3ca4ac9b7', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:58:28');
 INSERT INTO `sys_oper_log` VALUES ('94574f2cd723406aa73fd5a9ff43db15', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:49:13');
@@ -1285,9 +3625,11 @@ INSERT INTO `sys_oper_log` VALUES ('953d823a56d54ee2bb9c36453c68dcef', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('954c294a91bc42038b64785a87b34322', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:13:45');
 INSERT INTO `sys_oper_log` VALUES ('956028758df346f3835c019b56ab7457', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 21:48:06');
 INSERT INTO `sys_oper_log` VALUES ('9577af8a57a74875a30c71fa7e0721cc', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:09:22');
+INSERT INTO `sys_oper_log` VALUES ('9577ea3a2145491b8b999adcee452603', NULL, 'GET', 'GET', NULL, '{\"total\":\"2\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:11:28');
 INSERT INTO `sys_oper_log` VALUES ('95b394b8aa7d47848cac75aceb8daba5', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:48:49');
 INSERT INTO `sys_oper_log` VALUES ('95b7de908c9146e8bf4b561813d1f517', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:35:13');
 INSERT INTO `sys_oper_log` VALUES ('95c6e71c4223451c85268b1b2a6d2da8', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:21:13');
+INSERT INTO `sys_oper_log` VALUES ('95cc47793ffb4136b3c7d819481b264a', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/org/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:50');
 INSERT INTO `sys_oper_log` VALUES ('95cec180104646cab461d496aa2ecbd8', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:02:05');
 INSERT INTO `sys_oper_log` VALUES ('96447b711472445881d14e9161ce721a', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 16, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:57:54');
 INSERT INTO `sys_oper_log` VALUES ('964ab4fb7ad1473a8d769a3da081013b', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:38:46');
@@ -1319,6 +3661,7 @@ INSERT INTO `sys_oper_log` VALUES ('9a090b0883254133872a184064908bff', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('9a2ee92119eb4910a3086d72eadd8ecd', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/workflow/delete/b513abcb-06fa-11f0-b559-4ccc6a2e3718', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:10:56');
 INSERT INTO `sys_oper_log` VALUES ('9a3461c5af9c4590b5d3f89b85ae846a', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:48:49');
 INSERT INTO `sys_oper_log` VALUES ('9a3c239fa384477cad5e2f7b3bf90c61', NULL, 'GET', 'GET', NULL, '{}', NULL, 0, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:11:33');
+INSERT INTO `sys_oper_log` VALUES ('9a474ce7bf31472a80d5d304b9a2fe18', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 7, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:41:24');
 INSERT INTO `sys_oper_log` VALUES ('9a76a45b960f411081d782114f9326cd', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:12:17');
 INSERT INTO `sys_oper_log` VALUES ('9a876e25eed749a4be7ea3e68271f94f', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:58:42');
 INSERT INTO `sys_oper_log` VALUES ('9afa7a43247149c09f9e9aad6980088e', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:58:43');
@@ -1340,6 +3683,7 @@ INSERT INTO `sys_oper_log` VALUES ('9c969a0d331743f58dd3a5d76548fed7', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('9ca7aee961224bdb84cc9e60a3d777d8', NULL, 'GET', 'GET', NULL, '{}', NULL, 42, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:39:06');
 INSERT INTO `sys_oper_log` VALUES ('9cb9f5599f84451b9f6d0f27bf032f35', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:36:41');
 INSERT INTO `sys_oper_log` VALUES ('9ce5fe58c06d46d5893d1279d31f3528', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:11:34');
+INSERT INTO `sys_oper_log` VALUES ('9d16efb14b0047668f81a663acff3fbf', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:33');
 INSERT INTO `sys_oper_log` VALUES ('9d324f0792c64e4e9a6b4f9675772ab9', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:24:21');
 INSERT INTO `sys_oper_log` VALUES ('9d466ff6e0684f53833bf8cb4d113136', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:43:40');
 INSERT INTO `sys_oper_log` VALUES ('9d8661e81455445183b070097a6797f7', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:44:56');
@@ -1357,7 +3701,9 @@ INSERT INTO `sys_oper_log` VALUES ('9fca1c1562884db4937ff055b7f68d32', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('a03990963d5941a494aaf6ae4a8192e3', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:17:02');
 INSERT INTO `sys_oper_log` VALUES ('a05f7115ae364ebfbbd311f0f0ef819e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:49:42');
 INSERT INTO `sys_oper_log` VALUES ('a07c868134b24593a0d15587caf9cff6', NULL, 'GET', 'GET', NULL, '{\"id\":\"9886a2f4-06fd-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:19:35');
+INSERT INTO `sys_oper_log` VALUES ('a09d3990258a4af1b9de891deba4bcab', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:49:26');
 INSERT INTO `sys_oper_log` VALUES ('a102f696c78e47ab8f5b7c89932cf7b0', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:17:47');
+INSERT INTO `sys_oper_log` VALUES ('a131f871ef1b4818abc6e4f511793807', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:05');
 INSERT INTO `sys_oper_log` VALUES ('a14a54eb1ad84a6e8b3e99be8447e957', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:05:51');
 INSERT INTO `sys_oper_log` VALUES ('a1a6e9d6c4d34a48955262c8389eaccd', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:09:50');
 INSERT INTO `sys_oper_log` VALUES ('a1c51132a623436a9dc70858bb8be3ac', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 57, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:38:20');
@@ -1367,6 +3713,7 @@ INSERT INTO `sys_oper_log` VALUES ('a228b744a62240cc8b7dfe5fedb8736c', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('a23e679eeffa4d0aa76a373c6ab58a5a', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:02');
 INSERT INTO `sys_oper_log` VALUES ('a2953f43f8ad4248b630a2f203a4157e', NULL, 'GET', 'GET', NULL, '{}', NULL, 16, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:57:54');
 INSERT INTO `sys_oper_log` VALUES ('a2b2b06d6edb4b83a5b8c25238f0d9e1', NULL, 'GET', 'GET', NULL, '{}', NULL, 22, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:35:31');
+INSERT INTO `sys_oper_log` VALUES ('a2dd21e35c47439885344e39ce99c6ee', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:02:12');
 INSERT INTO `sys_oper_log` VALUES ('a2f019c3bb0e4b429a99c14cda1fd60e', NULL, 'GET', 'GET', NULL, '{}', NULL, 48, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:07:58');
 INSERT INTO `sys_oper_log` VALUES ('a3127a39e91c4059aad3204fc68726f5', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:17');
 INSERT INTO `sys_oper_log` VALUES ('a32aecad496443e7928ff289cac2feb3', NULL, 'POST', 'POST', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/menu/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:14:09');
@@ -1376,7 +3723,9 @@ INSERT INTO `sys_oper_log` VALUES ('a36919512da34d41b8945da70e78826f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('a37d505c3189414daca6b3e6126e92ed', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:29:06');
 INSERT INTO `sys_oper_log` VALUES ('a395d910b2b14055a58da9e61d916f6c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:11:35');
 INSERT INTO `sys_oper_log` VALUES ('a3bdb3a4106e43a6a09c1ce54f013479', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"ffff\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:06:39');
+INSERT INTO `sys_oper_log` VALUES ('a3fd1abb6d02435798b0896a3de07811', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:49:19');
 INSERT INTO `sys_oper_log` VALUES ('a41aa18c62424ac1b9f4123b5c3ca83d', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:20:54');
+INSERT INTO `sys_oper_log` VALUES ('a422cfe401f544e9922447d95ff7e185', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:50');
 INSERT INTO `sys_oper_log` VALUES ('a456d7e44d0c4b9aa6899269c3e3a8bf', NULL, 'GET', 'GET', NULL, '{\"classify\":\"7f08e688-de5a-11ed-8f49-00163e228eed\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:58:46');
 INSERT INTO `sys_oper_log` VALUES ('a4582a505a0f4d809b0b30381c4ad3c6', NULL, 'GET', 'GET', NULL, '{}', NULL, 35, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:26:18');
 INSERT INTO `sys_oper_log` VALUES ('a45c7627274347ba8722ccfcf15ba8a5', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:17:45');
@@ -1389,11 +3738,16 @@ INSERT INTO `sys_oper_log` VALUES ('a50c6fb6c15c4048a567a79c8e8868f6', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('a52f4b1264834a30a9b404577ff0d583', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:50');
 INSERT INTO `sys_oper_log` VALUES ('a53f9b8985304e9dbef888d300899506', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 8, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:56:30');
 INSERT INTO `sys_oper_log` VALUES ('a5b0b225d99a4103a64dd0c7e5c3e963', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 10, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:51:09');
+INSERT INTO `sys_oper_log` VALUES ('a5d52b304c2f454587f263d99da8396b', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:10:46');
 INSERT INTO `sys_oper_log` VALUES ('a606255b111e452788285b2e6cf1f82a', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:49:26');
 INSERT INTO `sys_oper_log` VALUES ('a60c49ce24a942319864218db72777df', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:35:18');
+INSERT INTO `sys_oper_log` VALUES ('a6231a0532bd47b8af61fe940b6ca3c9', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:36:04');
 INSERT INTO `sys_oper_log` VALUES ('a6295641e31c44f592703845a409ea81', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:50:27');
+INSERT INTO `sys_oper_log` VALUES ('a6434e6113344145b3a7b1a63416d636', NULL, 'GET', 'GET', NULL, '{\"assignee\":\"1\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:12');
 INSERT INTO `sys_oper_log` VALUES ('a647c91b23d3460aa6d9ada8c117c8d7', NULL, 'GET', 'GET', NULL, '{}', NULL, 26, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 21:48:06');
 INSERT INTO `sys_oper_log` VALUES ('a68c43916d704fa6bdbd020ce2548f3b', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:21:55');
+INSERT INTO `sys_oper_log` VALUES ('a6c5bd5646a246d692b975d94942da09', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:19:31');
+INSERT INTO `sys_oper_log` VALUES ('a6c6598ea87140dabe47e1d965432111', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:34:57');
 INSERT INTO `sys_oper_log` VALUES ('a6eda878a7684b8b8708fd1ecf72de8a', NULL, 'GET', 'GET', NULL, '{}', NULL, 26, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:11:24');
 INSERT INTO `sys_oper_log` VALUES ('a6f9b76221af4ed4940f0ad5f2621ced', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:45:01');
 INSERT INTO `sys_oper_log` VALUES ('a7a4c24650ef4055b83fb66c0d9ad283', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:35:10');
@@ -1406,19 +3760,25 @@ INSERT INTO `sys_oper_log` VALUES ('a9509805d62b4608a6ff90d90d21d650', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('a9add62f35f24d90847a5f05cb800699', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:55:36');
 INSERT INTO `sys_oper_log` VALUES ('a9b30f51f716480797e7050760c07f5c', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:42:48');
 INSERT INTO `sys_oper_log` VALUES ('a9c92e92c0444346846f42ef5ec6b27a', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:38:51');
+INSERT INTO `sys_oper_log` VALUES ('a9fc3060eb344796ad3a07d211611ad3', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:37');
 INSERT INTO `sys_oper_log` VALUES ('aa21740fdd9a4428b685bd85100b463a', NULL, 'GET', 'GET', NULL, '{\"id\":\"9886a2f4-06fd-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:12:13');
+INSERT INTO `sys_oper_log` VALUES ('aa34323e651040498101175a028fef97', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:19:13');
 INSERT INTO `sys_oper_log` VALUES ('aa3437bcdf2d464b9316d7d2fabb26f5', NULL, 'GET', 'GET', NULL, '{}', NULL, 23, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:00:33');
 INSERT INTO `sys_oper_log` VALUES ('aa397756d8f4401dacd16330bae4a6d1', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:03:10');
 INSERT INTO `sys_oper_log` VALUES ('aa41854c9e434d93947d57c26d262819', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:58:10');
 INSERT INTO `sys_oper_log` VALUES ('aa5c8685891642a5846c0058d388dc1c', NULL, 'GET', 'GET', NULL, '{\"classify\":\"306eeeb4daa0674cbf4026f6910ba5a0\",\"total\":\"2\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:35:24');
+INSERT INTO `sys_oper_log` VALUES ('aa5db000e35b4622a9137b94815deba6', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:35:38');
 INSERT INTO `sys_oper_log` VALUES ('aa65ae98d3a94978be884479d1217d15', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:50:41');
+INSERT INTO `sys_oper_log` VALUES ('aa70798395084d71b8a4358cc18eb856', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 43, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:21:18');
 INSERT INTO `sys_oper_log` VALUES ('aa71521817154457af76d7d62f197d0a', NULL, 'POST', 'POST', NULL, '{\"subTableName\":\"lc_pages_menu\",\"columns\":\"[{\\\"columnName\\\":\\\"title\\\",\\\"columnComment\\\":\\\"页面标题\\\",\\\"columnType\\\":\\\"varchar(255)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"subtitle\\\",\\\"columnComment\\\":\\\"副标题\\\",\\\"columnType\\\":\\\"varchar(255)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"parentId\\\",\\\"columnComment\\\":\\\"父页面\\\",\\\"columnType\\\":\\\"varchar(36)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"pageschema\\\",\\\"columnComment\\\":\\\"页面json\\\",\\\"columnType\\\":\\\"json\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"status\\\",\\\"columnComment\\\":\\\"状态：0、正常，1、禁用\\\",\\\"columnType\\\":\\\"int\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"creatorId\\\",\\\"columnComment\\\":\\\"创建人\\\",\\\"columnType\\\":\\\"varchar(36)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"updateTime\\\",\\\"columnComment\\\":\\\"更新时间\\\",\\\"columnType\\\":\\\"datetime\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"createTime\\\",\\\"columnComment\\\":\\\"创建时间\\\",\\\"columnType\\\":\\\"datetime\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false},{\\\"columnName\\\":\\\"remarks\\\",\\\"columnComment\\\":\\\"文件描述\\\",\\\"columnType\\\":\\\"varchar(255)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":false}]\",\"subColumns\":\"[{\\\"columnName\\\":\\\"pagesId\\\",\\\"columnComment\\\":\\\"页面id\\\",\\\"columnType\\\":\\\"varchar(36)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":true},{\\\"columnName\\\":\\\"menuId\\\",\\\"columnComment\\\":\\\"菜单id\\\",\\\"columnType\\\":\\\"varchar(36)\\\",\\\"component\\\":\\\"component: \'input\'\\\",\\\"where\\\":\\\"=\\\",\\\"save\\\":true,\\\"query\\\":true,\\\"list\\\":true,\\\"required\\\":true}]\",\"tableComment\":\"页面开发\",\"interfaceId\":\"2db48103dcac43ba86ac3f8854ef0d62\",\"dataSource\":\"tansci_boot\",\"tableName\":\"lc_pages\",\"info\":\"{\\\"moduleName\\\":\\\"测试\\\",\\\"modulePath\\\":\\\"/test\\\",\\\"businessName\\\":\\\"页面管理\\\",\\\"businessPath\\\":\\\"/pagess\\\",\\\"template\\\":\\\"subTable\\\",\\\"pid\\\":\\\"\\\",\\\"treeId\\\":\\\"\\\",\\\"treePid\\\":\\\"\\\",\\\"subTable\\\":\\\"lc_pages_menu\\\",\\\"subTableKey\\\":\\\"pagesId\\\"}\"}', NULL, 13, '1', NULL, 0, '/tansci/lowcode/generator/save', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:15:39');
 INSERT INTO `sys_oper_log` VALUES ('aaa57f8d4f5242ad9782c19f45889cfb', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:13:32');
 INSERT INTO `sys_oper_log` VALUES ('aaa6de4076a740b59e58896c0cbc8099', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:39:19');
 INSERT INTO `sys_oper_log` VALUES ('aab51e0769574b1eb70a834d0869677b', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:13:32');
+INSERT INTO `sys_oper_log` VALUES ('aad508e3656646bd8cdcc6dd15a7fa06', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:21:35');
 INSERT INTO `sys_oper_log` VALUES ('ab106509ff834730be9f268d5a3bfb14', NULL, 'DELETE', 'DELETE', NULL, '{}', NULL, 16, '1', NULL, 0, '/tansci/lowcode/generator/delete/e7bb1544-ebdf-11ee-9e30-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:16:48');
 INSERT INTO `sys_oper_log` VALUES ('ab358bde5a52421d90dacc821c3780a4', NULL, 'GET', 'GET', NULL, '{}', NULL, 54, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:03:19');
 INSERT INTO `sys_oper_log` VALUES ('ab45a8201c244c059e1b45ab21f9cb59', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:33:48');
+INSERT INTO `sys_oper_log` VALUES ('ab52c2034cb54185b427cec308516a27', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:34:57');
 INSERT INTO `sys_oper_log` VALUES ('ab655bdcab5244dcb86311e4435d6c4d', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:21:11');
 INSERT INTO `sys_oper_log` VALUES ('ab724104f394492d88e546df9eb57a6d', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 1, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:53:19');
 INSERT INTO `sys_oper_log` VALUES ('aba53b70e3b744f0a8ac1d7f7d2cf8f7', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:29:16');
@@ -1440,6 +3800,7 @@ INSERT INTO `sys_oper_log` VALUES ('ad5d1cec435d41b9af117446af66a037', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('ad70655330574bf9bcb8b4329f3677a3', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:10:14');
 INSERT INTO `sys_oper_log` VALUES ('ad72b3f3e40740b0a189a9f9d5d31e7e', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:55:15');
 INSERT INTO `sys_oper_log` VALUES ('ad963244da314071be87c2fc0719dc3c', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:12:05');
+INSERT INTO `sys_oper_log` VALUES ('ad998fdbc4f64c64ae563e9664a907f7', NULL, 'GET', 'GET', NULL, '{}', NULL, 14, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:50');
 INSERT INTO `sys_oper_log` VALUES ('adaf7e2c52234fef9224f4ba169922f0', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:06:48');
 INSERT INTO `sys_oper_log` VALUES ('adb407a4ec5c47679d77eae47aa1535d', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:42:17');
 INSERT INTO `sys_oper_log` VALUES ('adb5fead7d6c4c9da16200553a59edce', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 6, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:06:58');
@@ -1451,20 +3812,26 @@ INSERT INTO `sys_oper_log` VALUES ('ae75510cbd0040ceae765194fa4a6af8', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('ae9205130635471bba374400d0daa303', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:30:00');
 INSERT INTO `sys_oper_log` VALUES ('ae936abe1de347dab4412e1f9d0aae1e', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:25:05');
 INSERT INTO `sys_oper_log` VALUES ('aee67eeb95144d839c34245d55e45e21', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:45:38');
+INSERT INTO `sys_oper_log` VALUES ('aef051f852a741aaae675615ea8066fa', NULL, 'GET', 'GET', NULL, '{\"total\":\"1659\",\"size\":\"50\"}', NULL, 11, '1', NULL, 0, '/tansci/monitor/operLog', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:29:26');
 INSERT INTO `sys_oper_log` VALUES ('af0edc137705458cbc6e8567d29b4932', NULL, 'POST', 'POST', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/lowcode/lcPages/update', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:30:29');
 INSERT INTO `sys_oper_log` VALUES ('af1643c456ce4c84a75db4d00452c382', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:56');
 INSERT INTO `sys_oper_log` VALUES ('af1b5f392c6a4bdaae516f421fa69df2', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:52:22');
 INSERT INTO `sys_oper_log` VALUES ('af4c989f900a4261833550f9e77a5120', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:50:35');
 INSERT INTO `sys_oper_log` VALUES ('af659840b2b948c4a714fffa5b03d1ba', NULL, 'GET', 'GET', NULL, '{\"classify\":\"ce620f517565f989d718385d4e4033ac\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:36:22');
+INSERT INTO `sys_oper_log` VALUES ('af7a012ccec24e4aa40b3c6f326e76d5', NULL, 'GET', 'GET', NULL, '{\"assignee\":\"1\"}', NULL, 2, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:24');
 INSERT INTO `sys_oper_log` VALUES ('af7b7bb111e44502bf67338ad89465c8', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:19:56');
 INSERT INTO `sys_oper_log` VALUES ('afa407ab49854dc4a36431013ca00aff', NULL, 'GET', 'GET', NULL, '{}', NULL, 17, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:37');
 INSERT INTO `sys_oper_log` VALUES ('afb73107be6b4a85b910062f4669a603', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:49');
 INSERT INTO `sys_oper_log` VALUES ('afe0b2bb78f042d1a3f166e0cd5350ea', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 10, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:47:19');
 INSERT INTO `sys_oper_log` VALUES ('aff5cc1ee1e6442881e8141b391225a3', NULL, 'GET', 'GET', NULL, '{}', NULL, 21, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:13:45');
+INSERT INTO `sys_oper_log` VALUES ('b01ba11f77bd41c195875554123ee927', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:21:14');
 INSERT INTO `sys_oper_log` VALUES ('b03769b676b14ca8b1110e67c104b16d', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:06:39');
+INSERT INTO `sys_oper_log` VALUES ('b0b6987f0b8f4a97b46893a17e147293', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:19:15');
 INSERT INTO `sys_oper_log` VALUES ('b0c3b82d13ce43a98f2230121b5b2d1c', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:58:26');
+INSERT INTO `sys_oper_log` VALUES ('b0eac5fea0c643ccb0105c7882808575', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:31');
 INSERT INTO `sys_oper_log` VALUES ('b0edffac8a02412781dac8904da19f76', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:10:45');
 INSERT INTO `sys_oper_log` VALUES ('b11a1db2dc144c8a807bd482f1954ca7', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 5, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:59:04');
+INSERT INTO `sys_oper_log` VALUES ('b12f81f025584629824e4578311b9e05', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:18');
 INSERT INTO `sys_oper_log` VALUES ('b1406806ab274f0cb904119a6cd715d4', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:55:50');
 INSERT INTO `sys_oper_log` VALUES ('b16b6ad824814d838e8307f1afd45bdd', NULL, 'GET', 'GET', NULL, '{}', NULL, 33, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2024-01-12 10:50:19');
 INSERT INTO `sys_oper_log` VALUES ('b18d1f8b5b304abbb2d3f4b3141948ba', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:29:57');
@@ -1484,10 +3851,12 @@ INSERT INTO `sys_oper_log` VALUES ('b3013379f0a24ab2bfd1187a66b7072b', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('b301ad4a923a4f15bd990618aa4ce06d', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:55:38');
 INSERT INTO `sys_oper_log` VALUES ('b306e1430dc841edb96a9f8ef0a2c19d', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:57:56');
 INSERT INTO `sys_oper_log` VALUES ('b3aca86bf1d74102b04d4b74ee64d8c5', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:53:48');
+INSERT INTO `sys_oper_log` VALUES ('b3f3f2a431ab45e3a47eae90595ded23', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 11, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 23:00:53');
 INSERT INTO `sys_oper_log` VALUES ('b467974de98d48d78d56fb4e95805c5a', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:48:11');
 INSERT INTO `sys_oper_log` VALUES ('b46b32ee25a24578ac661918dc3d64ee', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 7, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:44:04');
 INSERT INTO `sys_oper_log` VALUES ('b47875237cc74226ac7bba0ac1ff4948', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:02:50');
 INSERT INTO `sys_oper_log` VALUES ('b4b928dfd88e41fab3e43507466a9362', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:33:06');
+INSERT INTO `sys_oper_log` VALUES ('b4e349ff4b0d44dab72dbf4346c18048', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 9, '1', NULL, 0, '/tansci/monitor/operLog', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:29:24');
 INSERT INTO `sys_oper_log` VALUES ('b4f3b4512fc342f396d9796bf5cb1943', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:19:02');
 INSERT INTO `sys_oper_log` VALUES ('b53e6a354fab49a384d51580e9e46693', NULL, 'GET', 'GET', NULL, '{}', NULL, 16, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:11:37');
 INSERT INTO `sys_oper_log` VALUES ('b56029e9fe9047bc88234c3d4dedd713', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:20:32');
@@ -1499,9 +3868,11 @@ INSERT INTO `sys_oper_log` VALUES ('b6035371f06a4219aa70208b6d56377e', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('b6186f413d454d8abd28efbdc0263def', NULL, 'GET', 'GET', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:09:50');
 INSERT INTO `sys_oper_log` VALUES ('b629989c97a84171b868222646b5846c', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"10\",\"tableName\":\"ffff\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:17:03');
 INSERT INTO `sys_oper_log` VALUES ('b6372682046e4b0a9191513dd3c83bc6', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:34:01');
+INSERT INTO `sys_oper_log` VALUES ('b66a296b473a414398f13bff7de4bba1', NULL, 'GET', 'GET', NULL, '{\"current\":\"3\",\"total\":\"1661\",\"size\":\"50\"}', NULL, 8, '1', NULL, 0, '/tansci/monitor/operLog', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:29:35');
 INSERT INTO `sys_oper_log` VALUES ('b681b1f43fc340d484533abaf15ea72a', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:27:55');
 INSERT INTO `sys_oper_log` VALUES ('b6aa902c53ea44d99e161a0cb063675e', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:28:16');
 INSERT INTO `sys_oper_log` VALUES ('b6c13d84298c46b08b394474b00c5cd6', NULL, 'GET', 'GET', NULL, '{\"total\":\"2\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:20:52');
+INSERT INTO `sys_oper_log` VALUES ('b6d563431f1e463ba78583b0785b6e4a', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:19:32');
 INSERT INTO `sys_oper_log` VALUES ('b775922ac5634490b77c07a19e979844', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-20 22:04:02');
 INSERT INTO `sys_oper_log` VALUES ('b77620af682f4723a8e24126dc431408', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:02:08');
 INSERT INTO `sys_oper_log` VALUES ('b7a1587deeea41a69fcf8f8a4d47b77b', NULL, 'POST', 'POST', NULL, '{}', NULL, 17, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:33:53');
@@ -1519,6 +3890,7 @@ INSERT INTO `sys_oper_log` VALUES ('b94c01f42ba14167860f69a38f26ff43', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('b98dd730c7984671b6408d7fd877fdcb', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:40:32');
 INSERT INTO `sys_oper_log` VALUES ('b9b156995a3a4323af4d9b49e313bcf8', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:55');
 INSERT INTO `sys_oper_log` VALUES ('b9b9a9ec8a654df09aba923b2fd45920', NULL, 'GET', 'GET', NULL, '{}', NULL, 31, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:37:43');
+INSERT INTO `sys_oper_log` VALUES ('ba0549bb41994395b31313741c55c3f0', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:21:35');
 INSERT INTO `sys_oper_log` VALUES ('ba29e1e2d0bc49e7bf7bbe44a94ac447', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:31:19');
 INSERT INTO `sys_oper_log` VALUES ('ba2c07dcebe34b6b878740b1ab6376f0', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:41:07');
 INSERT INTO `sys_oper_log` VALUES ('ba77559ad16c4400806f5def9b1c6666', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:42:17');
@@ -1553,6 +3925,7 @@ INSERT INTO `sys_oper_log` VALUES ('bf98e2e363ac4205b189d456d08621b7', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('bfdb92c49cee477cbd68819c97761c89', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:22:39');
 INSERT INTO `sys_oper_log` VALUES ('bfeb58228a324081908e4974b355d395', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:14:39');
 INSERT INTO `sys_oper_log` VALUES ('c060e890d4f444cdb81df0367ce3f2ce', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:43:40');
+INSERT INTO `sys_oper_log` VALUES ('c0c8f14df0b64df3b4bdc164ff2a1d6d', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:27:48');
 INSERT INTO `sys_oper_log` VALUES ('c0fb8da9e1954c2f87cd7828993f2ba0', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 5, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:11:33');
 INSERT INTO `sys_oper_log` VALUES ('c10d890f9bf84fa9a1719f70475710e3', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:09:17');
 INSERT INTO `sys_oper_log` VALUES ('c142474c4ab1411ea1598f7ea9e3a3d5', NULL, 'GET', 'GET', NULL, '{}', NULL, 17, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:55:53');
@@ -1589,6 +3962,7 @@ INSERT INTO `sys_oper_log` VALUES ('c5cf566721e64c13b8d1620d8ad0b29e', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('c5d54f216fdb4a61ad6da8192bccd674', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:15:25');
 INSERT INTO `sys_oper_log` VALUES ('c5e43d88450c4e8c90d3a785f570ff6d', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:31:16');
 INSERT INTO `sys_oper_log` VALUES ('c5e605b470b34bd18cb01b07fa374771', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:33:53');
+INSERT INTO `sys_oper_log` VALUES ('c60dc59c6afa482c8646ad91f5074221', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:54');
 INSERT INTO `sys_oper_log` VALUES ('c610ed50d4f0495b9590c11090941774', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:36:13');
 INSERT INTO `sys_oper_log` VALUES ('c61a280775ba4e528513a0cd3b4dc090', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:06:49');
 INSERT INTO `sys_oper_log` VALUES ('c6750456ad83444895b2d902a14d171b', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:04:27');
@@ -1628,6 +4002,7 @@ INSERT INTO `sys_oper_log` VALUES ('cb213f1b1971463d8ef503f7379555d3', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('cb4341162a3a4d6e80d4a66a5c9a99d4', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:31:20');
 INSERT INTO `sys_oper_log` VALUES ('cb7be6bd3adf4cef97b76eed4f5659e6', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '3ad1bd6b76c2e5573ea1805b7d68c6a9', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-03-27 10:07:48');
 INSERT INTO `sys_oper_log` VALUES ('cb8c32f25db4444d961f147594c1aba9', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:17:53');
+INSERT INTO `sys_oper_log` VALUES ('cba079c8c9d54fa2827da45f9134b300', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 9, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:15');
 INSERT INTO `sys_oper_log` VALUES ('cbf73ec18bb145baaabf04a87848f1b9', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:53:09');
 INSERT INTO `sys_oper_log` VALUES ('cc16076cb90e4d6eab637c6358a5fcf2', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 26, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:17:19');
 INSERT INTO `sys_oper_log` VALUES ('cc1857f579214659a854fa9cc644dff9', NULL, 'GET', 'GET', NULL, '{\"total\":\"0\",\"size\":\"10\"}', NULL, 6, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2024-02-02 12:30:30');
@@ -1643,9 +4018,12 @@ INSERT INTO `sys_oper_log` VALUES ('cdae0b702c77485d9eeda059fe9486b7', NULL, 'PO
 INSERT INTO `sys_oper_log` VALUES ('cdd835181e8b42a38e5026f7429fd945', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:39:19');
 INSERT INTO `sys_oper_log` VALUES ('cdf7002cbbf84c36a56016fb524933fe', NULL, 'GET', 'GET', NULL, '{}', NULL, 20, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:04:26');
 INSERT INTO `sys_oper_log` VALUES ('ce7e2b10ddbc4075b17e7487137fcc94', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 12, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:27:53');
+INSERT INTO `sys_oper_log` VALUES ('ce7fdb0d50574d3f9db9474aa54567d8', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:56');
 INSERT INTO `sys_oper_log` VALUES ('ce84ce60c9f74c8ebe31282f6f05435f', NULL, 'GET', 'GET', NULL, '{}', NULL, 20, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:04:50');
 INSERT INTO `sys_oper_log` VALUES ('cf3bf8cf947c434a920f0052236d10cd', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:35:18');
 INSERT INTO `sys_oper_log` VALUES ('cf562d1cc28b49779b596e85f948e746', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:27:13');
+INSERT INTO `sys_oper_log` VALUES ('cf87ffab1661435fa86bd469f2757185', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:15');
+INSERT INTO `sys_oper_log` VALUES ('cfc5455b6a0f42e1992d56a9e427643e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:11:58');
 INSERT INTO `sys_oper_log` VALUES ('cfcbe64f657d4f4398310b3933d871d9', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:40:01');
 INSERT INTO `sys_oper_log` VALUES ('cfcc76b7623441829ecec6a4b6128aca', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:53:09');
 INSERT INTO `sys_oper_log` VALUES ('cff7c28b76ca41c6b0e0e0f740960d59', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/pagesInfo/d2df5734-1ca6-11ee-8b16-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:43');
@@ -1654,6 +4032,7 @@ INSERT INTO `sys_oper_log` VALUES ('d01c685aa44e4d16b7eaed4fb7cc8cb3', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('d023a69e0b244bea903646e9616b3626', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:16');
 INSERT INTO `sys_oper_log` VALUES ('d034ca1a051a40078cac3bc0840ea623', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:29:54');
 INSERT INTO `sys_oper_log` VALUES ('d05ecbe66e79423092bf2200dde725cf', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:52:53');
+INSERT INTO `sys_oper_log` VALUES ('d0759926a65f435e89c9117aafc89d34', NULL, 'POST', 'POST', NULL, '{}', NULL, 18, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:02');
 INSERT INTO `sys_oper_log` VALUES ('d07bdbf3ef4c40839881e5c5720f6313', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:20:18');
 INSERT INTO `sys_oper_log` VALUES ('d085f6e7d14a4694a6cd55bf2dff601c', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:12:17');
 INSERT INTO `sys_oper_log` VALUES ('d0a1ac9997e141ccb47f89f1d9dec343', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 14, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:49:27');
@@ -1665,9 +4044,11 @@ INSERT INTO `sys_oper_log` VALUES ('d13f20d5747f416fad752e273e74b574', NULL, 'PO
 INSERT INTO `sys_oper_log` VALUES ('d156fe5b33a7495ebe460f2696288668', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:17:45');
 INSERT INTO `sys_oper_log` VALUES ('d1ac728ee0b942adadbb2c3ad0f470a7', NULL, 'POST', 'POST', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:13:17');
 INSERT INTO `sys_oper_log` VALUES ('d1ada1cc2471404282df9bb498458fde', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:59:04');
+INSERT INTO `sys_oper_log` VALUES ('d1ddbfcac8cf4da9ba29aad65425fbac', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:50');
 INSERT INTO `sys_oper_log` VALUES ('d2421c5d6d634b459ada5c7c4e64b421', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:49');
 INSERT INTO `sys_oper_log` VALUES ('d2c9c77724dc4bd9ab39ad9178a376bb', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:14:27');
 INSERT INTO `sys_oper_log` VALUES ('d2f8870f064549f3970f1487f8dc34c5', NULL, 'GET', 'GET', NULL, '{}', NULL, 18, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:09:47');
+INSERT INTO `sys_oper_log` VALUES ('d363f797eec948b882b366c01d4295a7', NULL, 'POST', 'POST', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:37');
 INSERT INTO `sys_oper_log` VALUES ('d380ed52e2834a84b74a47bb1b0e7691', NULL, 'GET', 'GET', NULL, '{\"name\":\"magic_api_backup\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/generator/columns', '127.0.0.1', NULL, '2.0.0', '2024-02-02 12:20:41');
 INSERT INTO `sys_oper_log` VALUES ('d3c65c2fcd814eb79168109107b7f801', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:55:53');
 INSERT INTO `sys_oper_log` VALUES ('d406f06fe57d425bbf0f3ab55abfba8e', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:54:36');
@@ -1679,6 +4060,7 @@ INSERT INTO `sys_oper_log` VALUES ('d4afbc8cb76d4f8289529d36fa58ca16', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('d4bb8ba54ea845799e2af5dec107e9df', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 8, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:21:40');
 INSERT INTO `sys_oper_log` VALUES ('d4c45490f51144ad83981e62b9623af5', NULL, 'GET', 'GET', NULL, '{\"id\":\"9886a2f4-06fd-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:11:13');
 INSERT INTO `sys_oper_log` VALUES ('d52c25e6682848fd89da52df7dc1dc76', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:17:29');
+INSERT INTO `sys_oper_log` VALUES ('d5667a099ec94856bd733d4bc7831280', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 6, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:21');
 INSERT INTO `sys_oper_log` VALUES ('d591a5de042c4e00abaf2f57aa329e7b', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:52:52');
 INSERT INTO `sys_oper_log` VALUES ('d59588c4344440938b6e4afb3089859a', NULL, 'GET', 'GET', NULL, '{\"total\":\"3\",\"size\":\"8\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:32:10');
 INSERT INTO `sys_oper_log` VALUES ('d6359266bc884cb0affa06399592e16c', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:42:25');
@@ -1688,6 +4070,7 @@ INSERT INTO `sys_oper_log` VALUES ('d6d6b51cc62b42dab652a6598d14627c', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('d750c30cc1f84f2e878a530aaaf1461f', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:27:23');
 INSERT INTO `sys_oper_log` VALUES ('d79fe59445ff48c69bde3fa65763b915', NULL, 'POST', 'POST', NULL, '{}', NULL, 64, '1', NULL, 0, '/tansci/system/menu/save', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:01:21');
 INSERT INTO `sys_oper_log` VALUES ('d7c32d90b5fc42609789e6885c1c4261', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:11:34');
+INSERT INTO `sys_oper_log` VALUES ('d7fc32d551594b32949bd68b04b8f601', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:34:57');
 INSERT INTO `sys_oper_log` VALUES ('d83cfb58607440d78dc5cb24369bdc17', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:19:35');
 INSERT INTO `sys_oper_log` VALUES ('d85a20204c8a4e07afc9c6c001e9972f', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:37');
 INSERT INTO `sys_oper_log` VALUES ('d860bbb529ae4603b8dd4c9f6cd19f44', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:41:56');
@@ -1700,6 +4083,7 @@ INSERT INTO `sys_oper_log` VALUES ('da12395bf908420a87da19540a25df8f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('da438f7b6fe549519deccae5f689abb8', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:13:45');
 INSERT INTO `sys_oper_log` VALUES ('da43eeeadf85472cbf263e25a0367d28', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:13:54');
 INSERT INTO `sys_oper_log` VALUES ('da44fd54bfbc48b0b0a9bde515c39165', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:01:17');
+INSERT INTO `sys_oper_log` VALUES ('da7b3bfbe569487eb828e463f8ebffaa', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:15');
 INSERT INTO `sys_oper_log` VALUES ('dab7dcd6e71547d3800b9978be1aece4', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:49:03');
 INSERT INTO `sys_oper_log` VALUES ('daf610f0c4fb407fa0f269a022e7b22b', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:58:42');
 INSERT INTO `sys_oper_log` VALUES ('db277130c3b84761b4d2ec84a940f903', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-20 22:04:02');
@@ -1713,11 +4097,16 @@ INSERT INTO `sys_oper_log` VALUES ('dbedd13dfd59487e804de271c3d06b8a', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('dc18d078b39b40e1bdd5d2fee326dc71', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:43:22');
 INSERT INTO `sys_oper_log` VALUES ('dc2a734ec1aa415192c653c2300b11d7', NULL, 'GET', 'GET', NULL, '{}', NULL, 20, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:13:12');
 INSERT INTO `sys_oper_log` VALUES ('dc3cc46d75a3459da64c93cd9e35db2a', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-20 21:49:38');
+INSERT INTO `sys_oper_log` VALUES ('dc7abcc8973a44c29d8fca27b655c919', NULL, 'GET', 'GET', NULL, '{\"assignee\":\"1\"}', NULL, 32, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:21:40');
 INSERT INTO `sys_oper_log` VALUES ('dc9f8bc8de4c49249e2c8334d606c481', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:49:13');
+INSERT INTO `sys_oper_log` VALUES ('dcaf49cb77cb47cc8392cff9c44c1280', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:28');
 INSERT INTO `sys_oper_log` VALUES ('dd12ba6befef40e08f9e22b5005f7c7b', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 22:45:25');
 INSERT INTO `sys_oper_log` VALUES ('dd79bf16e66c4f889f0652d6c8509e03', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-02-26 15:37:20');
+INSERT INTO `sys_oper_log` VALUES ('de0149afba504058aaad49140ac0bf7e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 17, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:06');
 INSERT INTO `sys_oper_log` VALUES ('de0313be126545629e4fb9660e906c22', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/workflow/delete/bc85d7c4-06ed-11f0-b559-4ccc6a2e3718', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:26:46');
 INSERT INTO `sys_oper_log` VALUES ('de32e42da7db4b008f4b6e6e00e82b5a', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:41:39');
+INSERT INTO `sys_oper_log` VALUES ('de4fd3909ab145f1af250b140179aa4f', NULL, 'POST', 'POST', NULL, '{}', NULL, 40, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:14');
+INSERT INTO `sys_oper_log` VALUES ('de524596335b462eb31dc5ca222d2c55', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 6, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:20');
 INSERT INTO `sys_oper_log` VALUES ('de5950200f464e3b8af8f0e1704ff9a8', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:36:41');
 INSERT INTO `sys_oper_log` VALUES ('de673ffb89064f6380166141499e0ae6', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:27:23');
 INSERT INTO `sys_oper_log` VALUES ('de7482999dc14eb188a7bb156638bc43', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 21:53:27');
@@ -1725,10 +4114,12 @@ INSERT INTO `sys_oper_log` VALUES ('de76c130b974473fa4cdc46aedf79e07', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('def3385c6c6446efa0b293809b3647d5', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:22:10');
 INSERT INTO `sys_oper_log` VALUES ('def87743c0fb4705b7f29e9de7500071', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:13:44');
 INSERT INTO `sys_oper_log` VALUES ('df047cfb9b3c4bf99481b121aa4d28d7', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:27:13');
+INSERT INTO `sys_oper_log` VALUES ('df3c79f49c6e448f94e1abeb3912bc41', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:27:21');
 INSERT INTO `sys_oper_log` VALUES ('df3eae4369224e80becfa9704ec1a87b', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:55:06');
 INSERT INTO `sys_oper_log` VALUES ('df42f5a4747243db992de65ffef49b06', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:23:16');
 INSERT INTO `sys_oper_log` VALUES ('df692a8b96a347a1aaa9de6dd509cde3', NULL, 'GET', 'GET', NULL, '{}', NULL, 13, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/delete/521ede02-f09d-11ee-a7f7-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:32:26');
 INSERT INTO `sys_oper_log` VALUES ('df6fe18996e34e26983c40e154d140df', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:11:44');
+INSERT INTO `sys_oper_log` VALUES ('df956d8f86eb4440bf343d1b1536b5f2', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:24:52');
 INSERT INTO `sys_oper_log` VALUES ('df9a30ded641475190225ef392c11ad7', NULL, 'GET', 'GET', NULL, '{}', NULL, 36, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:19:13');
 INSERT INTO `sys_oper_log` VALUES ('dfd01862b9b64f7fb27235be58ab8a44', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:57:42');
 INSERT INTO `sys_oper_log` VALUES ('dfd4b390a1464378bca2dae7f49444cd', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/monitor/onlineUser', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:49:54');
@@ -1741,6 +4132,8 @@ INSERT INTO `sys_oper_log` VALUES ('e01316935765461b85fdb8b81cdb5e49', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('e015d11461d8494f9ca32c515a4bcd49', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:35');
 INSERT INTO `sys_oper_log` VALUES ('e04818669b734d2bb10f98572716c89c', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:22');
 INSERT INTO `sys_oper_log` VALUES ('e04d6164830744a8a1754e4f8ffe00e4', NULL, 'POST', 'POST', NULL, '{}', NULL, 484, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2025-03-21 22:45:25');
+INSERT INTO `sys_oper_log` VALUES ('e0bc2cb5678c4942888be55bcc73eefc', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:25:05');
+INSERT INTO `sys_oper_log` VALUES ('e0c4b1871dfe42c1bdb92f520005a7c3', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:03');
 INSERT INTO `sys_oper_log` VALUES ('e0da6197b3bc45ddb9f770683b006919', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:05');
 INSERT INTO `sys_oper_log` VALUES ('e11c36c219734fe78e94da59ee527079', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:19:55');
 INSERT INTO `sys_oper_log` VALUES ('e127f3b99c6f4e89958d717cacd1357a', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:43');
@@ -1752,15 +4145,19 @@ INSERT INTO `sys_oper_log` VALUES ('e1a05d72cacb458b81365473e8dd2021', NULL, 'PO
 INSERT INTO `sys_oper_log` VALUES ('e1aac382934d41bf81cfeee34180c144', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:02:22');
 INSERT INTO `sys_oper_log` VALUES ('e1fc912441924b62a9b6bbb5535bfbea', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:13:54');
 INSERT INTO `sys_oper_log` VALUES ('e20043b2ce7e4b79bbf88025067b815f', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:21:53');
+INSERT INTO `sys_oper_log` VALUES ('e20fea46341745e083e07f8f9afa7059', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:28');
+INSERT INTO `sys_oper_log` VALUES ('e21737bbbd3e43b594339afb9675bb99', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:37:45');
 INSERT INTO `sys_oper_log` VALUES ('e2397fa25f4746ff84143651713743cc', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:35:41');
 INSERT INTO `sys_oper_log` VALUES ('e252b91361f1492db4770b035893bc02', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:06:47');
 INSERT INTO `sys_oper_log` VALUES ('e273c2b74ef1491b94dc1a3e1e7356e6', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:59:10');
 INSERT INTO `sys_oper_log` VALUES ('e29625290a5d452183e334eb9449d39c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 21, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:27:53');
+INSERT INTO `sys_oper_log` VALUES ('e2f60a3c2ee942cd888fb1bd170b5cc3', NULL, 'GET', 'GET', NULL, '{}', NULL, 38, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:15:53');
 INSERT INTO `sys_oper_log` VALUES ('e309db62ad72496fad7c7f8f17a1a95d', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:01:48');
 INSERT INTO `sys_oper_log` VALUES ('e326c17d77a045aaa395d80e03e6bdb7', NULL, 'GET', 'GET', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 16:29:15');
 INSERT INTO `sys_oper_log` VALUES ('e33060374b5b46149bf25dbb83003a23', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:56');
 INSERT INTO `sys_oper_log` VALUES ('e3447864187b4dd499e4198ab7921057', NULL, 'GET', 'GET', NULL, '{}', NULL, 31, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:32:24');
 INSERT INTO `sys_oper_log` VALUES ('e3502807ff134ca4967eab3625c31afe', NULL, 'GET', 'GET', NULL, '{\"classify\":\"ce620f517565f989d718385d4e4033ac\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"306eeeb4daa0674cbf4026f6910ba5a0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:59:09');
+INSERT INTO `sys_oper_log` VALUES ('e35c9160d9fd47d7bd553df05e53fca2', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 22, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:16:24');
 INSERT INTO `sys_oper_log` VALUES ('e363f8d66f56480d9f111ccfd05aae1f', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:34:54');
 INSERT INTO `sys_oper_log` VALUES ('e39f38b3250f4b9c880accb0764d4ea2', NULL, 'DELETE', 'DELETE', NULL, '{}', NULL, 31, '1', NULL, 0, '/tansci/lowcode/generator/delete/a54cb7225aa84346843957cb3299ed1f', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:13:51');
 INSERT INTO `sys_oper_log` VALUES ('e3b7bb2a0fea4f4992957283434ac08d', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:21:53');
@@ -1784,8 +4181,10 @@ INSERT INTO `sys_oper_log` VALUES ('e7a8ab5fa0544361b9d0782b5539f506', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('e7dcf4ec464349b3a338d2c7ec18b8ac', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:49:56');
 INSERT INTO `sys_oper_log` VALUES ('e7ecc581f56741428e749d3cecf64db5', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 08:54:04');
 INSERT INTO `sys_oper_log` VALUES ('e88ebcdfa1d74814876cb57703812214', NULL, 'POST', 'POST', NULL, '{}', NULL, 450, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:23:09');
+INSERT INTO `sys_oper_log` VALUES ('e893bedc428d4e5ca7b8ffc80e35ccce', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/work/model/details', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:47:27');
 INSERT INTO `sys_oper_log` VALUES ('e89ee1f93eee41c38bae4180860d094b', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:53:30');
 INSERT INTO `sys_oper_log` VALUES ('e8ae0ad1cb0a42b1895f388a62c376e5', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-21 22:45:25');
+INSERT INTO `sys_oper_log` VALUES ('e911c22b1bc643639fc0a11bafa67f20', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 7, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:41:07');
 INSERT INTO `sys_oper_log` VALUES ('e969ac18596647ebb2c5f41aaab42d28', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:42');
 INSERT INTO `sys_oper_log` VALUES ('e997ccad965d42a79b8d2d647c87f3a5', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:25:30');
 INSERT INTO `sys_oper_log` VALUES ('e9ad320ffe0e41829b9fb7f5fe02b994', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:36:13');
@@ -1813,38 +4212,50 @@ INSERT INTO `sys_oper_log` VALUES ('ec38c8b4e73e402cba06e9a663c7d20f', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('ec5b20e9eb6746a2bb4bebebe5fb3fd1', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:26:40');
 INSERT INTO `sys_oper_log` VALUES ('ec65e14c20474b5583560efaecb204aa', NULL, 'GET', 'GET', NULL, '{}', NULL, 17, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-02-26 14:23:12');
 INSERT INTO `sys_oper_log` VALUES ('ec686568d46745a1ac5001aa54ca18aa', NULL, 'GET', 'GET', NULL, '{\"id\":\"d1ce258d-06fe-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:36:34');
+INSERT INTO `sys_oper_log` VALUES ('ecb7979510054c7596cc5f888ba759a2', NULL, 'GET', 'GET', NULL, '{\"current\":\"2\",\"total\":\"1660\",\"size\":\"50\"}', NULL, 9, '1', NULL, 0, '/tansci/monitor/operLog', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:29:32');
+INSERT INTO `sys_oper_log` VALUES ('ecd020fb3345403e99669a404229d69a', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:54');
 INSERT INTO `sys_oper_log` VALUES ('ece3e4b71f2f4e7b840e642c02b79d2b', NULL, 'GET', 'GET', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 23:04:53');
 INSERT INTO `sys_oper_log` VALUES ('eced09f4411a43bfa62338c21a9f5132', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:18:38');
 INSERT INTO `sys_oper_log` VALUES ('ecf8e3adc081477494551328b1baf235', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:42:09');
 INSERT INTO `sys_oper_log` VALUES ('ed10f22207114ac7b4ae20effff257c9', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:28:05');
+INSERT INTO `sys_oper_log` VALUES ('ed73a251e15643e589cdaa7d8dcc1dee', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:02:58');
 INSERT INTO `sys_oper_log` VALUES ('edb86a7b15f64dafb3cfc48b7f500607', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:14:39');
 INSERT INTO `sys_oper_log` VALUES ('edd438db33bd4cfdb2a3e7aa5e885a11', NULL, 'POST', 'POST', NULL, '{}', NULL, 25, '1', NULL, 0, '/tansci/system/menu/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:07:30');
 INSERT INTO `sys_oper_log` VALUES ('edd9137fd1b641adb605cdb02153415c', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 7, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:14:26');
 INSERT INTO `sys_oper_log` VALUES ('ee31be727918402f9dd443bf092a29b6', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:42:09');
+INSERT INTO `sys_oper_log` VALUES ('ee48d18afd514f43b9ce4087e698f074', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:34');
 INSERT INTO `sys_oper_log` VALUES ('ee77143dec8945e3a31eee9e9a31eae1', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:48:48');
 INSERT INTO `sys_oper_log` VALUES ('ee901c1ae1c840cf8173698f24adc0cd', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:57:56');
 INSERT INTO `sys_oper_log` VALUES ('eebd55662b2f4935bf08ff9d038f901b', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:17:53');
 INSERT INTO `sys_oper_log` VALUES ('eece80d11f14439783cfe0018efbee56', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:02:23');
 INSERT INTO `sys_oper_log` VALUES ('eedd5d1f3df246d38f8a66e2233839da', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:47:28');
 INSERT INTO `sys_oper_log` VALUES ('eeeba47366ab4e10b32ce9a66858bdfd', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:25:05');
+INSERT INTO `sys_oper_log` VALUES ('eef4287876694550b884a5cff0a0c7dd', NULL, 'POST', 'POST', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/work/workflow/deployProcess', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:19:13');
+INSERT INTO `sys_oper_log` VALUES ('eefd87b5b712474998a3564ceb563229', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:03');
 INSERT INTO `sys_oper_log` VALUES ('ef1271397f504bbb884b601747e69df3', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:09:37');
 INSERT INTO `sys_oper_log` VALUES ('ef2455f30049412083ae80a99a10aa93', NULL, 'POST', 'POST', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/save', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:14:25');
 INSERT INTO `sys_oper_log` VALUES ('efc0ca2d22df4df194f644300b8eaa53', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:35:31');
 INSERT INTO `sys_oper_log` VALUES ('effd9f48c8f04d88b728386b1cbf48cb', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:13:32');
 INSERT INTO `sys_oper_log` VALUES ('f01331ccc0c047d2ab432cac5667e40c', NULL, 'GET', 'GET', NULL, '{\"name\":\"magic_api_backup\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/generator/columns', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:41:55');
 INSERT INTO `sys_oper_log` VALUES ('f021d5c601584c82936e98655ea8140c', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:34:54');
+INSERT INTO `sys_oper_log` VALUES ('f05e26d844dc437fac308a26d81e0c4b', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:03:03');
 INSERT INTO `sys_oper_log` VALUES ('f0a9cc95cb0c4d2e9340f1cda2b67f00', NULL, 'GET', 'GET', NULL, '{}', NULL, 11, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:13:26');
 INSERT INTO `sys_oper_log` VALUES ('f0c4ae0c1dce435e86005f7f8af2512b', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:02:48');
 INSERT INTO `sys_oper_log` VALUES ('f0d9b6b353954ffcbe96999e5b16e85d', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:19:17');
+INSERT INTO `sys_oper_log` VALUES ('f0fcedcc4ccf49e493d3191d84128b3e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:22');
+INSERT INTO `sys_oper_log` VALUES ('f135c71087c844299925167682b374bf', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/role/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:49');
 INSERT INTO `sys_oper_log` VALUES ('f140f00575a847f987ab48555cdd65e4', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:35:18');
+INSERT INTO `sys_oper_log` VALUES ('f15707d8b13442769c61a0b0c4421e60', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/work/workflow/getTaskByAssignee', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:00:41');
 INSERT INTO `sys_oper_log` VALUES ('f168e2986f6b4ebfb20c91ebc811d670', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 3, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-22 15:26:30');
 INSERT INTO `sys_oper_log` VALUES ('f1a58f2274fe40ac9d84630ece2daa88', NULL, 'GET', 'GET', NULL, '{\"id\":\"9886a2f4-06fd-11f0-b559-4ccc6a2e3718\"}', NULL, 2, '1', NULL, 0, '/tansci/system/workflow/details', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:16:36');
+INSERT INTO `sys_oper_log` VALUES ('f1d09216a1d24e819a08b5474db66456', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:32:27');
 INSERT INTO `sys_oper_log` VALUES ('f21aa304fb1b4772ac426be77279936d', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:38:51');
 INSERT INTO `sys_oper_log` VALUES ('f278184166dd49ed927020583bf389da', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:51:50');
 INSERT INTO `sys_oper_log` VALUES ('f303c33ad4a54bf6a7379a8e0fd992fa', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/auth/code', '127.0.0.1', NULL, '2.0.0', '2025-03-22 22:36:07');
 INSERT INTO `sys_oper_log` VALUES ('f34101a8c21c433e94a7fb11c5c3e443', NULL, 'GET', 'GET', NULL, '{\"name\":\"tansci_boot\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/generator/tables', '127.0.0.1', NULL, '2.0.0', '2024-02-02 12:26:48');
 INSERT INTO `sys_oper_log` VALUES ('f379bd04d4574e8f870bd06350e5c4ac', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:57:56');
 INSERT INTO `sys_oper_log` VALUES ('f37e29652bc14bddb8d669d233f61085', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:35:25');
+INSERT INTO `sys_oper_log` VALUES ('f3960e9eccbd42889222f69f4b873c1a', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 6, '1', NULL, 0, '/tansci/system/workflow/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:26:27');
 INSERT INTO `sys_oper_log` VALUES ('f413746dcfa441a98f37bfa5313468d0', NULL, 'GET', 'GET', NULL, '{\"name\":\"magic_api_backup\"}', NULL, 7, '1', NULL, 0, '/tansci/lowcode/generator/columns', '127.0.0.1', NULL, '2.0.0', '2024-02-02 11:17:26');
 INSERT INTO `sys_oper_log` VALUES ('f47c17a49b0343f4a923f7e263f68bfd', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/delete/undefined', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:58:45');
 INSERT INTO `sys_oper_log` VALUES ('f4a6a97d3cde492db7ccf8fd3fb533c8', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:14:27');
@@ -1852,6 +4263,7 @@ INSERT INTO `sys_oper_log` VALUES ('f4b1131847974690b110e2d9677d50f9', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('f4cd5edf3d47419f9b667fd0637a2042', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:17:29');
 INSERT INTO `sys_oper_log` VALUES ('f4df89323353445ab5457b29a4ff5dc5', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:08:16');
 INSERT INTO `sys_oper_log` VALUES ('f4f1b9cec48a4b459022e4a402c4db72', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:31:16');
+INSERT INTO `sys_oper_log` VALUES ('f4f45c292f884c279caa5c0b200f17fc', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:19:11');
 INSERT INTO `sys_oper_log` VALUES ('f4febf0820914d7bb919f051a436be5e', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 18, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 09:37:53');
 INSERT INTO `sys_oper_log` VALUES ('f548dc7b83594368841a85e9ed89396f', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:53:44');
 INSERT INTO `sys_oper_log` VALUES ('f5a0792e12f944588c9c87062161b09e', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:53:12');
@@ -1859,6 +4271,7 @@ INSERT INTO `sys_oper_log` VALUES ('f5c2535c49f0440db25509ac715783ba', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('f5ceafa8047e4e46991f5921d8003966', NULL, 'GET', 'GET', NULL, '{}', NULL, 1, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:42:09');
 INSERT INTO `sys_oper_log` VALUES ('f61ba464ce5641a2b174873cd95b589d', NULL, 'POST', 'POST', NULL, '{}', NULL, 0, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:13:30');
 INSERT INTO `sys_oper_log` VALUES ('f63d047be6c444078cbd22f611f066ea', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 09:57:48');
+INSERT INTO `sys_oper_log` VALUES ('f6efb247a2684e16af3da6d4b30c4d90', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 7, '1', NULL, 0, '/tansci/system/user/page', '127.0.0.1', NULL, '2.0.0', '2025-03-25 22:28:47');
 INSERT INTO `sys_oper_log` VALUES ('f75a0168da0d4a58a9b78175c0fab9d6', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:37:14');
 INSERT INTO `sys_oper_log` VALUES ('f7725751d1984dc6a310beb08d076a17', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-22 17:19:17');
 INSERT INTO `sys_oper_log` VALUES ('f776e0eb33404ae083d0a05ee818de4d', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:00:36');
@@ -1901,7 +4314,9 @@ INSERT INTO `sys_oper_log` VALUES ('fd001806fe514251acaf861a7f91f097', NULL, 'GE
 INSERT INTO `sys_oper_log` VALUES ('fda6924bea6e44c5b576a8555178c891', NULL, 'GET', 'GET', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2024-01-12 11:11:33');
 INSERT INTO `sys_oper_log` VALUES ('fdc970d4700d448da766bfecf1db6e57', NULL, 'GET', 'GET', NULL, '{\"classify\":\"306eeeb4daa0674cbf4026f6910ba5a0\",\"total\":\"0\",\"size\":\"8\",\"parentId\":\"0\"}', NULL, 3, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:36:23');
 INSERT INTO `sys_oper_log` VALUES ('fdd41dd3e0f9443db2c4325d4cc52d85', NULL, 'GET', 'GET', NULL, '{}', NULL, 3, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-21 23:42:48');
+INSERT INTO `sys_oper_log` VALUES ('fde9531609794ce7803c287004a7abf5', NULL, 'POST', 'POST', NULL, '{}', NULL, 12, '1', NULL, 0, '/tansci/system/menu/update', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:18:30');
 INSERT INTO `sys_oper_log` VALUES ('fe539dd07f414987847ae7a69f9bfffd', NULL, 'DELETE', 'DELETE', NULL, '{}', NULL, 19, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/delete/undefined', '127.0.0.1', NULL, '2.0.0', '2024-04-02 10:57:59');
+INSERT INTO `sys_oper_log` VALUES ('fe8e119b9def40a29e2593e1b28d851a', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-25 21:37:45');
 INSERT INTO `sys_oper_log` VALUES ('fecc7287233e4b3bbee40ad6079c0c90', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2024-04-02 11:12:05');
 INSERT INTO `sys_oper_log` VALUES ('ff021a2bcf3647a5af3eee990ecc8683', NULL, 'GET', 'GET', NULL, '{}', NULL, 4, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-18 22:35:10');
 INSERT INTO `sys_oper_log` VALUES ('ff496afffe3b41a7abdadf16ec3a3bf7', NULL, 'GET', 'GET', NULL, '{}', NULL, 2, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-22 10:26:28');
@@ -2078,26 +4493,5 @@ CREATE TABLE `sys_user_role`  (
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES ('1', '534a37c366ec47878a6b0c85703d0bc3');
 INSERT INTO `sys_user_role` VALUES ('3ad1bd6b76c2e5573ea1805b7d68c6a9', '441b6dae329b3a20ad8b4f4ca8f83a0b');
-
--- ----------------------------
--- Table structure for workflow
--- ----------------------------
-DROP TABLE IF EXISTS `workflow`;
-CREATE TABLE `workflow`  (
-  `id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键ID',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '名称',
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '内容',
-  `status` int NULL DEFAULT NULL COMMENT '状态：0、正常，1、禁用',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '工作流' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of workflow
--- ----------------------------
-INSERT INTO `workflow` VALUES ('d1ce258d-06fe-11f0-b559-4ccc6a2e3718', '测试2', '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<definitions xmlns=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:omgdc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:camunda=\"http://camunda.org/schema/1.0/bpmn\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" id=\"sid-38422fae-e03e-43a3-bef4-bd33b32041b2\" targetNamespace=\"http://bpmn.io/bpmn\" exporter=\"bpmn-js (https://demo.bpmn.io)\" exporterVersion=\"5.1.2\">\n  <process id=\"Process\" name=\"默认模板\" isExecutable=\"true\" camunda:versionTag=\"0.0.1\">\n    <startEvent id=\"StartEvent\" name=\"开始\">\n      <outgoing>Flow_0vnnu22</outgoing>\n    </startEvent>\n    <task id=\"Activity_0nfau9t\" name=\"审核\">\n      <incoming>Flow_0vnnu22</incoming>\n      <outgoing>Flow_1avmj9a</outgoing>\n      <outgoing>Flow_0j64rs7</outgoing>\n    </task>\n    <sequenceFlow id=\"Flow_0vnnu22\" sourceRef=\"StartEvent\" targetRef=\"Activity_0nfau9t\" />\n    <intermediateThrowEvent id=\"Event_0ti4ydj\" name=\"结束\">\n      <incoming>Flow_1avmj9a</incoming>\n    </intermediateThrowEvent>\n    <sequenceFlow id=\"Flow_1avmj9a\" name=\"通过\" sourceRef=\"Activity_0nfau9t\" targetRef=\"Event_0ti4ydj\" />\n    <exclusiveGateway id=\"Gateway_0bx76gk\" name=\"不通过\">\n      <incoming>Flow_0j64rs7</incoming>\n      <outgoing>Flow_00w04ql</outgoing>\n    </exclusiveGateway>\n    <sequenceFlow id=\"Flow_0j64rs7\" sourceRef=\"Activity_0nfau9t\" targetRef=\"Gateway_0bx76gk\" />\n    <endEvent id=\"Event_0h96ede\" name=\"结束\">\n      <incoming>Flow_00w04ql</incoming>\n    </endEvent>\n    <sequenceFlow id=\"Flow_00w04ql\" sourceRef=\"Gateway_0bx76gk\" targetRef=\"Event_0h96ede\" />\n  </process>\n  <bpmndi:BPMNDiagram id=\"BpmnDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BpmnPlane_1\" bpmnElement=\"Process\">\n      <bpmndi:BPMNShape id=\"StartEvent_1y45yut_di\" bpmnElement=\"StartEvent\">\n        <omgdc:Bounds x=\"152\" y=\"102\" width=\"36\" height=\"36\" />\n        <bpmndi:BPMNLabel>\n          <omgdc:Bounds x=\"160\" y=\"145\" width=\"22\" height=\"14\" />\n        </bpmndi:BPMNLabel>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Activity_0nfau9t_di\" bpmnElement=\"Activity_0nfau9t\">\n        <omgdc:Bounds x=\"240\" y=\"80\" width=\"100\" height=\"80\" />\n        <bpmndi:BPMNLabel />\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Gateway_0bx76gk_di\" bpmnElement=\"Gateway_0bx76gk\" isMarkerVisible=\"true\">\n        <omgdc:Bounds x=\"265\" y=\"225\" width=\"50\" height=\"50\" />\n        <bpmndi:BPMNLabel>\n          <omgdc:Bounds x=\"274\" y=\"282\" width=\"33\" height=\"14\" />\n        </bpmndi:BPMNLabel>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Event_0h96ede_di\" bpmnElement=\"Event_0h96ede\">\n        <omgdc:Bounds x=\"392\" y=\"232\" width=\"36\" height=\"36\" />\n        <bpmndi:BPMNLabel>\n          <omgdc:Bounds x=\"399\" y=\"275\" width=\"22\" height=\"14\" />\n        </bpmndi:BPMNLabel>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Event_0ti4ydj_di\" bpmnElement=\"Event_0ti4ydj\">\n        <omgdc:Bounds x=\"532\" y=\"102\" width=\"36\" height=\"36\" />\n        <bpmndi:BPMNLabel>\n          <omgdc:Bounds x=\"539\" y=\"145\" width=\"22\" height=\"14\" />\n        </bpmndi:BPMNLabel>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNEdge id=\"Flow_0vnnu22_di\" bpmnElement=\"Flow_0vnnu22\">\n        <di:waypoint x=\"188\" y=\"120\" />\n        <di:waypoint x=\"240\" y=\"120\" />\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_1avmj9a_di\" bpmnElement=\"Flow_1avmj9a\">\n        <di:waypoint x=\"340\" y=\"120\" />\n        <di:waypoint x=\"532\" y=\"120\" />\n        <bpmndi:BPMNLabel>\n          <omgdc:Bounds x=\"425\" y=\"102\" width=\"22\" height=\"14\" />\n        </bpmndi:BPMNLabel>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_0j64rs7_di\" bpmnElement=\"Flow_0j64rs7\">\n        <di:waypoint x=\"290\" y=\"160\" />\n        <di:waypoint x=\"290\" y=\"225\" />\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_00w04ql_di\" bpmnElement=\"Flow_00w04ql\">\n        <di:waypoint x=\"315\" y=\"250\" />\n        <di:waypoint x=\"392\" y=\"250\" />\n      </bpmndi:BPMNEdge>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</definitions>\n', 0, '1', '2025-03-22 17:26:28', '2025-03-22 17:19:55', '');
 
 SET FOREIGN_KEY_CHECKS = 1;

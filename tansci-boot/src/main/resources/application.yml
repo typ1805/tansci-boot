@@ -60,5 +60,5 @@ magic-api:
 
 # flowable
 flowable:
-  async-executor-activate: true # 关闭定时任务job
-  database-schema-update: true # flowable自动更新表结构
+  async-executor-activate: false # 关闭定时任务job
+  database-schema-update: false # flowable自动更新表结构
