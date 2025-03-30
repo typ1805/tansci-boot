@@ -27,13 +27,8 @@
         tableTitle: [
             {prop:'code',label:'流程编码'},
             {prop:'name',label:'流程名称'},
-            {prop:'status',label:'是否部署',type:'switch',
-                option:{
-                    activeValue:0,activeColor:'#ff4949',activeText:'未部署',
-                    inactiveValue:1,inactiveColor:'#13ce66',inactiveText:'已部署',
-                    inlinePrompt: false
-                }
-            },
+            {prop:'status',label:'部署状态',type:'dict',dictType:'model_status'},
+            {prop:'taskId',label:'任务ID'},
             {prop:'updateTime',label:'更新时间'},
             {prop:'remarks',label:'描述'}
         ],
@@ -132,7 +127,8 @@
                 if(res && res.result != null){
                     update({
                         id: val.column.row.id,
-                        status: 1
+                        status: 1,
+                        taskId: res.result
                     }).then(res=>{
                         if(res){
                             ElMessage.success('部署成功!');
@@ -161,9 +157,9 @@
             </template>
             <template #column="scope">
                 <el-button @click="onViewer(scope)" type='primary' link style="color:var(--query); padding:0;">预览</el-button>
-                <el-button @click="onDeployProcess(scope)" type='primary' link style="color:var(--add); padding:0;">部署</el-button>
-                <el-button @click="onEdit(scope)" v-permission="'model:update'" type='primary' link style="color:var(--edit); padding:0;">编辑</el-button>
-                <el-button @click="onDelete(scope)" v-permission="'model:delete'" type='primary' link style="color:var(--delete); padding:0;">删除</el-button>
+                <el-button v-if="scope.column.row.status == 0" @click="onDeployProcess(scope)" type='primary' link style="color:var(--add); padding:0;">部署</el-button>
+                <el-button v-if="scope.column.row.status == 0" @click="onEdit(scope)" v-permission="'model:update'" type='primary' link style="color:var(--edit); padding:0;">编辑</el-button>
+                <el-button v-if="scope.column.row.status == 0" @click="onDelete(scope)" v-permission="'model:delete'" type='primary' link style="color:var(--delete); padding:0;">删除</el-button>
             </template>
         </Table>
         <el-dialog v-model="viewer.viewerVisible" title="预览">

@@ -1,4 +1,4 @@
-﻿package com.tansci.service;
+package com.tansci.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.engine.IdentityService;
@@ -19,24 +19,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @className：FlowableService.java
- * @description： Flowable
- * @author：tanyp
- * @date：2025/3/23
- */
+ * @ClassName： FlowableService.java
+ * @ClassPath： com.tansci.service.FlowableService.java
+ * @Description： Flowable
+ * @Author： tanyp
+ * @Date： 2025/3/30
+ **/
 @Slf4j
 @Service
 public class FlowableService {
 
     @Autowired
     private RepositoryService repositoryService;
-
     @Autowired
     private RuntimeService runtimeService;
-
     @Autowired
     private TaskService taskService;
-
     @Autowired
     private IdentityService identityService;
 
@@ -47,10 +45,10 @@ public class FlowableService {
      * @Description： 模型列表
      * @Author： tanyp
      * @Date： 2025/3/23
-     * @Param： [name, xml]
+     * @Param： []
      * @return： java.util.List
      **/
-    public List<Model> modelList(String name, String xml) {
+    public List<Model> modelList() {
         try {
             List<Model> list = repositoryService.createModelQuery().list();
             return list;
@@ -65,10 +63,10 @@ public class FlowableService {
      * @Description： 流程定义列表
      * @Author： tanyp
      * @Date： 2025/3/23
-     * @Param： [name, xml]
+     * @Param： []
      * @return： java.util.List
      **/
-    public List<ProcessDefinition> processDefinitionList(String name, String xml) {
+    public List<ProcessDefinition> processDefinitionList() {
         try {
             List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().list();
             return list;

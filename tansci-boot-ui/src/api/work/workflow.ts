@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-// 查询分配给指定用户的任务
-export function getTaskByAssignee(params:any){
+// 模型列表
+export function modelList(params:any){
     return new Promise((resolve, reject) => {
         request({
-            url: '/tansci/system/work/workflow/getTaskByAssignee',
+            url: '/tansci/system/work/workflow/modelList',
             method: 'get',
             params: params
         }).then((res:any) => {
@@ -15,7 +15,97 @@ export function getTaskByAssignee(params:any){
     })
 }
 
-// 部署流程模型
+// 流程定义
+export function processDefinitionList(params:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/system/work/workflow/processDefinitionList',
+            method: 'get',
+            params: params
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+// 激活流程
+export function activateProcess(params:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/system/work/workflow/activateProcess',
+            method: 'get',
+            params: params
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+// 挂起流程
+export function suspendProcess(params:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/system/work/workflow/suspendProcess',
+            method: 'get',
+            params: params
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+// 删除流程
+export function deleteDeployment(params:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/system/work/workflow/deleteDeployment',
+            method: 'get',
+            params: params
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+// 删除正在运行的流程
+export function deleteProcessInstance(params:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/system/work/workflow/deleteProcessInstance',
+            method: 'get',
+            params: params
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+// 任务列表
+export function taskList(params:any){
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tansci/system/work/workflow/taskList',
+            method: 'get',
+            params: params
+        }).then((res:any) => {
+            resolve(res.data)
+        }).catch((e:any) => {
+            reject(e)
+        })
+    })
+}
+
+// 部署流程
 export function deployProcess(data:any){
     return new Promise((resolve, reject) => {
         request({
