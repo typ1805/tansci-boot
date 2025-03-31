@@ -11,7 +11,7 @@
  Target Server Version : 80041 (8.0.41)
  File Encoding         : 65001
 
- Date: 30/03/2025 23:23:57
+ Date: 31/03/2025 17:55:23
 */
 
 SET NAMES utf8mb4;
@@ -41,51 +41,6 @@ CREATE TABLE `act_app_appdef`  (
 -- ----------------------------
 -- Records of act_app_appdef
 -- ----------------------------
-
--- ----------------------------
--- Table structure for act_app_databasechangelog
--- ----------------------------
-DROP TABLE IF EXISTS `act_app_databasechangelog`;
-CREATE TABLE `act_app_databasechangelog`  (
-  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `DATEEXECUTED` datetime NOT NULL,
-  `ORDEREXECUTED` int NOT NULL,
-  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_app_databasechangelog
--- ----------------------------
-INSERT INTO `act_app_databasechangelog` VALUES ('1', 'flowable', 'org/flowable/app/db/liquibase/flowable-app-db-changelog.xml', '2025-03-25 21:15:35', 1, 'EXECUTED', '8:496fc778bdf2ab13f2e1926d0e63e0a2', 'createTable tableName=ACT_APP_DEPLOYMENT; createTable tableName=ACT_APP_DEPLOYMENT_RESOURCE; addForeignKeyConstraint baseTableName=ACT_APP_DEPLOYMENT_RESOURCE, constraintName=ACT_FK_APP_RSRC_DPL, referencedTableName=ACT_APP_DEPLOYMENT; createIndex...', '', NULL, '4.9.1', NULL, NULL, '2908534544');
-INSERT INTO `act_app_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/app/db/liquibase/flowable-app-db-changelog.xml', '2025-03-25 21:15:35', 2, 'EXECUTED', '8:ccea9ebfb6c1f8367ca4dd473fcbb7db', 'modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_APP_DEPLOYMENT', '', NULL, '4.9.1', NULL, NULL, '2908534544');
-INSERT INTO `act_app_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/app/db/liquibase/flowable-app-db-changelog.xml', '2025-03-25 21:15:35', 3, 'EXECUTED', '8:f1f8aff320aade831944ebad24355f3d', 'createIndex indexName=ACT_IDX_APP_DEF_UNIQ, tableName=ACT_APP_APPDEF', '', NULL, '4.9.1', NULL, NULL, '2908534544');
-
--- ----------------------------
--- Table structure for act_app_databasechangeloglock
--- ----------------------------
-DROP TABLE IF EXISTS `act_app_databasechangeloglock`;
-CREATE TABLE `act_app_databasechangeloglock`  (
-  `ID` int NOT NULL,
-  `LOCKED` bit(1) NOT NULL,
-  `LOCKGRANTED` datetime NULL DEFAULT NULL,
-  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_app_databasechangeloglock
--- ----------------------------
-INSERT INTO `act_app_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for act_app_deployment
@@ -137,10 +92,10 @@ CREATE TABLE `act_cmmn_casedef`  (
   `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `RESOURCE_NAME_` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `HAS_GRAPHICAL_NOTATION_` bit(1) NULL DEFAULT NULL,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  `HAS_GRAPHICAL_NOTATION_` tinyint NULL DEFAULT NULL,
   `DGRM_RESOURCE_NAME_` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `HAS_START_FORM_KEY_` bit(1) NULL DEFAULT NULL,
+  `HAS_START_FORM_KEY_` tinyint NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   PRIMARY KEY (`ID_`) USING BTREE,
   UNIQUE INDEX `ACT_IDX_CASE_DEF_UNIQ`(`KEY_` ASC, `VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE,
   INDEX `ACT_IDX_CASE_DEF_DPLY`(`DEPLOYMENT_ID_` ASC) USING BTREE,
@@ -150,64 +105,6 @@ CREATE TABLE `act_cmmn_casedef`  (
 -- ----------------------------
 -- Records of act_cmmn_casedef
 -- ----------------------------
-
--- ----------------------------
--- Table structure for act_cmmn_databasechangelog
--- ----------------------------
-DROP TABLE IF EXISTS `act_cmmn_databasechangelog`;
-CREATE TABLE `act_cmmn_databasechangelog`  (
-  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `DATEEXECUTED` datetime NOT NULL,
-  `ORDEREXECUTED` int NOT NULL,
-  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_cmmn_databasechangelog
--- ----------------------------
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('1', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:26', 1, 'EXECUTED', '8:8b4b922d90b05ff27483abefc9597aa6', 'createTable tableName=ACT_CMMN_DEPLOYMENT; createTable tableName=ACT_CMMN_DEPLOYMENT_RESOURCE; addForeignKeyConstraint baseTableName=ACT_CMMN_DEPLOYMENT_RESOURCE, constraintName=ACT_FK_CMMN_RSRC_DPL, referencedTableName=ACT_CMMN_DEPLOYMENT; create...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:26', 2, 'EXECUTED', '8:65e39b3d385706bb261cbeffe7533cbe', 'addColumn tableName=ACT_CMMN_CASEDEF; addColumn tableName=ACT_CMMN_DEPLOYMENT_RESOURCE; addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:27', 3, 'EXECUTED', '8:c01f6e802b49436b4489040da3012359', 'addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_CASE_INST; createIndex indexName=ACT_IDX_PLAN_ITEM_STAGE_INST, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableNam...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('4', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:27', 4, 'EXECUTED', '8:e40d29cb79345b7fb5afd38a7f0ba8fc', 'createTable tableName=ACT_CMMN_HI_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_MIL_INST; addColumn tableName=ACT_CMMN_HI_MIL_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('5', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:31', 5, 'EXECUTED', '8:70349de472f87368dcdec971a10311a0', 'modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_CMMN_DEPLOYMENT; modifyDataType columnName=START_TIME_, tableName=ACT_CMMN_RU_CASE_INST; modifyDataType columnName=START_TIME_, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; modifyDataType columnName=T...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('6', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:31', 6, 'EXECUTED', '8:10e82e26a7fee94c32a92099c059c18c', 'createIndex indexName=ACT_IDX_CASE_DEF_UNIQ, tableName=ACT_CMMN_CASEDEF', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('7', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:31', 7, 'EXECUTED', '8:530bc81a1e30618ccf4a2da1f7c6c043', 'renameColumn newColumnName=CREATE_TIME_, oldColumnName=START_TIME_, tableName=ACT_CMMN_RU_PLAN_ITEM_INST; renameColumn newColumnName=CREATE_TIME_, oldColumnName=CREATED_TIME_, tableName=ACT_CMMN_HI_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_RU_P...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('8', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:31', 8, 'EXECUTED', '8:e8c2eb1ce28bc301efe07e0e29757781', 'addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('9', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:32', 9, 'EXECUTED', '8:4cb4782b9bdec5ced2a64c525aa7b3a0', 'addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('10', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:32', 10, 'EXECUTED', '8:341c16be247f5d17badc9809da8691f9', 'addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_RU_CASE_INST; createIndex indexName=ACT_IDX_CASE_INST_REF_ID_, tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE...', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('11', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:32', 11, 'EXECUTED', '8:d7c4da9276bcfffbfb0ebfb25e3f7b05', 'addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('12', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:33', 12, 'EXECUTED', '8:adf4ecc45f2aa9a44a5626b02e1d6f98', 'addColumn tableName=ACT_CMMN_RU_CASE_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('13', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:33', 13, 'EXECUTED', '8:7550626f964ab5518464709408333ec1', 'addColumn tableName=ACT_CMMN_RU_PLAN_ITEM_INST; addColumn tableName=ACT_CMMN_HI_PLAN_ITEM_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('14', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:33', 14, 'EXECUTED', '8:086b40b3a05596dcc8a8d7479922d494', 'addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('16', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:33', 15, 'EXECUTED', '8:a697a222ddd99dd15b36516a252f1c63', 'addColumn tableName=ACT_CMMN_RU_CASE_INST; addColumn tableName=ACT_CMMN_HI_CASE_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-INSERT INTO `act_cmmn_databasechangelog` VALUES ('17', 'flowable', 'org/flowable/cmmn/db/liquibase/flowable-cmmn-db-changelog.xml', '2025-03-25 21:15:34', 16, 'EXECUTED', '8:d3706c5813a9b97fd2a59d12a9523946', 'createIndex indexName=ACT_IDX_HI_CASE_INST_END, tableName=ACT_CMMN_HI_CASE_INST', '', NULL, '4.9.1', NULL, NULL, '2908523183');
-
--- ----------------------------
--- Table structure for act_cmmn_databasechangeloglock
--- ----------------------------
-DROP TABLE IF EXISTS `act_cmmn_databasechangeloglock`;
-CREATE TABLE `act_cmmn_databasechangeloglock`  (
-  `ID` int NOT NULL,
-  `LOCKED` bit(1) NOT NULL,
-  `LOCKGRANTED` datetime NULL DEFAULT NULL,
-  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_cmmn_databasechangeloglock
--- ----------------------------
-INSERT INTO `act_cmmn_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for act_cmmn_deployment
@@ -237,7 +134,7 @@ CREATE TABLE `act_cmmn_deployment_resource`  (
   `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `RESOURCE_BYTES_` longblob NULL,
-  `GENERATED_` bit(1) NULL DEFAULT NULL,
+  `GENERATED_` tinyint NULL DEFAULT NULL,
   PRIMARY KEY (`ID_`) USING BTREE,
   INDEX `ACT_IDX_CMMN_RSRC_DPL`(`DEPLOYMENT_ID_` ASC) USING BTREE,
   CONSTRAINT `ACT_FK_CMMN_RSRC_DPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_cmmn_deployment` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -264,12 +161,12 @@ CREATE TABLE `act_cmmn_hi_case_inst`  (
   `START_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `CALLBACK_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `CALLBACK_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `LAST_REACTIVATION_TIME_` datetime(3) NULL DEFAULT NULL,
   `LAST_REACTIVATION_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `BUSINESS_STATUS_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   PRIMARY KEY (`ID_`) USING BTREE,
   INDEX `ACT_IDX_HI_CASE_INST_END`(`END_TIME_` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
@@ -286,7 +183,7 @@ CREATE TABLE `act_cmmn_hi_mil_inst`  (
   `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `REV_` int NOT NULL,
   `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `TIME_STAMP_` datetime(3) NULL DEFAULT NULL,
+  `TIME_STAMP_` datetime(3) NOT NULL,
   `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -310,7 +207,7 @@ CREATE TABLE `act_cmmn_hi_plan_item_inst`  (
   `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `IS_STAGE_` bit(1) NULL DEFAULT NULL,
+  `IS_STAGE_` tinyint NULL DEFAULT NULL,
   `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `ITEM_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `ITEM_DEFINITION_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
@@ -329,14 +226,15 @@ CREATE TABLE `act_cmmn_hi_plan_item_inst`  (
   `START_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   `ENTRY_CRITERION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `EXIT_CRITERION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `SHOW_IN_OVERVIEW_` bit(1) NULL DEFAULT NULL,
+  `SHOW_IN_OVERVIEW_` tinyint NULL DEFAULT NULL,
   `EXTRA_VALUE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `DERIVED_CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `LAST_UNAVAILABLE_TIME_` datetime(3) NULL DEFAULT NULL,
-  PRIMARY KEY (`ID_`) USING BTREE
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_HI_PLAN_ITEM_INST_CASE`(`CASE_INST_ID_` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -359,15 +257,15 @@ CREATE TABLE `act_cmmn_ru_case_inst`  (
   `START_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `CALLBACK_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `CALLBACK_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   `LOCK_TIME_` datetime(3) NULL DEFAULT NULL,
-  `IS_COMPLETEABLE_` bit(1) NULL DEFAULT NULL,
+  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `IS_COMPLETEABLE_` tinyint NULL DEFAULT NULL,
   `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `LAST_REACTIVATION_TIME_` datetime(3) NULL DEFAULT NULL,
   `LAST_REACTIVATION_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `BUSINESS_STATUS_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   PRIMARY KEY (`ID_`) USING BTREE,
   INDEX `ACT_IDX_CASE_INST_CASE_DEF`(`CASE_DEF_ID_` ASC) USING BTREE,
   INDEX `ACT_IDX_CASE_INST_PARENT`(`PARENT_ID_` ASC) USING BTREE,
@@ -386,7 +284,7 @@ DROP TABLE IF EXISTS `act_cmmn_ru_mil_inst`;
 CREATE TABLE `act_cmmn_ru_mil_inst`  (
   `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `TIME_STAMP_` datetime(3) NULL DEFAULT NULL,
+  `TIME_STAMP_` datetime(3) NOT NULL,
   `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -412,7 +310,7 @@ CREATE TABLE `act_cmmn_ru_plan_item_inst`  (
   `CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `CASE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `IS_STAGE_` bit(1) NULL DEFAULT NULL,
+  `IS_STAGE_` tinyint NULL DEFAULT NULL,
   `ELEMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `STATE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
@@ -420,11 +318,10 @@ CREATE TABLE `act_cmmn_ru_plan_item_inst`  (
   `START_USER_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `REFERENCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `REFERENCE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   `ITEM_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `ITEM_DEFINITION_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `IS_COMPLETEABLE_` bit(1) NULL DEFAULT NULL,
-  `IS_COUNT_ENABLED_` bit(1) NULL DEFAULT NULL,
+  `IS_COMPLETEABLE_` tinyint NULL DEFAULT NULL,
+  `IS_COUNT_ENABLED_` tinyint NULL DEFAULT NULL,
   `VAR_COUNT_` int NULL DEFAULT NULL,
   `SENTRY_PART_INST_COUNT_` int NULL DEFAULT NULL,
   `LAST_AVAILABLE_TIME_` datetime(3) NULL DEFAULT NULL,
@@ -442,6 +339,7 @@ CREATE TABLE `act_cmmn_ru_plan_item_inst`  (
   `EXTRA_VALUE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `DERIVED_CASE_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `LAST_UNAVAILABLE_TIME_` datetime(3) NULL DEFAULT NULL,
+  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   PRIMARY KEY (`ID_`) USING BTREE,
   INDEX `ACT_IDX_PLAN_ITEM_CASE_DEF`(`CASE_DEF_ID_` ASC) USING BTREE,
   INDEX `ACT_IDX_PLAN_ITEM_CASE_INST`(`CASE_INST_ID_` ASC) USING BTREE,
@@ -479,133 +377,6 @@ CREATE TABLE `act_cmmn_ru_sentry_part_inst`  (
 -- ----------------------------
 -- Records of act_cmmn_ru_sentry_part_inst
 -- ----------------------------
-
--- ----------------------------
--- Table structure for act_co_content_item
--- ----------------------------
-DROP TABLE IF EXISTS `act_co_content_item`;
-CREATE TABLE `act_co_content_item`  (
-  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `MIME_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TASK_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `PROC_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTENT_STORE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTENT_STORE_NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `FIELD_` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTENT_AVAILABLE_` bit(1) NULL DEFAULT b'0',
-  `CREATED_` timestamp(6) NULL DEFAULT NULL,
-  `CREATED_BY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LAST_MODIFIED_` timestamp(6) NULL DEFAULT NULL,
-  `LAST_MODIFIED_BY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTENT_SIZE_` bigint NULL DEFAULT 0,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID_`) USING BTREE,
-  INDEX `idx_contitem_taskid`(`TASK_ID_` ASC) USING BTREE,
-  INDEX `idx_contitem_procid`(`PROC_INST_ID_` ASC) USING BTREE,
-  INDEX `idx_contitem_scope`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_co_content_item
--- ----------------------------
-
--- ----------------------------
--- Table structure for act_co_databasechangelog
--- ----------------------------
-DROP TABLE IF EXISTS `act_co_databasechangelog`;
-CREATE TABLE `act_co_databasechangelog`  (
-  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `DATEEXECUTED` datetime NOT NULL,
-  `ORDEREXECUTED` int NOT NULL,
-  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_co_databasechangelog
--- ----------------------------
-INSERT INTO `act_co_databasechangelog` VALUES ('1', 'activiti', 'org/flowable/content/db/liquibase/flowable-content-db-changelog.xml', '2025-03-25 21:15:22', 1, 'EXECUTED', '8:7644d7165cfe799200a2abdd3419e8b6', 'createTable tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_taskid, tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_procid, tableName=ACT_CO_CONTENT_ITEM', '', NULL, '4.9.1', NULL, NULL, '2908522090');
-INSERT INTO `act_co_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/content/db/liquibase/flowable-content-db-changelog.xml', '2025-03-25 21:15:22', 2, 'EXECUTED', '8:fe7b11ac7dbbf9c43006b23bbab60bab', 'addColumn tableName=ACT_CO_CONTENT_ITEM; createIndex indexName=idx_contitem_scope, tableName=ACT_CO_CONTENT_ITEM', '', NULL, '4.9.1', NULL, NULL, '2908522090');
-
--- ----------------------------
--- Table structure for act_co_databasechangeloglock
--- ----------------------------
-DROP TABLE IF EXISTS `act_co_databasechangeloglock`;
-CREATE TABLE `act_co_databasechangeloglock`  (
-  `ID` int NOT NULL,
-  `LOCKED` bit(1) NOT NULL,
-  `LOCKGRANTED` datetime NULL DEFAULT NULL,
-  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_co_databasechangeloglock
--- ----------------------------
-INSERT INTO `act_co_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
-
--- ----------------------------
--- Table structure for act_dmn_databasechangelog
--- ----------------------------
-DROP TABLE IF EXISTS `act_dmn_databasechangelog`;
-CREATE TABLE `act_dmn_databasechangelog`  (
-  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `DATEEXECUTED` datetime NOT NULL,
-  `ORDEREXECUTED` int NOT NULL,
-  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_dmn_databasechangelog
--- ----------------------------
-INSERT INTO `act_dmn_databasechangelog` VALUES ('1', 'activiti', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:18', 1, 'EXECUTED', '8:c8701f1c71018b55029f450b2e9a10a1', 'createTable tableName=ACT_DMN_DEPLOYMENT; createTable tableName=ACT_DMN_DEPLOYMENT_RESOURCE; createTable tableName=ACT_DMN_DECISION_TABLE', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-INSERT INTO `act_dmn_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:18', 2, 'EXECUTED', '8:47f94b27feb7df8a30d4e338c7bd5fb8', 'createTable tableName=ACT_DMN_HI_DECISION_EXECUTION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-INSERT INTO `act_dmn_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 3, 'EXECUTED', '8:ac17eae89fbdccb6e08daf3c7797b579', 'addColumn tableName=ACT_DMN_HI_DECISION_EXECUTION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-INSERT INTO `act_dmn_databasechangelog` VALUES ('4', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 4, 'EXECUTED', '8:f73aabc4529e7292c2942073d1cff6f9', 'dropColumn columnName=PARENT_DEPLOYMENT_ID_, tableName=ACT_DMN_DECISION_TABLE', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-INSERT INTO `act_dmn_databasechangelog` VALUES ('5', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 5, 'EXECUTED', '8:3e03528582dd4eeb4eb41f9b9539140d', 'modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_DMN_DEPLOYMENT; modifyDataType columnName=START_TIME_, tableName=ACT_DMN_HI_DECISION_EXECUTION; modifyDataType columnName=END_TIME_, tableName=ACT_DMN_HI_DECISION_EXECUTION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-INSERT INTO `act_dmn_databasechangelog` VALUES ('6', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 6, 'EXECUTED', '8:646c6a061e0b6e8a62e69844ff96abb0', 'createIndex indexName=ACT_IDX_DEC_TBL_UNIQ, tableName=ACT_DMN_DECISION_TABLE', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-INSERT INTO `act_dmn_databasechangelog` VALUES ('7', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 7, 'EXECUTED', '8:215a499ff7ae77685b55355245b8b708', 'dropIndex indexName=ACT_IDX_DEC_TBL_UNIQ, tableName=ACT_DMN_DECISION_TABLE; renameTable newTableName=ACT_DMN_DECISION, oldTableName=ACT_DMN_DECISION_TABLE; createIndex indexName=ACT_IDX_DMN_DEC_UNIQ, tableName=ACT_DMN_DECISION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-INSERT INTO `act_dmn_databasechangelog` VALUES ('8', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 8, 'EXECUTED', '8:5355bee389318afed91a11702f2df032', 'addColumn tableName=ACT_DMN_DECISION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-INSERT INTO `act_dmn_databasechangelog` VALUES ('9', 'flowable', 'org/flowable/dmn/db/liquibase/flowable-dmn-db-changelog.xml', '2025-03-25 21:15:19', 9, 'EXECUTED', '8:0fe82086431b1953d293f0199f805876', 'createIndex indexName=ACT_IDX_DMN_INSTANCE_ID, tableName=ACT_DMN_HI_DECISION_EXECUTION', '', NULL, '4.9.1', NULL, NULL, '2908518521');
-
--- ----------------------------
--- Table structure for act_dmn_databasechangeloglock
--- ----------------------------
-DROP TABLE IF EXISTS `act_dmn_databasechangeloglock`;
-CREATE TABLE `act_dmn_databasechangeloglock`  (
-  `ID` int NOT NULL,
-  `LOCKED` bit(1) NOT NULL,
-  `LOCKGRANTED` datetime NULL DEFAULT NULL,
-  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_dmn_databasechangeloglock
--- ----------------------------
-INSERT INTO `act_dmn_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for act_dmn_decision
@@ -677,7 +448,7 @@ CREATE TABLE `act_dmn_hi_decision_execution`  (
   `INSTANCE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `EXECUTION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `ACTIVITY_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `FAILED_` bit(1) NULL DEFAULT b'0',
+  `FAILED_` tinyint NULL DEFAULT 0,
   `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `EXECUTION_JSON_` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
@@ -714,137 +485,6 @@ CREATE TABLE `act_evt_log`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for act_fo_databasechangelog
--- ----------------------------
-DROP TABLE IF EXISTS `act_fo_databasechangelog`;
-CREATE TABLE `act_fo_databasechangelog`  (
-  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `DATEEXECUTED` datetime NOT NULL,
-  `ORDEREXECUTED` int NOT NULL,
-  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_fo_databasechangelog
--- ----------------------------
-INSERT INTO `act_fo_databasechangelog` VALUES ('1', 'activiti', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:20', 1, 'EXECUTED', '8:033ebf9380889aed7c453927ecc3250d', 'createTable tableName=ACT_FO_FORM_DEPLOYMENT; createTable tableName=ACT_FO_FORM_RESOURCE; createTable tableName=ACT_FO_FORM_DEFINITION; createTable tableName=ACT_FO_FORM_INSTANCE', '', NULL, '4.9.1', NULL, NULL, '2908520554');
-INSERT INTO `act_fo_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:20', 2, 'EXECUTED', '8:986365ceb40445ce3b27a8e6b40f159b', 'addColumn tableName=ACT_FO_FORM_INSTANCE', '', NULL, '4.9.1', NULL, NULL, '2908520554');
-INSERT INTO `act_fo_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:21', 3, 'EXECUTED', '8:abf482518ceb09830ef674e52c06bf15', 'dropColumn columnName=PARENT_DEPLOYMENT_ID_, tableName=ACT_FO_FORM_DEFINITION', '', NULL, '4.9.1', NULL, NULL, '2908520554');
-INSERT INTO `act_fo_databasechangelog` VALUES ('4', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:21', 4, 'EXECUTED', '8:2087829f22a4b2298dbf530681c74854', 'modifyDataType columnName=DEPLOY_TIME_, tableName=ACT_FO_FORM_DEPLOYMENT; modifyDataType columnName=SUBMITTED_DATE_, tableName=ACT_FO_FORM_INSTANCE', '', NULL, '4.9.1', NULL, NULL, '2908520554');
-INSERT INTO `act_fo_databasechangelog` VALUES ('5', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:21', 5, 'EXECUTED', '8:b4be732b89e5ca028bdd520c6ad4d446', 'createIndex indexName=ACT_IDX_FORM_DEF_UNIQ, tableName=ACT_FO_FORM_DEFINITION', '', NULL, '4.9.1', NULL, NULL, '2908520554');
-INSERT INTO `act_fo_databasechangelog` VALUES ('6', 'flowable', 'org/flowable/form/db/liquibase/flowable-form-db-changelog.xml', '2025-03-25 21:15:21', 6, 'EXECUTED', '8:384bbd364a649b67c3ca1bcb72fe537f', 'createIndex indexName=ACT_IDX_FORM_TASK, tableName=ACT_FO_FORM_INSTANCE; createIndex indexName=ACT_IDX_FORM_PROC, tableName=ACT_FO_FORM_INSTANCE; createIndex indexName=ACT_IDX_FORM_SCOPE, tableName=ACT_FO_FORM_INSTANCE', '', NULL, '4.9.1', NULL, NULL, '2908520554');
-
--- ----------------------------
--- Table structure for act_fo_databasechangeloglock
--- ----------------------------
-DROP TABLE IF EXISTS `act_fo_databasechangeloglock`;
-CREATE TABLE `act_fo_databasechangeloglock`  (
-  `ID` int NOT NULL,
-  `LOCKED` bit(1) NOT NULL,
-  `LOCKGRANTED` datetime NULL DEFAULT NULL,
-  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_fo_databasechangeloglock
--- ----------------------------
-INSERT INTO `act_fo_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
-
--- ----------------------------
--- Table structure for act_fo_form_definition
--- ----------------------------
-DROP TABLE IF EXISTS `act_fo_form_definition`;
-CREATE TABLE `act_fo_form_definition`  (
-  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `VERSION_` int NULL DEFAULT NULL,
-  `KEY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `RESOURCE_NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DESCRIPTION_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID_`) USING BTREE,
-  UNIQUE INDEX `ACT_IDX_FORM_DEF_UNIQ`(`KEY_` ASC, `VERSION_` ASC, `TENANT_ID_` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_fo_form_definition
--- ----------------------------
-
--- ----------------------------
--- Table structure for act_fo_form_deployment
--- ----------------------------
-DROP TABLE IF EXISTS `act_fo_form_deployment`;
-CREATE TABLE `act_fo_form_deployment`  (
-  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CATEGORY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOY_TIME_` datetime(3) NULL DEFAULT NULL,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `PARENT_DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID_`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_fo_form_deployment
--- ----------------------------
-
--- ----------------------------
--- Table structure for act_fo_form_instance
--- ----------------------------
-DROP TABLE IF EXISTS `act_fo_form_instance`;
-CREATE TABLE `act_fo_form_instance`  (
-  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `FORM_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `TASK_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `PROC_INST_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `PROC_DEF_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `SUBMITTED_DATE_` datetime(3) NULL DEFAULT NULL,
-  `SUBMITTED_BY_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `FORM_VALUES_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TENANT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `SCOPE_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID_`) USING BTREE,
-  INDEX `ACT_IDX_FORM_TASK`(`TASK_ID_` ASC) USING BTREE,
-  INDEX `ACT_IDX_FORM_PROC`(`PROC_INST_ID_` ASC) USING BTREE,
-  INDEX `ACT_IDX_FORM_SCOPE`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_fo_form_instance
--- ----------------------------
-
--- ----------------------------
--- Table structure for act_fo_form_resource
--- ----------------------------
-DROP TABLE IF EXISTS `act_fo_form_resource`;
-CREATE TABLE `act_fo_form_resource`  (
-  `ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `NAME_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOYMENT_ID_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `RESOURCE_BYTES_` longblob NULL,
-  PRIMARY KEY (`ID_`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of act_fo_form_resource
--- ----------------------------
-
--- ----------------------------
 -- Table structure for act_ge_bytearray
 -- ----------------------------
 DROP TABLE IF EXISTS `act_ge_bytearray`;
@@ -863,8 +503,6 @@ CREATE TABLE `act_ge_bytearray`  (
 -- ----------------------------
 -- Records of act_ge_bytearray
 -- ----------------------------
-INSERT INTO `act_ge_bytearray` VALUES ('6cfc6a43-0984-11f0-82ff-4ccc6a2e3718', 1, '默认模型', '6cfc6a42-0984-11f0-82ff-4ccc6a2e3718', 0x3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D38223F3E0A3C646566696E6974696F6E7320786D6C6E733D22687474703A2F2F7777772E6F6D672E6F72672F737065632F42504D4E2F32303130303532342F4D4F44454C2220786D6C6E733A62706D6E64693D22687474703A2F2F7777772E6F6D672E6F72672F737065632F42504D4E2F32303130303532342F44492220786D6C6E733A6F6D6764633D22687474703A2F2F7777772E6F6D672E6F72672F737065632F44442F32303130303532342F44432220786D6C6E733A7873693D22687474703A2F2F7777772E77332E6F72672F323030312F584D4C536368656D612D696E7374616E63652220786D6C6E733A63616D756E64613D22687474703A2F2F63616D756E64612E6F72672F736368656D612F312E302F62706D6E2220786D6C6E733A64693D22687474703A2F2F7777772E6F6D672E6F72672F737065632F44442F32303130303532342F4449222069643D227369642D33383432326661652D653033652D343361332D626566342D62643333623332303431623222207461726765744E616D6573706163653D22687474703A2F2F62706D6E2E696F2F62706D6E22206578706F727465723D2262706D6E2D6A73202868747470733A2F2F64656D6F2E62706D6E2E696F2922206578706F7274657256657273696F6E3D22352E312E32223E0A20203C70726F636573732069643D22636F64652D306163653439373132616462616636666665336638626438326233393164653222206E616D653D22E9BB98E8AEA4E6A8A1E59E8B2220697345786563757461626C653D2274727565222063616D756E64613A76657273696F6E5461673D22302E302E31223E0A202020203C73746172744576656E742069643D224576656E745F3135796E6D6F3922206E616D653D22E5BC80E5A78B223E0A2020202020203C6F7574676F696E673E466C6F775F3175356E79387A3C2F6F7574676F696E673E0A202020203C2F73746172744576656E743E0A202020203C7461736B2069643D2241637469766974795F3033647670723622206E616D653D22E5AEA1E6A0B8223E0A2020202020203C657874656E73696F6E456C656D656E74733E0A20202020202020203C63616D756E64613A696E7075744F75747075743E0A202020202020202020203C63616D756E64613A696E707574506172616D65746572206E616D653D22496E7075745F3030633470353822202F3E0A202020202020202020203C63616D756E64613A6F7574707574506172616D65746572206E616D653D224F75747075745F30727468366F3222202F3E0A20202020202020203C2F63616D756E64613A696E7075744F75747075743E0A2020202020203C2F657874656E73696F6E456C656D656E74733E0A2020202020203C696E636F6D696E673E466C6F775F3175356E79387A3C2F696E636F6D696E673E0A2020202020203C6F7574676F696E673E466C6F775F3032716F7A686D3C2F6F7574676F696E673E0A202020203C2F7461736B3E0A202020203C73657175656E6365466C6F772069643D22466C6F775F3175356E79387A2220736F757263655265663D224576656E745F3135796E6D6F3922207461726765745265663D2241637469766974795F3033647670723622202F3E0A202020203C696E7465726D6564696174655468726F774576656E742069643D224576656E745F3075307830647622206E616D653D22E7BB93E69D9F223E0A2020202020203C696E636F6D696E673E466C6F775F3032716F7A686D3C2F696E636F6D696E673E0A202020203C2F696E7465726D6564696174655468726F774576656E743E0A202020203C73657175656E6365466C6F772069643D22466C6F775F3032716F7A686D2220736F757263655265663D2241637469766974795F3033647670723622207461726765745265663D224576656E745F3075307830647622202F3E0A20203C2F70726F636573733E0A20203C62706D6E64693A42504D4E4469616772616D2069643D2242706D6E4469616772616D5F31223E0A202020203C62706D6E64693A42504D4E506C616E652069643D2242706D6E506C616E655F31222062706D6E456C656D656E743D22636F64652D3061636534393731326164626166366666653366386264383262333931646532223E0A2020202020203C62706D6E64693A42504D4E53686170652069643D224576656E745F3135796E6D6F395F6469222062706D6E456C656D656E743D224576656E745F3135796E6D6F39223E0A20202020202020203C6F6D6764633A426F756E647320783D223238322220793D22323532222077696474683D22333622206865696768743D22333622202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C3E0A202020202020202020203C6F6D6764633A426F756E647320783D223238392220793D22323935222077696474683D22323222206865696768743D22313422202F3E0A20202020202020203C2F62706D6E64693A42504D4E4C6162656C3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652069643D2241637469766974795F303364767072365F6469222062706D6E456C656D656E743D2241637469766974795F30336476707236223E0A20202020202020203C6F6D6764633A426F756E647320783D223337302220793D22323330222077696474683D2231303022206865696768743D22383022202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C202F3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652069643D224576656E745F307530783064765F6469222062706D6E456C656D656E743D224576656E745F30753078306476223E0A20202020202020203C6F6D6764633A426F756E647320783D223532322220793D22323532222077696474683D22333622206865696768743D22333622202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C3E0A202020202020202020203C6F6D6764633A426F756E647320783D223532392220793D22323935222077696474683D22323222206865696768743D22313422202F3E0A20202020202020203C2F62706D6E64693A42504D4E4C6162656C3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E456467652069643D22466C6F775F3175356E79387A5F6469222062706D6E456C656D656E743D22466C6F775F3175356E79387A223E0A20202020202020203C64693A776179706F696E7420783D223331382220793D2232373022202F3E0A20202020202020203C64693A776179706F696E7420783D223337302220793D2232373022202F3E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A2020202020203C62706D6E64693A42504D4E456467652069643D22466C6F775F3032716F7A686D5F6469222062706D6E456C656D656E743D22466C6F775F3032716F7A686D223E0A20202020202020203C64693A776179706F696E7420783D223437302220793D2232373022202F3E0A20202020202020203C64693A776179706F696E7420783D223532322220793D2232373022202F3E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A202020203C2F62706D6E64693A42504D4E506C616E653E0A20203C2F62706D6E64693A42504D4E4469616772616D3E0A3C2F646566696E6974696F6E733E0A, 0);
-INSERT INTO `act_ge_bytearray` VALUES ('f35f896e-0d73-11f0-ba00-4ccc6a2e3718', 1, '默认模型', 'f35f896d-0d73-11f0-ba00-4ccc6a2e3718', 0x3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D38223F3E0A3C646566696E6974696F6E7320786D6C6E733D22687474703A2F2F7777772E6F6D672E6F72672F737065632F42504D4E2F32303130303532342F4D4F44454C2220786D6C6E733A62706D6E64693D22687474703A2F2F7777772E6F6D672E6F72672F737065632F42504D4E2F32303130303532342F44492220786D6C6E733A6F6D6764633D22687474703A2F2F7777772E6F6D672E6F72672F737065632F44442F32303130303532342F44432220786D6C6E733A7873693D22687474703A2F2F7777772E77332E6F72672F323030312F584D4C536368656D612D696E7374616E63652220786D6C6E733A63616D756E64613D22687474703A2F2F63616D756E64612E6F72672F736368656D612F312E302F62706D6E2220786D6C6E733A64693D22687474703A2F2F7777772E6F6D672E6F72672F737065632F44442F32303130303532342F4449222069643D227369642D33383432326661652D653033652D343361332D626566342D62643333623332303431623222207461726765744E616D6573706163653D22687474703A2F2F62706D6E2E696F2F62706D6E22206578706F727465723D2262706D6E2D6A73202868747470733A2F2F64656D6F2E62706D6E2E696F2922206578706F7274657256657273696F6E3D22352E312E32223E0A20203C70726F636573732069643D22636F64652D306163653439373132616462616636666665336638626438326233393164653222206E616D653D22E9BB98E8AEA4E6A8A1E59E8B2220697345786563757461626C653D2274727565222063616D756E64613A76657273696F6E5461673D22302E302E31223E0A202020203C73746172744576656E742069643D224576656E745F3135796E6D6F3922206E616D653D22E5BC80E5A78B223E0A2020202020203C6F7574676F696E673E466C6F775F3175356E79387A3C2F6F7574676F696E673E0A202020203C2F73746172744576656E743E0A202020203C7461736B2069643D2241637469766974795F3033647670723622206E616D653D22E5AEA1E6A0B8223E0A2020202020203C657874656E73696F6E456C656D656E74733E0A20202020202020203C63616D756E64613A696E7075744F75747075743E0A202020202020202020203C63616D756E64613A696E707574506172616D65746572206E616D653D22496E7075745F3030633470353822202F3E0A202020202020202020203C63616D756E64613A6F7574707574506172616D65746572206E616D653D224F75747075745F30727468366F3222202F3E0A20202020202020203C2F63616D756E64613A696E7075744F75747075743E0A2020202020203C2F657874656E73696F6E456C656D656E74733E0A2020202020203C696E636F6D696E673E466C6F775F3175356E79387A3C2F696E636F6D696E673E0A2020202020203C6F7574676F696E673E466C6F775F3032716F7A686D3C2F6F7574676F696E673E0A202020203C2F7461736B3E0A202020203C73657175656E6365466C6F772069643D22466C6F775F3175356E79387A2220736F757263655265663D224576656E745F3135796E6D6F3922207461726765745265663D2241637469766974795F3033647670723622202F3E0A202020203C696E7465726D6564696174655468726F774576656E742069643D224576656E745F3075307830647622206E616D653D22E7BB93E69D9F223E0A2020202020203C696E636F6D696E673E466C6F775F3032716F7A686D3C2F696E636F6D696E673E0A202020203C2F696E7465726D6564696174655468726F774576656E743E0A202020203C73657175656E6365466C6F772069643D22466C6F775F3032716F7A686D2220736F757263655265663D2241637469766974795F3033647670723622207461726765745265663D224576656E745F3075307830647622202F3E0A20203C2F70726F636573733E0A20203C62706D6E64693A42504D4E4469616772616D2069643D2242706D6E4469616772616D5F31223E0A202020203C62706D6E64693A42504D4E506C616E652069643D2242706D6E506C616E655F31222062706D6E456C656D656E743D22636F64652D3061636534393731326164626166366666653366386264383262333931646532223E0A2020202020203C62706D6E64693A42504D4E53686170652069643D224576656E745F3135796E6D6F395F6469222062706D6E456C656D656E743D224576656E745F3135796E6D6F39223E0A20202020202020203C6F6D6764633A426F756E647320783D223238322220793D22323532222077696474683D22333622206865696768743D22333622202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C3E0A202020202020202020203C6F6D6764633A426F756E647320783D223238392220793D22323935222077696474683D22323222206865696768743D22313422202F3E0A20202020202020203C2F62706D6E64693A42504D4E4C6162656C3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652069643D2241637469766974795F303364767072365F6469222062706D6E456C656D656E743D2241637469766974795F30336476707236223E0A20202020202020203C6F6D6764633A426F756E647320783D223337302220793D22323330222077696474683D2231303022206865696768743D22383022202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C202F3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E53686170652069643D224576656E745F307530783064765F6469222062706D6E456C656D656E743D224576656E745F30753078306476223E0A20202020202020203C6F6D6764633A426F756E647320783D223532322220793D22323532222077696474683D22333622206865696768743D22333622202F3E0A20202020202020203C62706D6E64693A42504D4E4C6162656C3E0A202020202020202020203C6F6D6764633A426F756E647320783D223532392220793D22323935222077696474683D22323222206865696768743D22313422202F3E0A20202020202020203C2F62706D6E64693A42504D4E4C6162656C3E0A2020202020203C2F62706D6E64693A42504D4E53686170653E0A2020202020203C62706D6E64693A42504D4E456467652069643D22466C6F775F3175356E79387A5F6469222062706D6E456C656D656E743D22466C6F775F3175356E79387A223E0A20202020202020203C64693A776179706F696E7420783D223331382220793D2232373022202F3E0A20202020202020203C64693A776179706F696E7420783D223337302220793D2232373022202F3E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A2020202020203C62706D6E64693A42504D4E456467652069643D22466C6F775F3032716F7A686D5F6469222062706D6E456C656D656E743D22466C6F775F3032716F7A686D223E0A20202020202020203C64693A776179706F696E7420783D223437302220793D2232373022202F3E0A20202020202020203C64693A776179706F696E7420783D223532322220793D2232373022202F3E0A2020202020203C2F62706D6E64693A42504D4E456467653E0A202020203C2F62706D6E64693A42504D4E506C616E653E0A20203C2F62706D6E64693A42504D4E4469616772616D3E0A3C2F646566696E6974696F6E733E0A, 0);
 
 -- ----------------------------
 -- Table structure for act_ge_property
@@ -880,19 +518,16 @@ CREATE TABLE `act_ge_property`  (
 -- ----------------------------
 -- Records of act_ge_property
 -- ----------------------------
-INSERT INTO `act_ge_property` VALUES ('batch.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('app.schema.version', '7.1.0.2', 1);
 INSERT INTO `act_ge_property` VALUES ('cfg.execution-related-entities-count', 'true', 1);
 INSERT INTO `act_ge_property` VALUES ('cfg.task-related-entities-count', 'true', 1);
-INSERT INTO `act_ge_property` VALUES ('common.schema.version', '6.8.1.0', 1);
-INSERT INTO `act_ge_property` VALUES ('entitylink.schema.version', '6.8.1.0', 1);
-INSERT INTO `act_ge_property` VALUES ('eventsubscription.schema.version', '6.8.1.0', 1);
-INSERT INTO `act_ge_property` VALUES ('identitylink.schema.version', '6.8.1.0', 1);
-INSERT INTO `act_ge_property` VALUES ('job.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('cmmn.schema.version', '7.1.0.2', 1);
+INSERT INTO `act_ge_property` VALUES ('common.schema.version', '7.1.0.2', 1);
+INSERT INTO `act_ge_property` VALUES ('dmn.schema.version', '7.1.0.2', 1);
+INSERT INTO `act_ge_property` VALUES ('eventregistry.schema.version', '7.1.0.2', 1);
 INSERT INTO `act_ge_property` VALUES ('next.dbid', '1', 1);
-INSERT INTO `act_ge_property` VALUES ('schema.history', 'create(6.8.1.0)', 1);
-INSERT INTO `act_ge_property` VALUES ('schema.version', '6.8.1.0', 1);
-INSERT INTO `act_ge_property` VALUES ('task.schema.version', '6.8.1.0', 1);
-INSERT INTO `act_ge_property` VALUES ('variable.schema.version', '6.8.1.0', 1);
+INSERT INTO `act_ge_property` VALUES ('schema.history', 'create(7.1.0.2)', 1);
+INSERT INTO `act_ge_property` VALUES ('schema.version', '7.1.0.2', 1);
 
 -- ----------------------------
 -- Table structure for act_hi_actinst
@@ -1116,17 +751,25 @@ CREATE TABLE `act_hi_taskinst`  (
   `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `PROPAGATED_STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `STATE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `PARENT_TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `ASSIGNEE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `START_TIME_` datetime(3) NOT NULL,
+  `IN_PROGRESS_TIME_` datetime(3) NULL DEFAULT NULL,
+  `IN_PROGRESS_STARTED_BY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `CLAIM_TIME_` datetime(3) NULL DEFAULT NULL,
+  `CLAIMED_BY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUSPENDED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `SUSPENDED_BY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `END_TIME_` datetime(3) NULL DEFAULT NULL,
+  `COMPLETED_BY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `DURATION_` bigint NULL DEFAULT NULL,
   `DELETE_REASON_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `PRIORITY_` int NULL DEFAULT NULL,
+  `IN_PROGRESS_DUE_DATE_` datetime(3) NULL DEFAULT NULL,
   `DUE_DATE_` datetime(3) NULL DEFAULT NULL,
   `FORM_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
@@ -1162,8 +805,9 @@ CREATE TABLE `act_hi_tsk_log`  (
   `SUB_SCOPE_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
-  PRIMARY KEY (`ID_`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`ID_`) USING BTREE,
+  INDEX `ACT_IDX_ACT_HI_TSK_LOG_TASK`(`TASK_ID_` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of act_hi_tsk_log
@@ -1323,7 +967,7 @@ CREATE TABLE `act_id_property`  (
 -- ----------------------------
 -- Records of act_id_property
 -- ----------------------------
-INSERT INTO `act_id_property` VALUES ('schema.version', '6.8.1.0', 1);
+INSERT INTO `act_id_property` VALUES ('schema.version', '7.1.0.2', 1);
 
 -- ----------------------------
 -- Table structure for act_id_token
@@ -1408,8 +1052,6 @@ CREATE TABLE `act_re_deployment`  (
 -- ----------------------------
 -- Records of act_re_deployment
 -- ----------------------------
-INSERT INTO `act_re_deployment` VALUES ('6cfc6a42-0984-11f0-82ff-4ccc6a2e3718', '默认模型', NULL, NULL, '', '2025-03-25 22:21:21.730', NULL, NULL, '6cfc6a42-0984-11f0-82ff-4ccc6a2e3718', NULL);
-INSERT INTO `act_re_deployment` VALUES ('f35f896d-0d73-11f0-ba00-4ccc6a2e3718', '默认模型', NULL, NULL, '', '2025-03-30 22:33:30.401', NULL, NULL, 'f35f896d-0d73-11f0-ba00-4ccc6a2e3718', NULL);
 
 -- ----------------------------
 -- Table structure for act_re_model
@@ -1608,14 +1250,16 @@ CREATE TABLE `act_ru_event_subscr`  (
   `SUB_SCOPE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `SCOPE_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `SCOPE_DEFINITION_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SCOPE_DEFINITION_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `SCOPE_TYPE_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `LOCK_TIME_` timestamp(3) NULL DEFAULT NULL,
   `LOCK_OWNER_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
   PRIMARY KEY (`ID_`) USING BTREE,
   INDEX `ACT_IDX_EVENT_SUBSCR_CONFIG_`(`CONFIGURATION_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EVENT_SUBSCR_EXEC_ID`(`EXECUTION_ID_` ASC) USING BTREE,
+  INDEX `ACT_IDX_EVENT_SUBSCR_PROC_ID`(`PROC_INST_ID_` ASC) USING BTREE,
   INDEX `ACT_IDX_EVENT_SUBSCR_SCOPEREF_`(`SCOPE_ID_` ASC, `SCOPE_TYPE_` ASC) USING BTREE,
-  INDEX `ACT_FK_EVENT_EXEC`(`EXECUTION_ID_` ASC) USING BTREE,
   CONSTRAINT `ACT_FK_EVENT_EXEC` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
@@ -1913,6 +1557,7 @@ CREATE TABLE `act_ru_task`  (
   `SCOPE_TYPE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `SCOPE_DEFINITION_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `PROPAGATED_STAGE_INST_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `STATE_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `NAME_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `PARENT_TASK_ID_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `DESCRIPTION_` varchar(4000) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
@@ -1922,12 +1567,18 @@ CREATE TABLE `act_ru_task`  (
   `DELEGATION_` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `PRIORITY_` int NULL DEFAULT NULL,
   `CREATE_TIME_` timestamp(3) NULL DEFAULT NULL,
+  `IN_PROGRESS_TIME_` datetime(3) NULL DEFAULT NULL,
+  `IN_PROGRESS_STARTED_BY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `CLAIM_TIME_` datetime(3) NULL DEFAULT NULL,
+  `CLAIMED_BY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `SUSPENDED_TIME_` datetime(3) NULL DEFAULT NULL,
+  `SUSPENDED_BY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
+  `IN_PROGRESS_DUE_DATE_` datetime(3) NULL DEFAULT NULL,
   `DUE_DATE_` datetime(3) NULL DEFAULT NULL,
   `CATEGORY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
   `SUSPENSION_STATE_` int NULL DEFAULT NULL,
   `TENANT_ID_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '',
   `FORM_KEY_` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL,
-  `CLAIM_TIME_` datetime(3) NULL DEFAULT NULL,
   `IS_COUNT_ENABLED_` tinyint NULL DEFAULT NULL,
   `VAR_COUNT_` int NULL DEFAULT NULL,
   `ID_LINK_COUNT_` int NULL DEFAULT NULL,
@@ -2087,51 +1738,6 @@ CREATE TABLE `flw_channel_definition`  (
 -- ----------------------------
 -- Records of flw_channel_definition
 -- ----------------------------
-
--- ----------------------------
--- Table structure for flw_ev_databasechangelog
--- ----------------------------
-DROP TABLE IF EXISTS `flw_ev_databasechangelog`;
-CREATE TABLE `flw_ev_databasechangelog`  (
-  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `DATEEXECUTED` datetime NOT NULL,
-  `ORDEREXECUTED` int NOT NULL,
-  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of flw_ev_databasechangelog
--- ----------------------------
-INSERT INTO `flw_ev_databasechangelog` VALUES ('1', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2025-03-25 21:15:16', 1, 'EXECUTED', '8:1b0c48c9cf7945be799d868a2626d687', 'createTable tableName=FLW_EVENT_DEPLOYMENT; createTable tableName=FLW_EVENT_RESOURCE; createTable tableName=FLW_EVENT_DEFINITION; createIndex indexName=ACT_IDX_EVENT_DEF_UNIQ, tableName=FLW_EVENT_DEFINITION; createTable tableName=FLW_CHANNEL_DEFIN...', '', NULL, '4.9.1', NULL, NULL, '2908515820');
-INSERT INTO `flw_ev_databasechangelog` VALUES ('2', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2025-03-25 21:15:16', 2, 'EXECUTED', '8:0ea825feb8e470558f0b5754352b9cda', 'addColumn tableName=FLW_CHANNEL_DEFINITION; addColumn tableName=FLW_CHANNEL_DEFINITION', '', NULL, '4.9.1', NULL, NULL, '2908515820');
-INSERT INTO `flw_ev_databasechangelog` VALUES ('3', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2025-03-25 21:15:16', 3, 'EXECUTED', '8:3c2bb293350b5cbe6504331980c9dcee', 'customChange', '', NULL, '4.9.1', NULL, NULL, '2908515820');
-
--- ----------------------------
--- Table structure for flw_ev_databasechangeloglock
--- ----------------------------
-DROP TABLE IF EXISTS `flw_ev_databasechangeloglock`;
-CREATE TABLE `flw_ev_databasechangeloglock`  (
-  `ID` int NOT NULL,
-  `LOCKED` bit(1) NOT NULL,
-  `LOCKGRANTED` datetime NULL DEFAULT NULL,
-  `LOCKEDBY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of flw_ev_databasechangeloglock
--- ----------------------------
-INSERT INTO `flw_ev_databasechangeloglock` VALUES (1, b'0', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for flw_event_definition
@@ -2527,6 +2133,7 @@ CREATE TABLE `sys_login_log`  (
 -- ----------------------------
 -- Records of sys_login_log
 -- ----------------------------
+INSERT INTO `sys_login_log` VALUES ('ea9cdd9a-0e15-11f0-9a52-4ccc6a2e3718', 'admin', NULL, '成功', 'Chrome', 'Windows 10 or Windows Server 2016', '内网IP', '127.0.0.1', 'fa0ad9d5-0501-4f59-b75f-3837a4764bff', '成功', '2025-03-31 17:52:54');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -2641,6 +2248,34 @@ CREATE TABLE `sys_oper_log`  (
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
+INSERT INTO `sys_oper_log` VALUES ('16e783b21efc4702af60867be77949d6', NULL, 'GET', 'GET', NULL, '{}', NULL, 7, '1', NULL, 0, '/tansci/system/user/info', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:52:54');
+INSERT INTO `sys_oper_log` VALUES ('1e4d7dfedb0444068d260af1e9fc5f33', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/system/work/workflow/modelList', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:49');
+INSERT INTO `sys_oper_log` VALUES ('2331debf5c1f41fa8dee046259df06fe', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/dict/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:09');
+INSERT INTO `sys_oper_log` VALUES ('27f7b5f35e04403d951b4ebe603a384f', NULL, 'GET', 'GET', NULL, '{}', NULL, 8, '1', NULL, 0, '/tansci/lowcode/lcPages/pagesInfo/d2df5734-1ca6-11ee-8b16-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:54:22');
+INSERT INTO `sys_oper_log` VALUES ('2a5e2d877a6048dfa7ba65f419ff8dd1', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/monitor/operLog', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:54:28');
+INSERT INTO `sys_oper_log` VALUES ('2a924cea7d9a43c2a5503c2fa9fb84ab', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 10, '1', NULL, 0, '/tansci/system/role/page', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:04');
+INSERT INTO `sys_oper_log` VALUES ('3edcd80aefc14f80b1731e0df09831cd', NULL, 'GET', 'GET', NULL, '{\"total\":\"20\",\"size\":\"20\"}', NULL, 6, '1', NULL, 0, '/tansci/monitor/operLog', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:54:03');
+INSERT INTO `sys_oper_log` VALUES ('5100f19d45804ba29f3f36762755f0c8', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/monitor/operLog', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:57');
+INSERT INTO `sys_oper_log` VALUES ('58ae271ff96a40c9b6c6ab4c82d94ee9', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"0\",\"size\":\"8\"}', NULL, 21, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:14');
+INSERT INTO `sys_oper_log` VALUES ('58f6d3b3bef842659f31b4e6bed948fc', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/lowcode/generator/page', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:30');
+INSERT INTO `sys_oper_log` VALUES ('647a78a1cdfe4e3f80c9f50da23632d6', NULL, 'GET', 'GET', NULL, '{}', NULL, 5, '1', NULL, 0, '/tansci/lowcode/lcPages/pagesInfo/eb404f1c-1ca6-11ee-8b16-e0be038740d4', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:54:26');
+INSERT INTO `sys_oper_log` VALUES ('6abc1bd9b1d34fcc9bb59f896218d18b', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/monitor/loginLog', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:54:06');
+INSERT INTO `sys_oper_log` VALUES ('6ad4eb9848c149db82e97898c8c18d50', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 9, '1', NULL, 0, '/tansci/system/work/model/page', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:39');
+INSERT INTO `sys_oper_log` VALUES ('6e45e713d099408788e0dd278bffac3e', NULL, 'GET', 'GET', NULL, '{}', NULL, 43, '1', NULL, 0, '/tansci/system/menu/menus', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:52:54');
+INSERT INTO `sys_oper_log` VALUES ('6f8cdf002b0f46a0bfd90dbe5abaa176', NULL, 'GET', 'GET', NULL, '{}', NULL, 31, '1', NULL, 0, '/tansci/system/menu/tree', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:00');
+INSERT INTO `sys_oper_log` VALUES ('76113543013c4be4b16f8b1dc3e3c3ea', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/monitor/loginLog', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:52');
+INSERT INTO `sys_oper_log` VALUES ('793605184cb84778b4f002e56c406789', NULL, 'GET', 'GET', NULL, '{}', NULL, 6, '1', NULL, 0, '/tansci/system/dict/list', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:52:54');
+INSERT INTO `sys_oper_log` VALUES ('7bce8194199740f188f50048b2425fc3', NULL, 'POST', 'POST', NULL, '{}', NULL, 258, '1', NULL, 0, '/tansci/system/auth/login', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:52:54');
+INSERT INTO `sys_oper_log` VALUES ('7cb1f2d7becf4f738a2437a47675be6b', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/system/work/workflow/processDefinitionList', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:46');
+INSERT INTO `sys_oper_log` VALUES ('949621e0b1804b209fd2d5c503a514d7', NULL, 'GET', 'GET', NULL, '{}', NULL, 9, '1', NULL, 0, '/tansci/lowcode/lcPages/classify/list', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:14');
+INSERT INTO `sys_oper_log` VALUES ('aabcf046c007404188bb77e089bf5618', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"size\":\"10\",\"title\":\"\"}', NULL, 4, '1', NULL, 0, '/tansci/lowcode/lcPages/page', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:54:23');
+INSERT INTO `sys_oper_log` VALUES ('b099a5987f074479893b1b51b3e13eea', NULL, 'GET', 'GET', NULL, '{}', NULL, 10, '1', NULL, 0, '/tansci/system/org/list', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:02');
+INSERT INTO `sys_oper_log` VALUES ('bbc848d4e59b485bb702fee1b856c4cd', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 11, '1', NULL, 0, '/tansci/monitor/onlineUser', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:56');
+INSERT INTO `sys_oper_log` VALUES ('ce48d3c42b574a2282bbe972c52c642b', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 6, '1', NULL, 0, '/tansci/system/user/page', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:11');
+INSERT INTO `sys_oper_log` VALUES ('e18345b93d134233b235800960b432c4', NULL, 'GET', 'GET', NULL, '{}', NULL, 30, '1', NULL, 0, '/tansci/system/role/menuList/441b6dae329b3a20ad8b4f4ca8f83a0b', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:07');
+INSERT INTO `sys_oper_log` VALUES ('f1c3b46c4ee34320baee2ea4e0e86948', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 4, '1', NULL, 0, '/tansci/monitor/onlineUser', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:54:09');
+INSERT INTO `sys_oper_log` VALUES ('f4e6ca5118534802abc25f819325f3f0', NULL, 'GET', 'GET', NULL, '{}', NULL, 25, '1', NULL, 0, '/tansci/system/work/workflow/taskList', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:48');
+INSERT INTO `sys_oper_log` VALUES ('f963b845dd2d4e8ea07056a39d6eafdb', NULL, 'GET', 'GET', NULL, '{\"current\":\"1\",\"total\":\"1\",\"size\":\"10\"}', NULL, 5, '1', NULL, 0, '/tansci/monitor/operLog', '127.0.0.1', NULL, '2.0.0', '2025-03-31 17:53:53');
 
 -- ----------------------------
 -- Table structure for sys_org

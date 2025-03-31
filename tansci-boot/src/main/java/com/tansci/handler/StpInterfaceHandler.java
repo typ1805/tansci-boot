@@ -1,12 +1,13 @@
 package com.tansci.handler;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.extra.servlet.ServletUtil;
 import com.alibaba.fastjson2.JSON;
 import com.tansci.common.WrapMapper;
 import com.tansci.common.Wrapper;
 import com.tansci.common.constant.Constants;
+import com.tansci.utils.SystemUtils;
 import com.tansci.utils.UUIDUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -22,7 +23,6 @@ import org.ssssssss.magicapi.core.servlet.MagicHttpServletRequest;
 import org.ssssssss.magicapi.core.servlet.MagicHttpServletResponse;
 import org.ssssssss.script.MagicScriptContext;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -89,7 +89,7 @@ public class StpInterfaceHandler implements RequestInterceptor, HandlerIntercept
                         StpUtil.getLoginId(),
                         0,
                         request.getRequestURI(),
-                        ServletUtil.getClientIP(request),
+                        SystemUtils.getIp(request),
                         "2.0.0",
                         LocalDateTime.now()
                 );

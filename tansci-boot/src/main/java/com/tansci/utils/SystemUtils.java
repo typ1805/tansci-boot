@@ -1,12 +1,12 @@
 package com.tansci.utils;
 
+
 import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import cn.hutool.json.JSONUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @ClassName： SystemUtils.java

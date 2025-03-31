@@ -4,6 +4,9 @@
   const gzh = new URL('../assets/image/gzh.jpg', import.meta.url).href
   const state = reactive({
     versionList: [
+      {timestamp:'2025-03-31', icon:'CircleCheckFilled', color:'#409EFF', content: ['v1.3.0 升级 SpringBoot3']},
+      {timestamp:'2025-03-23', icon:'CircleCheckFilled', color:'#409EFF', content: ['1、前端集成 bpmn.js 流程设计器；', '2、后端集成 flowable；']},
+      {timestamp:'2023-07-07', icon:'CircleCheckFilled', color:'#409EFF', content: ['v1.1.0 集成 magic-api']},
       {timestamp:'2024-04-03', icon:'CircleCheckFilled', color:'#409EFF', content: [
         '1、amis 编辑器版本升级至 6.0.0；',
         '2、element-plus 版本升级至 2.6.3；',
@@ -46,10 +49,13 @@
         </div>
         <div class="text">
           <el-space alignment="normal" direction="vertical">
-            <el-text tag="p">基于 SpringBoot2 + magic-api + Vue3 + Element Plus + amis3.0 快速开发管理系统</el-text>
+            <el-text tag="p">基于 SpringBoot3 + magic-api + Vue3 + Element Plus + amis3.0 快速开发管理系统</el-text>
             <el-text tag="p">Tansci-Boot 是一个前后端分离后台管理系统， 前端集成 amis 低代码前端框架，后端集成 magic-api 的接口快速开发框架。包含基础权限、安全认证、以及常用的一些组件功能。项目易上手，技术更综合，能力更全面。</el-text>
             <el-text tag="p">amis 是一个低代码前端框架，它使用 JSON 配置来生成页面，可以减少页面开发工作量，极大提升效率。</el-text>
             <el-text tag="p">magic-api 一个基于 Java 的接口快速开发框架，通过 magic-api 提供的 UI 界面完成编写接口，无需定义 Controller、Service、Dao、Mapper、XML、VO 等 Java 对象即可完成常见的 HTTP API 接口开发。</el-text>
+            <el-text tag="p">版本说明：</el-text>
+            <el-text tag="p">master 分支为最新版本</el-text>
+            <el-text tag="p">boot2 分支为 SpringBoot2 版本</el-text>
           </el-space>
         </div>
       </div>
@@ -62,7 +68,7 @@
         <div>
           <div>
             <el-text>博客：</el-text>
-            <el-link type="success" href="https://typ1805.gitee.io" target="_blank">https://typ1805.gitee.io</el-link>
+            <el-link type="success" href="http://tansci.top" target="_blank">http://tansci.top</el-link>
           </div>
           <div style="padding-top: 1rem;">
             <el-text>QQ：</el-text>

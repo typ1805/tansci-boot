@@ -9,7 +9,7 @@
 <a href="https://gitee.com/link?target=http%3A%2F%2Fwww.opensource.org%2Flicenses%2FMIT"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT"></a>
 </p>
 
-<p align="center">基于 SpringBoot2 + magic-api + Vue3 + Element Plus + amis3.0 快速开发管理系统</p>
+<p align="center">基于 SpringBoot3 + magic-api + Vue3 + Element Plus + amis3.0 快速开发管理系统</p>
 
 Tansci-Boot 是一个前后端分离后台管理系统， 前端集成 `amis` 低代码前端框架，后端集成 `magic-api` 的接口快速开发框架。包含基础权限、安全认证、以及常用的一些组件功能。项目易上手，技术更综合，能力更全面。
 
@@ -22,7 +22,12 @@ Tansci-Boot 是一个前后端分离后台管理系统， 前端集成 `amis` �
 - 解决前后端分离难题：前后端功能整合，集成 HTTP 组件 Axios，解决前后端分离架构中常见的问题，如跨域、参数传递、多环境配置等；
 - 落地实践工程化项目：涵盖日志、配置文件、部署、Git、Maven，后端接口统一返回参数设计、封装统一请求返回参数、工具类封装；
 - amis：低代码前端配置框架； 
-- magic-api：HTTP API 接口快速开发框架。 
+- magic-api：HTTP API 接口快速开发框架。
+
+版本说明：
+
+- master 分支为最新版本
+- boot2 分支为 SpringBoot2 版本
 
 ## 项目预览
 

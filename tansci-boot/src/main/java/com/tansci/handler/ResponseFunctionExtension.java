@@ -1,5 +1,8 @@
 package com.tansci.handler;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -10,9 +13,6 @@ import org.ssssssss.magicapi.modules.servlet.ResponseModule;
 import org.ssssssss.script.annotation.Comment;
 import org.ssssssss.script.functions.ExtensionMethod;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
